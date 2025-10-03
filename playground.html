@@ -4,46 +4,30 @@
   <meta charset="UTF-8">
   <title>Python Playground</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    #codeBox {
-      background: #f4f4f4;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 15px 0;
-      white-space: pre-wrap;
-      font-family: monospace;
-    }
-  </style>
 </head>
 <body>
   <h1>Python Playground</h1>
   <p>Experiment with Python directly in your browser using this embedded Trinket editor:</p>
 
-  <!-- Lesson code display -->
-  <h3>Lesson Code:</h3>
-  <pre id="codeBox"></pre>
-  <button onclick="copyCode()">📋 Copy to Editor</button>
+  <iframe id="trinketFrame"
+          src="https://trinket.io/embed/python3/055c60f8a0"
+          width="100%"
+          height="500"
+          frameborder="0"
+          marginwidth="0"
+          marginheight="0"
+          allowfullscreen>
+  </iframe>
 
-  <!-- Trinket embed -->
-  <iframe src="https://trinket.io/embed/python3/055c60f8a0"
-          width="100%" height="500"
-          frameborder="0" marginwidth="0" marginheight="0"
-          allowfullscreen></iframe>
-
-  <p><a href="lessons.html">⬅ Back to Lessons</a></p>
+  <p><a href="index.html">⬅ Back to Home</a></p>
 
   <script>
-    // Get code from URL
+    // If code is passed via ?code= in URL, display a message to paste it in
     const params = new URLSearchParams(window.location.search);
-    const code = decodeURIComponent(params.get("code") || "");
-    document.getElementById("codeBox").textContent = code;
-
-    function copyCode() {
-      navigator.clipboard.writeText(code).then(() => {
-        alert("✅ Code copied! Paste it into the editor above.");
-      });
+    if (params.has("code")) {
+      const decoded = decodeURIComponent(params.get("code"));
+      alert("💡 Suggested code for this lesson:\n\n" + decoded + "\n\nPaste it into the editor!");
     }
   </script>
 </body>
 </html>
-
