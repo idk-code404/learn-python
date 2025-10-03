@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+header {
+  background: #222;
+  color: white;
+  padding: 1rem;
+}
+nav a {
+  margin: 0 1rem;
+  color: white;
+  text-decoration: none;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+.btn {
+  display: inline-block;
+  background: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+}
+textarea {
+  width: 80%;
+  font-family: monospace;
+}
+pre {
+  background: #eee;
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: left;
+}
