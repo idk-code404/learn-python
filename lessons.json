@@ -5,20 +5,108 @@
     "content": "Python is a beginner-friendly language. Let's print something!",
     "code": "print('Hello, world!')",
     "quiz": {
-      "question": "What function prints text in Python?",
+      "question": "Which function displays text in Python?",
       "options": ["say()", "print()", "echo()", "display()"],
       "answer": "print()"
     }
   },
   {
     "id": 2,
-    "title": "Variables and Types",
-    "content": "Variables store data. Example: x = 10 stores an integer.",
-    "code": "x = 10\nprint(x)",
+    "title": "Variables and Data Types",
+    "content": "Variables store data. Python supports integers, floats, strings, and booleans.",
+    "code": "x = 10\ny = 3.14\nname = 'Alice'\nis_happy = True\nprint(x, y, name, is_happy)",
     "quiz": {
-      "question": "Which of these assigns a variable correctly?",
+      "question": "Which of these correctly assigns a variable?",
       "options": ["10 = x", "x == 10", "x = 10", "var x = 10"],
       "answer": "x = 10"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Operators and Expressions",
+    "content": "Operators let us calculate values. Example: +, -, *, /, %, ** for power.",
+    "code": "a = 5\nb = 2\nprint(a + b)\nprint(a ** b)\nprint(a % b)",
+    "quiz": {
+      "question": "What operator is used for exponentiation in Python?",
+      "options": ["^", "**", "pow", "exp"],
+      "answer": "**"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Control Flow: if Statements",
+    "content": "Conditional statements let you run code only if conditions are met.",
+    "code": "x = 10\nif x > 5:\n    print('x is greater than 5')",
+    "quiz": {
+      "question": "Which keyword is used for conditions in Python?",
+      "options": ["if", "when", "switch", "case"],
+      "answer": "if"
+    }
+  },
+  {
+    "id": 5,
+    "title": "Loops: for and while",
+    "content": "Loops let you repeat tasks. 'for' loops iterate over sequences, 'while' loops run until a condition is false.",
+    "code": "for i in range(5):\n    print(i)\n\ncount = 3\nwhile count > 0:\n    print(count)\n    count -= 1",
+    "quiz": {
+      "question": "Which function generates a sequence of numbers?",
+      "options": ["seq()", "numbers()", "range()", "loop()"],
+      "answer": "range()"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Functions",
+    "content": "Functions are reusable blocks of code defined with 'def'.",
+    "code": "def greet(name):\n    return 'Hello, ' + name\n\nprint(greet('Alice'))",
+    "quiz": {
+      "question": "Which keyword defines a function in Python?",
+      "options": ["func", "function", "def", "define"],
+      "answer": "def"
+    }
+  },
+  {
+    "id": 7,
+    "title": "Lists and Tuples",
+    "content": "Lists are mutable sequences, tuples are immutable. Example: list = [1,2,3], tuple = (1,2,3).",
+    "code": "fruits = ['apple', 'banana', 'cherry']\nprint(fruits[0])\nfruits.append('orange')\nprint(fruits)",
+    "quiz": {
+      "question": "Which method adds an element to a list?",
+      "options": ["push()", "add()", "append()", "insert()"],
+      "answer": "append()"
+    }
+  },
+  {
+    "id": 8,
+    "title": "Dictionaries",
+    "content": "Dictionaries store key-value pairs. Example: {'name': 'Alice', 'age': 25}.",
+    "code": "person = {'name': 'Alice', 'age': 25}\nprint(person['name'])\nprint(person.get('age'))",
+    "quiz": {
+      "question": "What symbol is used to define dictionaries?",
+      "options": ["[]", "()", "{}", "<>"],
+      "answer": "{}"
+    }
+  },
+  {
+    "id": 9,
+    "title": "Classes and Objects",
+    "content": "Python is object-oriented. Classes define blueprints for objects.",
+    "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        print(self.name + ' says woof!')\n\nd = Dog('Rex')\nd.bark()",
+    "quiz": {
+      "question": "Which method initializes a Python class?",
+      "options": ["__start__", "__create__", "__init__", "init()"],
+      "answer": "__init__"
+    }
+  },
+  {
+    "id": 10,
+    "title": "File Handling",
+    "content": "Python can read and write files with open(). Example: f = open('file.txt','r').",
+    "code": "with open('example.txt','w') as f:\n    f.write('Hello file!')\n\nwith open('example.txt','r') as f:\n    print(f.read())",
+    "quiz": {
+      "question": "Which mode opens a file for writing?",
+      "options": ["'r'", "'rw'", "'w'", "'write'"],
+      "answer": "'w'"
     }
   }
 ]
