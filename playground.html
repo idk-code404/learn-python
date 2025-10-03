@@ -4,35 +4,20 @@
   <meta charset="UTF-8">
   <title>Python Playground</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.2/full/pyodide.js"></script>
 </head>
 <body>
-  <header>
-    <h1>🐍 Python Playground</h1>
-  </header>
+  <h1>Python Playground</h1>
+  <p>Experiment with Python directly in your browser using this embedded Trinket editor:</p>
 
-  <main>
-    <textarea id="code" rows="8" cols="60">print("Hello, Python!")</textarea><br>
-    <button id="run">Run Code</button>
-    <pre id="output"></pre>
-  </main>
+  <iframe src="https://trinket.io/embed/python3/055c60f8a0"
+          width="100%"
+          height="500"
+          frameborder="0"
+          marginwidth="0"
+          marginheight="0"
+          allowfullscreen>
+  </iframe>
 
-  <script>
-    let pyodide;
-    async function loadPyodideAndPackages() {
-      pyodide = await loadPyodide();
-    }
-    loadPyodideAndPackages();
-
-    document.getElementById("run").addEventListener("click", async () => {
-      let code = document.getElementById("code").value;
-      try {
-        let result = await pyodide.runPythonAsync(code);
-        document.getElementById("output").textContent = result ?? "";
-      } catch (err) {
-        document.getElementById("output").textContent = err;
-      }
-    });
-  </script>
+  <p><a href="index.html">⬅ Back to Home</a></p>
 </body>
 </html>
