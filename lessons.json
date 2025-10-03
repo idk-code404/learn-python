@@ -14,9 +14,33 @@
   {
     "id": 2,
     "category": "Beginner",
+    "title": "Data Types",
+    "content": "Python supports different data types: int, float, str, bool.",
+    "code": "a = 10\nb = 3.14\nc = 'Hello'\nd = True\nprint(type(a), type(b), type(c), type(d))",
+    "quiz": {
+      "question": "What type is the value True?",
+      "options": ["int", "str", "float", "bool"],
+      "answer": "bool"
+    }
+  },
+  {
+    "id": 3,
+    "category": "Beginner",
+    "title": "Lists",
+    "content": "Lists hold multiple items in one variable.",
+    "code": "fruits = ['apple', 'banana', 'cherry']\nprint(fruits[0])\nfruits.append('orange')\nprint(fruits)",
+    "quiz": {
+      "question": "Which method adds an item to a list?",
+      "options": ["add()", "append()", "push()", "insert()"],
+      "answer": "append()"
+    }
+  },
+  {
+    "id": 4,
+    "category": "Beginner",
     "title": "Loops",
-    "content": "Loops allow repeating actions.",
-    "code": "for i in range(5):\n    print(i)",
+    "content": "Loops let you repeat actions efficiently.",
+    "code": "for i in range(5):\n    print('Iteration', i)",
     "quiz": {
       "question": "Which loop is best for iterating a known number of times?",
       "options": ["while", "for", "repeat", "loop"],
@@ -24,22 +48,118 @@
     }
   },
   {
-    "id": 3,
+    "id": 5,
+    "category": "Beginner",
+    "title": "Functions",
+    "content": "Functions group reusable code blocks.",
+    "code": "def greet(name):\n    return 'Hello, ' + name\n\nprint(greet('Alice'))",
+    "quiz": {
+      "question": "Which keyword defines a function?",
+      "options": ["func", "function", "def", "define"],
+      "answer": "def"
+    }
+  },
+  {
+    "id": 6,
+    "category": "Intermediate",
+    "title": "Conditionals",
+    "content": "Use if/elif/else to control program flow.",
+    "code": "x = 7\nif x > 10:\n    print('Large')\nelif x > 5:\n    print('Medium')\nelse:\n    print('Small')",
+    "quiz": {
+      "question": "What keyword handles multiple alternative conditions?",
+      "options": ["elif", "else if", "elseif", "elsif"],
+      "answer": "elif"
+    }
+  },
+  {
+    "id": 7,
+    "category": "Intermediate",
+    "title": "Dictionaries",
+    "content": "Dictionaries store key-value pairs.",
+    "code": "person = {'name':'Alice', 'age':25}\nprint(person['name'])\nperson['age'] = 26\nprint(person)",
+    "quiz": {
+      "question": "Which syntax creates a dictionary?",
+      "options": ["{}", "[]", "dict()", "both {} and dict()"],
+      "answer": "both {} and dict()"
+    }
+  },
+  {
+    "id": 8,
+    "category": "Intermediate",
+    "title": "File I/O",
+    "content": "Read and write files using open().",
+    "code": "with open('example.txt', 'w') as f:\n    f.write('Hello file!')\n\nwith open('example.txt', 'r') as f:\n    print(f.read())",
+    "quiz": {
+      "question": "Which mode opens a file for writing?",
+      "options": ["r", "w", "rw", "write"],
+      "answer": "w"
+    }
+  },
+  {
+    "id": 9,
     "category": "Intermediate",
     "title": "Exceptions",
-    "content": "Exceptions help handle errors gracefully.",
+    "content": "Exceptions let you handle errors safely.",
     "code": "try:\n    x = 1/0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
     "quiz": {
-      "question": "What keyword is used to handle exceptions?",
-      "options": ["try", "catch", "except", "error"],
+      "question": "What keyword is used to catch exceptions?",
+      "options": ["catch", "except", "error", "handle"],
       "answer": "except"
     }
   },
   {
     "id": 10,
+    "category": "Intermediate",
+    "title": "Modules",
+    "content": "Use import to include external modules.",
+    "code": "import math\nprint(math.sqrt(16))",
+    "quiz": {
+      "question": "Which function computes square roots in the math module?",
+      "options": ["root()", "sqrt()", "pow()", "square()"],
+      "answer": "sqrt()"
+    }
+  },
+  {
+    "id": 11,
+    "category": "Intermediate",
+    "title": "Libraries",
+    "content": "Python has rich standard and external libraries.",
+    "code": "import random\nprint(random.randint(1, 6))",
+    "quiz": {
+      "question": "Which library provides random numbers?",
+      "options": ["rand", "random", "math", "numbers"],
+      "answer": "random"
+    }
+  },
+  {
+    "id": 12,
+    "category": "Advanced",
+    "title": "List Comprehensions",
+    "content": "Concise way to create lists.",
+    "code": "squares = [x*x for x in range(5)]\nprint(squares)",
+    "quiz": {
+      "question": "What does [x*x for x in range(3)] produce?",
+      "options": ["[0,1,2]", "[1,2,3]", "[0,1,4]", "[0,1,4]"],
+      "answer": "[0, 1, 4]"
+    }
+  },
+  {
+    "id": 13,
+    "category": "Advanced",
+    "title": "Generators",
+    "content": "Generators yield items one by one using yield.",
+    "code": "def gen():\n    for i in range(3):\n        yield i\n\nfor x in gen():\n    print(x)",
+    "quiz": {
+      "question": "Which keyword produces values in a generator?",
+      "options": ["return", "yield", "send", "generate"],
+      "answer": "yield"
+    }
+  },
+  {
+    "id": 14,
     "category": "Advanced",
     "title": "Decorators",
-    "content": "Decorators modify the behavior of functions.",
+    "content": "Decorators wrap and modify functions.",
     "code": "def decorator(func):\n    def wrapper():\n        print('Before')\n        func()\n        print('After')\n    return wrapper\n\n@decorator\ndef greet():\n    print('Hello!')\n\ngreet()",
     "quiz": {
       "question": "What symbol is used to apply a decorator?",
@@ -49,14 +169,122 @@
   },
   {
     "id": 15,
+    "category": "Advanced",
+    "title": "Async Programming",
+    "content": "Use async/await for concurrency.",
+    "code": "import asyncio\n\nasync def main():\n    print('Hello')\n    await asyncio.sleep(1)\n    print('World')\n\nasyncio.run(main())",
+    "quiz": {
+      "question": "Which keyword declares an asynchronous function?",
+      "options": ["async", "await", "def", "future"],
+      "answer": "async"
+    }
+  },
+  {
+    "id": 16,
+    "category": "Advanced",
+    "title": "Context Managers",
+    "content": "Use with to manage resources safely.",
+    "code": "with open('file.txt','w') as f:\n    f.write('Hello')",
+    "quiz": {
+      "question": "Which keyword is used with context managers?",
+      "options": ["with", "using", "context", "manage"],
+      "answer": "with"
+    }
+  },
+  {
+    "id": 17,
     "category": "Expert",
-    "title": "Flask Web App",
-    "content": "Flask allows building web applications with Python.",
-    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello, Flask!'\n\nif __name__ == '__main__':\n    app.run()",
+    "title": "NumPy Basics",
+    "content": "NumPy supports fast numerical operations.",
+    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr*2)",
+    "quiz": {
+      "question": "Which library is used for numerical arrays?",
+      "options": ["pandas", "numpy", "math", "scipy"],
+      "answer": "numpy"
+    }
+  },
+  {
+    "id": 18,
+    "category": "Expert",
+    "title": "Pandas DataFrames",
+    "content": "Pandas provides DataFrame structures for data analysis.",
+    "code": "import pandas as pd\ndf = pd.DataFrame({'A':[1,2],'B':[3,4]})\nprint(df)",
+    "quiz": {
+      "question": "Which object type represents tabular data in pandas?",
+      "options": ["DataTable", "Frame", "DataFrame", "Table"],
+      "answer": "DataFrame"
+    }
+  },
+  {
+    "id": 19,
+    "category": "Expert",
+    "title": "Matplotlib",
+    "content": "Matplotlib is used for plotting.",
+    "code": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[4,5,6])\nplt.show()",
+    "quiz": {
+      "question": "Which function shows a plot window?",
+      "options": ["plot()", "show()", "display()", "graph()"],
+      "answer": "show()"
+    }
+  },
+  {
+    "id": 20,
+    "category": "Expert",
+    "title": "Flask Basics",
+    "content": "Flask lets you build web apps.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n\nif __name__ == '__main__':\n    app.run()",
     "quiz": {
       "question": "Which command starts a Flask app?",
-      "options": ["flask start", "python app.py", "flask run", "run flask"],
+      "options": ["flask start", "flask run", "python flask", "run flask"],
       "answer": "flask run"
+    }
+  },
+  {
+    "id": 21,
+    "category": "Expert",
+    "title": "APIs with Requests",
+    "content": "Use requests to call web APIs.",
+    "code": "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)",
+    "quiz": {
+      "question": "Which method sends a GET request?",
+      "options": ["fetch()", "get()", "request()", "send()"],
+      "answer": "get()"
+    }
+  },
+  {
+    "id": 22,
+    "category": "Expert",
+    "title": "Unit Testing",
+    "content": "Use unittest to test code.",
+    "code": "import unittest\n\nclass TestMath(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(1+1,2)\n\nunittest.main()",
+    "quiz": {
+      "question": "Which framework is built-in for Python testing?",
+      "options": ["pytest", "mocha", "unittest", "junit"],
+      "answer": "unittest"
+    }
+  },
+  {
+    "id": 23,
+    "category": "Expert",
+    "title": "Virtual Environments",
+    "content": "Use venv to isolate dependencies.",
+    "code": "python3 -m venv myenv\nsource myenv/bin/activate",
+    "quiz": {
+      "question": "Which command creates a virtual environment?",
+      "options": ["pip install venv", "python -m venv", "mkvenv", "new venv"],
+      "answer": "python -m venv"
+    }
+  },
+  {
+    "id": 24,
+    "category": "Expert",
+    "title": "Async Web APIs (aiohttp)",
+    "content": "aiohttp allows async HTTP requests.",
+    "code": "import aiohttp, asyncio\n\nasync def main():\n    async with aiohttp.ClientSession() as session:\n        async with session.get('https://example.com') as resp:\n            print(await resp.text())\n\nasyncio.run(main())",
+    "quiz": {
+      "question": "Which library is used for async HTTP in Python?",
+      "options": ["requests", "aiohttp", "httpx", "urllib"],
+      "answer": "aiohttp"
     }
   }
 ]
