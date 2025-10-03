@@ -1,13 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav ul li {
+  margin: 8px 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #2980b9;
+}
+
+nav ul li a:hover {
+  color: #27ae60;
+}
+
+/* TOC */
 #toc {
   background: #f4f4f4;
   border: 1px solid #ccc;
   padding: 15px;
   margin: 20px 0;
   border-radius: 5px;
-}
-
-#toc h2 {
-  margin-top: 0;
 }
 
 #toc ul {
@@ -27,4 +53,40 @@
 
 #toc a:hover {
   color: #27ae60;
+}
+
+/* Lessons */
+.category {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.category-header {
+  cursor: pointer;
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.lesson {
+  padding: 10px;
+  margin: 10px 0;
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+
+.lesson button {
+  margin: 5px 5px 0 0;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.quiz {
+  margin-top: 10px;
+}
+
+progress {
+  width: 100%;
+  height: 20px;
 }
