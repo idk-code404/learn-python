@@ -7,25 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("lessons.json")
       .then(response => response.json())
       .then(lessons => {
-        // Group lessons by category
         const categories = {};
         lessons.forEach(lesson => {
-          if (!categories[lesson.category]) {
-            categories[lesson.category] = [];
-          }
+          if (!categories[lesson.category]) categories[lesson.category] = [];
           categories[lesson.category].push(lesson);
         });
 
-        // Render categories + TOC
         for (const category in categories) {
           const sectionId = category.toLowerCase();
 
-          // Add to TOC
+          // TOC link
           const li = document.createElement("li");
           li.innerHTML = `<a href="#${sectionId}">${category}</a>`;
           tocList.appendChild(li);
 
-          // Build section
+          // Section
           const section = document.createElement("div");
           section.className = "category";
           section.id = sectionId;
@@ -69,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Progress dashboard
   if (progressContainer) {
     fetch("lessons.json")
       .then(response => response.json())
