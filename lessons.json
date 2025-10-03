@@ -1,222 +1,62 @@
 [
   {
     "id": 1,
-    "title": "Introduction to Python",
-    "content": "Python is a beginner-friendly language. Let's print something!",
-    "code": "print('Hello, world!')",
+    "category": "Beginner",
+    "title": "Variables and Printing",
+    "content": "Learn how to store values in variables and print them.",
+    "code": "x = 5\nprint('Value of x is', x)",
     "quiz": {
-      "question": "Which function displays text in Python?",
-      "options": ["say()", "print()", "echo()", "display()"],
-      "answer": "print()"
+      "question": "Which keyword is used to display text in Python?",
+      "options": ["echo", "print", "say", "output"],
+      "answer": "print"
     }
   },
   {
     "id": 2,
-    "title": "Variables and Data Types",
-    "content": "Variables store data. Python supports integers, floats, strings, and booleans.",
-    "code": "x = 10\ny = 3.14\nname = 'Alice'\nis_happy = True\nprint(x, y, name, is_happy)",
+    "category": "Beginner",
+    "title": "Loops",
+    "content": "Loops allow repeating actions.",
+    "code": "for i in range(5):\n    print(i)",
     "quiz": {
-      "question": "Which of these correctly assigns a variable?",
-      "options": ["10 = x", "x == 10", "x = 10", "var x = 10"],
-      "answer": "x = 10"
+      "question": "Which loop is best for iterating a known number of times?",
+      "options": ["while", "for", "repeat", "loop"],
+      "answer": "for"
     }
   },
   {
     "id": 3,
-    "title": "Operators and Expressions",
-    "content": "Operators let us calculate values. Example: +, -, *, /, %, ** for power.",
-    "code": "a = 5\nb = 2\nprint(a + b)\nprint(a ** b)\nprint(a % b)",
+    "category": "Intermediate",
+    "title": "Exceptions",
+    "content": "Exceptions help handle errors gracefully.",
+    "code": "try:\n    x = 1/0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
     "quiz": {
-      "question": "What operator is used for exponentiation in Python?",
-      "options": ["^", "**", "pow", "exp"],
-      "answer": "**"
-    }
-  },
-  {
-    "id": 4,
-    "title": "Control Flow: if Statements",
-    "content": "Conditional statements let you run code only if conditions are met.",
-    "code": "x = 10\nif x > 5:\n    print('x is greater than 5')",
-    "quiz": {
-      "question": "Which keyword is used for conditions in Python?",
-      "options": ["if", "when", "switch", "case"],
-      "answer": "if"
-    }
-  },
-  {
-    "id": 5,
-    "title": "Loops: for and while",
-    "content": "Loops let you repeat tasks. 'for' loops iterate over sequences, 'while' loops run until a condition is false.",
-    "code": "for i in range(5):\n    print(i)\n\ncount = 3\nwhile count > 0:\n    print(count)\n    count -= 1",
-    "quiz": {
-      "question": "Which function generates a sequence of numbers?",
-      "options": ["seq()", "numbers()", "range()", "loop()"],
-      "answer": "range()"
-    }
-  },
-  {
-    "id": 6,
-    "title": "Functions",
-    "content": "Functions are reusable blocks of code defined with 'def'.",
-    "code": "def greet(name):\n    return 'Hello, ' + name\n\nprint(greet('Alice'))",
-    "quiz": {
-      "question": "Which keyword defines a function in Python?",
-      "options": ["func", "function", "def", "define"],
-      "answer": "def"
-    }
-  },
-  {
-    "id": 7,
-    "title": "Lists and Tuples",
-    "content": "Lists are mutable sequences, tuples are immutable.",
-    "code": "fruits = ['apple', 'banana', 'cherry']\nprint(fruits[0])\nfruits.append('orange')\nprint(fruits)",
-    "quiz": {
-      "question": "Which method adds an element to a list?",
-      "options": ["push()", "add()", "append()", "insert()"],
-      "answer": "append()"
-    }
-  },
-  {
-    "id": 8,
-    "title": "Dictionaries",
-    "content": "Dictionaries store key-value pairs. Example: {'name': 'Alice', 'age': 25}.",
-    "code": "person = {'name': 'Alice', 'age': 25}\nprint(person['name'])\nprint(person.get('age'))",
-    "quiz": {
-      "question": "What symbol is used to define dictionaries?",
-      "options": ["[]", "()", "{}", "<>"],
-      "answer": "{}"
-    }
-  },
-  {
-    "id": 9,
-    "title": "Classes and Objects",
-    "content": "Python is object-oriented. Classes define blueprints for objects.",
-    "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        print(self.name + ' says woof!')\n\nd = Dog('Rex')\nd.bark()",
-    "quiz": {
-      "question": "Which method initializes a Python class?",
-      "options": ["__start__", "__create__", "__init__", "init()"],
-      "answer": "__init__"
+      "question": "What keyword is used to handle exceptions?",
+      "options": ["try", "catch", "except", "error"],
+      "answer": "except"
     }
   },
   {
     "id": 10,
-    "title": "File Handling",
-    "content": "Python can read and write files with open().",
-    "code": "with open('example.txt','w') as f:\n    f.write('Hello file!')\n\nwith open('example.txt','r') as f:\n    print(f.read())",
-    "quiz": {
-      "question": "Which mode opens a file for writing?",
-      "options": ["'r'", "'rw'", "'w'", "'write'"],
-      "answer": "'w'"
-    }
-  },
-  {
-    "id": 11,
-    "title": "Exceptions and Error Handling",
-    "content": "Use try/except to handle errors gracefully.",
-    "code": "try:\n    num = int('hello')\nexcept ValueError:\n    print('Invalid number!')",
-    "quiz": {
-      "question": "Which keyword starts an error handling block?",
-      "options": ["catch", "try", "error", "except"],
-      "answer": "try"
-    }
-  },
-  {
-    "id": 12,
-    "title": "Modules and Imports",
-    "content": "Modules let you reuse code. Use import to bring them in.",
-    "code": "import math\nprint(math.sqrt(16))",
-    "quiz": {
-      "question": "Which keyword imports a module?",
-      "options": ["require", "include", "import", "use"],
-      "answer": "import"
-    }
-  },
-  {
-    "id": 13,
-    "title": "Libraries (requests)",
-    "content": "Python has many libraries. 'requests' lets you fetch web pages.",
-    "code": "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)",
-    "quiz": {
-      "question": "Which library is commonly used for HTTP requests?",
-      "options": ["urllib", "http", "requests", "fetch"],
-      "answer": "requests"
-    }
-  },
-  {
-    "id": 14,
+    "category": "Advanced",
     "title": "Decorators",
-    "content": "Decorators let you modify functions.",
-    "code": "def logger(func):\n    def wrapper():\n        print('Function is running...')\n        func()\n    return wrapper\n\n@logger\ndef hello():\n    print('Hello!')\n\nhello()",
+    "content": "Decorators modify the behavior of functions.",
+    "code": "def decorator(func):\n    def wrapper():\n        print('Before')\n        func()\n        print('After')\n    return wrapper\n\n@decorator\ndef greet():\n    print('Hello!')\n\ngreet()",
     "quiz": {
-      "question": "Which symbol is used for decorators?",
+      "question": "What symbol is used to apply a decorator?",
       "options": ["@", "#", "$", "&"],
       "answer": "@"
     }
   },
   {
     "id": 15,
-    "title": "Generators",
-    "content": "Generators produce values lazily using yield.",
-    "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(3):\n    print(num)",
+    "category": "Expert",
+    "title": "Flask Web App",
+    "content": "Flask allows building web applications with Python.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello, Flask!'\n\nif __name__ == '__main__':\n    app.run()",
     "quiz": {
-      "question": "Which keyword creates a generator?",
-      "options": ["yield", "gen", "next", "iterator"],
-      "answer": "yield"
-    }
-  },
-  {
-    "id": 16,
-    "title": "Async Programming",
-    "content": "Use async and await for concurrency.",
-    "code": "import asyncio\n\nasync def greet():\n    await asyncio.sleep(1)\n    print('Hello async!')\n\nasyncio.run(greet())",
-    "quiz": {
-      "question": "Which keyword defines an asynchronous function?",
-      "options": ["async", "await", "defasync", "future"],
-      "answer": "async"
-    }
-  },
-  {
-    "id": 17,
-    "title": "NumPy Basics",
-    "content": "NumPy is a library for numerical computing.",
-    "code": "import numpy as np\narr = np.array([1, 2, 3, 4])\nprint(arr * 2)",
-    "quiz": {
-      "question": "Which library is used for numerical arrays?",
-      "options": ["Pandas", "NumPy", "SciPy", "Math"],
-      "answer": "NumPy"
-    }
-  },
-  {
-    "id": 18,
-    "title": "Flask Web Apps",
-    "content": "Flask is a micro web framework.",
-    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n\nif __name__ == '__main__':\n    app.run()",
-    "quiz": {
-      "question": "Which decorator defines a route in Flask?",
-      "options": ["@endpoint", "@path", "@url", "@app.route"],
-      "answer": "@app.route"
-    }
-  },
-  {
-    "id": 19,
-    "title": "APIs with Flask",
-    "content": "You can build APIs with Flask by returning JSON.",
-    "code": "from flask import Flask, jsonify\napp = Flask(__name__)\n\n@app.route('/api')\ndef api():\n    return jsonify(message='Hello API!')",
-    "quiz": {
-      "question": "Which Flask function returns JSON?",
-      "options": ["json()", "return()", "jsonify()", "dict()"],
-      "answer": "jsonify()"
-    }
-  },
-  {
-    "id": 20,
-    "title": "Capstone Project",
-    "content": "Combine your skills to build a project (e.g., a web app using Flask + NumPy).",
-    "code": "# Example: Flask API using NumPy\nfrom flask import Flask, jsonify\nimport numpy as np\n\napp = Flask(__name__)\n\n@app.route('/double')\ndef double():\n    arr = np.array([1,2,3])\n    return jsonify(result=(arr*2).tolist())\n\nif __name__ == '__main__':\n    app.run()",
-    "quiz": {
-      "question": "Which two technologies are combined in this project?",
-      "options": ["Flask + NumPy", "Requests + JSON", "Pandas + Django", "SciPy + SQL"],
-      "answer": "Flask + NumPy"
+      "question": "Which command starts a Flask app?",
+      "options": ["flask start", "python app.py", "flask run", "run flask"],
+      "answer": "flask run"
     }
   }
 ]
