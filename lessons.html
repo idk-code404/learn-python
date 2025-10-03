@@ -4,44 +4,181 @@
   <meta charset="UTF-8">
   <title>Python Lessons</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      display: flex;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    /* Sidebar TOC */
+    .toc {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      width: 240px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .toc h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+    .toc li {
+      margin-bottom: 1rem;
+    }
+    .toc a {
+      font-weight: bold;
+      color: #2196F3;
+      text-decoration: none;
+    }
+    .toc a.active {
+      color: #1565C0;
+      text-decoration: underline;
+    }
+    .tip {
+      font-size: 0.85rem;
+      color: #555;
+      margin: 0.2rem 0 0 0.5rem;
+    }
+
+    /* Main content */
+    .content {
+      margin-left: 280px;
+      padding: 2rem;
+      max-width: 900px;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    section h2 {
+      border-bottom: 2px solid #2196F3;
+      padding-bottom: 0.5rem;
+    }
+    .lesson-card {
+      background: #f9f9f9;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .lesson-card h3 {
+      margin-top: 0;
+    }
+    button.try-code {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+      margin-top: 0.5rem;
+    }
+    button.try-code:hover {
+      background: #388E3C;
+    }
+  </style>
 </head>
 <body>
-  <h1>Python Lessons</h1>
+  <!-- TOC Sidebar -->
+  <nav class="toc" id="toc">
+    <h2>Contents</h2>
+    <ul>
+      <li>
+        <a href="#beginner">Beginner</a>
+        <p class="tip">📘 Start here if you’re new — syntax, variables, loops, basics.</p>
+      </li>
+      <li>
+        <a href="#intermediate">Intermediate</a>
+        <p class="tip">🛠 Functions, modules, exceptions, and file handling.</p>
+      </li>
+      <li>
+        <a href="#advanced">Advanced</a>
+        <p class="tip">⚡ Decorators, generators, async, NumPy, Flask basics.</p>
+      </li>
+      <li>
+        <a href="#expert">Expert</a>
+        <p class="tip">🚀 APIs, Django, Machine Learning, web frameworks.</p>
+      </li>
+    </ul>
+  </nav>
 
-  <div id="lessons-wrapper">
-    <!-- Sidebar TOC -->
-    <div id="toc">
-      <h2>Table of Contents</h2>
-      <ul id="toc-list"></ul>
-    </div>
-
-    <!-- Lessons content -->
-    <div id="lessons"></div>
+  <!-- Main Content -->
+  <div class="content" id="lessons-content">
+    <!-- Sections will be populated via JS -->
   </div>
 
-  <p><a href="index.html">⬅ Back to Home</a></p>
-  <script src="script.js"></script>
-  <!-- Sidebar Table of Contents -->
-<nav class="toc" id="toc">
-  <h2>Contents</h2>
-  <ul>
-    <li>
-      <a href="#beginner">Beginner</a>
-      <p class="tip">📘 Start here if you’re new to Python — covers syntax, variables, loops, and basics.</p>
-    </li>
-    <li>
-      <a href="#intermediate">Intermediate</a>
-      <p class="tip">🛠 Dive deeper into functions, error handling, modules, and working with files.</p>
-    </li>
-    <li>
-      <a href="#advanced">Advanced</a>
-      <p class="tip">⚡ Learn decorators, generators, async programming, NumPy, and Flask.</p>
-    </li>
-    <li>
-      <a href="#expert">Expert</a>
-      <p class="tip">🚀 Explore web frameworks, data science, APIs, Django, and machine learning.</p>
-    </li>
-  </ul>
-</nav>
+  <script>
+    // Scroll-spy active link
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('.lesson-section');
+      const scrollPos = window.scrollY + 100; // offset for header
+      sections.forEach(section => {
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.toc a[href="#${id}"]`);
+        if (scrollPos >= top && scrollPos <= bottom) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+
+    // Load lessons.json
+    fetch('lessons.json')
+      .then(res => res.json())
+      .then(lessons => {
+        const content = document.getElementById('lessons-content');
+
+        // Group by category
+        const categories = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+        categories.forEach(cat => {
+          const section = document.createElement('section');
+          section.id = cat.toLowerCase();
+          section.className = 'lesson-section';
+          section.innerHTML = `<h2>${cat}</h2>`;
+
+          lessons.filter(l => l.category === cat).forEach(lesson => {
+            const card = document.createElement('div');
+            card.className = 'lesson-card';
+            card.innerHTML = `
+              <h3>${lesson.title}</h3>
+              <p>${lesson.content}</p>
+              <button class="try-code" onclick="copyCode(${lesson.id})">📋 Try Code</button>
+            `;
+            section.appendChild(card);
+          });
+
+          content.appendChild(section);
+        });
+      });
+
+    // Copy Python code to clipboard
+    function copyCode(id) {
+      fetch('lessons.json')
+        .then(res => res.json())
+        .then(lessons => {
+          const lesson = lessons.find(l => l.id === id);
+          if (lesson && lesson.code) {
+            navigator.clipboard.writeText(lesson.code).then(() => {
+              alert("✅ Code copied to clipboard! Open the Playground and paste it in.");
+            }).catch(err => console.error("Clipboard error", err));
+          }
+        });
+    }
+  </script>
 </body>
 </html>
