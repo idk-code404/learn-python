@@ -4,144 +4,22 @@
   <meta charset="UTF-8">
   <title>Python Lessons</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Layout wrapper */
-    #lessons-wrapper {
-      display: flex;
-      align-items: flex-start;
-    }
-
-    /* TOC Sidebar */
-    #toc {
-      position: sticky;
-      top: 10px;
-      width: 220px;
-      background: #f4f4f4;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex-shrink: 0;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    #toc h2 {
-      text-align: center;
-      font-size: 1.2rem;
-      margin-top: 0;
-    }
-    #toc ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    #toc li {
-      margin-bottom: 1rem;
-    }
-    #toc a {
-      text-decoration: none;
-      color: #2196F3;
-      font-weight: bold;
-      display: block;
-      padding: 4px 0;
-    }
-    #toc a.active {
-      color: #1565C0;
-      text-decoration: underline;
-    }
-    .tip {
-      font-size: 0.85rem;
-      color: #555;
-      margin-left: 0.5rem;
-    }
-
-    /* Main lesson content */
-    #lessons {
-      flex: 1;
-      margin-left: 20px;
-    }
-    .category {
-      margin-bottom: 2rem;
-    }
-    .category h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 4px;
-    }
-    .lesson {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      background: #f9f9f9;
-    }
-    .lesson pre {
-      background: #eaeaea;
-      padding: 10px;
-      border-radius: 6px;
-      overflow-x: auto;
-    }
-    button {
-      margin: 5px 5px 5px 0;
-      padding: 6px 10px;
-      cursor: pointer;
-      border: none;
-      background: #3498db;
-      color: white;
-      border-radius: 4px;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #2980b9;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      #lessons-wrapper {
-        flex-direction: column;
-      }
-      #toc {
-        width: 100%;
-        margin-bottom: 20px;
-        max-height: none;
-        position: relative;
-      }
-      #lessons {
-        margin-left: 0;
-      }
-    }
-  </style>
 </head>
 <body>
   <h1>Python Lessons</h1>
 
   <div id="lessons-wrapper">
-    <!-- TOC Sidebar -->
-    <nav id="toc">
+    <!-- Sidebar TOC -->
+    <div id="toc">
       <h2>Table of Contents</h2>
-      <ul>
-        <li>
-          <a href="#beginner">Beginner</a>
-          <p class="tip">📘 Start here if you’re new — syntax, variables, loops, basics.</p>
-        </li>
-        <li>
-          <a href="#intermediate">Intermediate</a>
-          <p class="tip">🛠 Dive deeper — functions, exceptions, modules, libraries.</p>
-        </li>
-        <li>
-          <a href="#advanced">Advanced</a>
-          <p class="tip">⚡ Decorators, generators, async, NumPy, Flask.</p>
-        </li>
-        <li>
-          <a href="#expert">Expert</a>
-          <p class="tip">🚀 Web APIs, Django, Machine Learning, data visualization.</p>
-        </li>
-      </ul>
-    </nav>
+      <ul id="toc-list"></ul>
+    </div>
 
     <!-- Lessons content -->
     <div id="lessons"></div>
   </div>
 
   <p><a href="index.html">⬅ Back to Home</a></p>
-
   <script src="script.js"></script>
 </body>
 </html>
