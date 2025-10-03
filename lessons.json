@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "title": "Introduction to Python",
+    "content": "Python is a beginner-friendly language. Let's print something!",
+    "code": "print('Hello, world!')",
+    "quiz": {
+      "question": "What function prints text in Python?",
+      "options": ["say()", "print()", "echo()", "display()"],
+      "answer": "print()"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Variables and Types",
+    "content": "Variables store data. Example: x = 10 stores an integer.",
+    "code": "x = 10\nprint(x)",
+    "quiz": {
+      "question": "Which of these assigns a variable correctly?",
+      "options": ["10 = x", "x == 10", "x = 10", "var x = 10"],
+      "answer": "x = 10"
+    }
+  }
+]
