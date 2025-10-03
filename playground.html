@@ -9,8 +9,7 @@
   <h1>Python Playground</h1>
   <p>Experiment with Python directly in your browser using this embedded Trinket editor:</p>
 
-  <iframe id="trinketFrame"
-          src="https://trinket.io/embed/python3/055c60f8a0"
+  <iframe src="https://trinket.io/embed/python3/055c60f8a0"
           width="100%"
           height="500"
           frameborder="0"
@@ -20,14 +19,6 @@
   </iframe>
 
   <p><a href="index.html">⬅ Back to Home</a></p>
-
-  <script>
-    // If code is passed via ?code= in URL, display a message to paste it in
-    const params = new URLSearchParams(window.location.search);
-    if (params.has("code")) {
-      const decoded = decodeURIComponent(params.get("code"));
-      alert("💡 Suggested code for this lesson:\n\n" + decoded + "\n\nPaste it into the editor!");
-    }
-  </script>
 </body>
 </html>
+
