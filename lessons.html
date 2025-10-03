@@ -6,22 +6,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Slim header with Back button -->
-  <header class="page-header">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Step-by-step lessons from Beginner → Expert</p>
-      </div>
-
-      <div class="header-actions">
-        <a href="index.html" class="back-btn" aria-label="Back to Home">
-          <span class="arrow">⬅</span>
-          <span class="text">Home</span>
-        </a>
-      </div>
-    </div>
-  </header>
+  <h1>Python Lessons</h1>
 
   <div id="lessons-wrapper">
     <!-- Sidebar TOC -->
@@ -29,7 +14,7 @@
       <h2>Table of Contents</h2>
       <ul id="toc-list"></ul>
 
-      <!-- Quick Coding Tips (read-only) -->
+      <!-- Quick Coding Tips (no copy buttons) -->
       <div id="toc-tips" aria-label="Quick coding tips">
         <h3>💡 Quick Coding Tips</h3>
         <ul>
@@ -50,6 +35,8 @@
     <!-- Lessons content -->
     <main id="lessons" role="main"></main>
   </div>
+
+  <p><a href="index.html">⬅ Back to Home</a></p>
 
   <script src="script.js"></script>
 </body>
