@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const lessonsContainer = document.getElementById("lessons");
+  const tocList = document.getElementById("toc-list");
   const progressContainer = document.getElementById("progress");
 
   if (lessonsContainer) {
@@ -15,10 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
           categories[lesson.category].push(lesson);
         });
 
-        // Render categories
+        // Render categories + TOC
         for (const category in categories) {
+          const sectionId = category.toLowerCase();
+
+          // Add to TOC
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="#${sectionId}">${category}</a>`;
+          tocList.appendChild(li);
+
+          // Build section
           const section = document.createElement("div");
           section.className = "category";
+          section.id = sectionId;
 
           const header = document.createElement("h2");
           header.textContent = category;
