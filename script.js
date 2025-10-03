@@ -1,5 +1,5 @@
 // script.js
-// Handles lesson rendering, TOC, progress, quiz and clipboard copy.
+// Handles lesson rendering, TOC, progress, quiz, clipboard copy + open playground.
 
 function checkAnswer(selected, correct, lessonId) {
   if (selected === correct) {
@@ -10,9 +10,9 @@ function checkAnswer(selected, correct, lessonId) {
   }
 }
 
-function openPlaygroundWithCode(code) {
-  // Open playground in a new tab (user can paste the code)
+function openPlaygroundWindowWithCodeEncoded(code) {
   const url = `playground.html?code=${encodeURIComponent(code)}`;
+  // Open in a new tab/window (used as fallback if blank window couldn't be created earlier)
   window.open(url, "_blank");
 }
 
@@ -21,7 +21,7 @@ async function copyToClipboard(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(text);
     } else {
-      // fallback
+      // fallback for older browsers
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.style.position = "fixed";
@@ -33,9 +33,11 @@ async function copyToClipboard(text) {
       document.body.removeChild(ta);
     }
     showToast("✅ Code copied to clipboard");
+    return true;
   } catch (err) {
     console.error("Copy failed", err);
-    showToast("⚠️ Failed to copy (see console)");
+    showToast("⚠️ Failed to copy (opening playground anyway)");
+    return false;
   }
 }
 
@@ -55,6 +57,8 @@ function showToast(msg, duration = 1800) {
     t.style.zIndex = 9999;
     t.style.fontFamily = "system-ui, Arial, sans-serif";
     t.style.fontSize = "14px";
+    t.style.transition = "opacity 0.25s";
+    t.style.opacity = "0";
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -131,21 +135,46 @@ document.addEventListener("DOMContentLoaded", () => {
             const btnRow = document.createElement("div");
             btnRow.style.marginTop = "8px";
 
-            // Try Code button (copies code to clipboard)
+            // Try Code button (copies code to clipboard AND opens playground)
             const tryBtn = document.createElement("button");
-            tryBtn.textContent = "▶ Try Code (Copy)";
-            tryBtn.title = "Copy this lesson's code to your clipboard";
-            tryBtn.addEventListener("click", () => {
-              copyToClipboard(lesson.code);
+            tryBtn.textContent = "▶ Try Code (Copy & Open)";
+            tryBtn.title = "Copy this lesson's code to clipboard and open the playground";
+            tryBtn.style.background = "#3498db";
+            tryBtn.style.color = "#fff";
+
+            // Open a blank tab synchronously to avoid popup blockers, then navigate it after copy completes.
+            tryBtn.addEventListener("click", async (e) => {
+              // open a blank tab synchronously (allowed because this handler runs on user click)
+              const newWin = window.open("", "_blank");
+
+              // attempt to copy
+              await copyToClipboard(lesson.code);
+
+              // navigate the opened tab to playground with code param (fallback if newWin was blocked)
+              const playgroundUrl = `playground.html?code=${encodeURIComponent(lesson.code)}`;
+              if (newWin) {
+                try {
+                  newWin.location = playgroundUrl;
+                } catch (err) {
+                  // In case assigning location fails, open via window.open fallback
+                  window.open(playgroundUrl, "_blank");
+                }
+              } else {
+                // If window.open failed (blocked), open normally (may be blocked too)
+                window.open(playgroundUrl, "_blank");
+              }
             });
 
-            // Open Playground button
+            // Open Playground button (just open playground)
             const openBtn = document.createElement("button");
             openBtn.textContent = "Open Playground";
             openBtn.title = "Open the playground (paste code there)";
             openBtn.style.background = "#2ecc71";
+            openBtn.style.color = "#fff";
             openBtn.addEventListener("click", () => {
-              openPlaygroundWithCode(lesson.code);
+              // open synchronously (user gesture)
+              const url = `playground.html?code=${encodeURIComponent(lesson.code)}`;
+              window.open(url, "_blank");
             });
 
             btnRow.appendChild(tryBtn);
@@ -169,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             quizDiv.appendChild(optionsRow);
 
-            // Assemble
+            // Assemble lesson card
             div.appendChild(title);
             div.appendChild(desc);
             div.appendChild(pre);
@@ -191,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
           let current = "";
           sections.forEach(section => {
             const rect = section.getBoundingClientRect();
-            // Use top of viewport + 80px offset logic similar to previous setup
             if (rect.top <= 120) {
               current = section.id;
             }
