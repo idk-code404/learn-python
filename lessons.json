@@ -1,302 +1,302 @@
 [
   {
     "id": 1,
-    "category": "Beginner",
     "title": "Hello World",
     "content": "Learn how to print your first message in Python.",
-    "code": "print('Hello, World!')",
+    "code": "print('Hello, world!')",
     "quiz": {
-      "question": "What function is used to display output in Python?",
-      "options": ["echo()", "print()", "say()", "output()"],
+      "question": "What function prints text in Python?",
+      "options": ["echo()", "printf()", "print()"],
       "answer": "print()"
-    }
+    },
+    "category": "Beginner"
   },
   {
     "id": 2,
-    "category": "Beginner",
     "title": "Variables",
-    "content": "Learn how to store and use variables.",
-    "code": "name = 'Alice'\nprint(name)",
+    "content": "Store data in variables.",
+    "code": "x = 5\nname = 'Alice'\nprint(x, name)",
     "quiz": {
-      "question": "Which symbol is used for assignment in Python?",
-      "options": ["=", "==", "->", ":"],
+      "question": "Which symbol is used to assign a value?",
+      "options": ["=", "==", ":"],
       "answer": "="
-    }
+    },
+    "category": "Beginner"
   },
   {
     "id": 3,
-    "category": "Beginner",
     "title": "Data Types",
-    "content": "Numbers, strings, and booleans are basic data types.",
-    "code": "age = 25\nheight = 5.9\nis_student = True\nprint(age, height, is_student)",
+    "content": "Python supports strings, integers, floats, and booleans.",
+    "code": "age = 25\npi = 3.14\nis_happy = True\nprint(type(pi))",
     "quiz": {
-      "question": "Which of these is NOT a basic type?",
-      "options": ["int", "str", "float", "char"],
-      "answer": "char"
-    }
+      "question": "Which type is 3.14?",
+      "options": ["int", "float", "str"],
+      "answer": "float"
+    },
+    "category": "Beginner"
   },
   {
     "id": 4,
-    "category": "Beginner",
     "title": "Lists",
-    "content": "Lists can hold multiple values.",
-    "code": "fruits = ['apple','banana','cherry']\nprint(fruits[0])",
+    "content": "Lists store ordered collections.",
+    "code": "fruits = ['apple','banana','cherry']\nprint(fruits[1])",
     "quiz": {
-      "question": "How do you access the first element of a list?",
-      "options": ["list.1", "list[0]", "list.first()", "list[-1]"],
-      "answer": "list[0]"
-    }
+      "question": "Which index gives 'banana'?",
+      "options": ["0", "1", "2"],
+      "answer": "1"
+    },
+    "category": "Beginner"
   },
   {
     "id": 5,
-    "category": "Beginner",
-    "title": "Loops",
-    "content": "Loops let you repeat actions.",
-    "code": "for i in range(3):\n    print(i)",
+    "title": "If Statements",
+    "content": "Control flow with conditions.",
+    "code": "x = 10\nif x > 5:\n    print('Big!')",
     "quiz": {
-      "question": "What keyword starts a loop?",
-      "options": ["repeat", "loop", "for", "iterate"],
-      "answer": "for"
-    }
+      "question": "What keyword starts a condition?",
+      "options": ["if", "when", "case"],
+      "answer": "if"
+    },
+    "category": "Beginner"
   },
   {
     "id": 6,
-    "category": "Intermediate",
-    "title": "Functions",
-    "content": "Functions help organize code into reusable blocks.",
-    "code": "def greet(name):\n    return 'Hello ' + name\n\nprint(greet('Alice'))",
+    "title": "Loops",
+    "content": "Repeat actions with loops.",
+    "code": "for i in range(3):\n    print(i)",
     "quiz": {
-      "question": "What keyword defines a function?",
-      "options": ["func", "function", "def", "lambda"],
-      "answer": "def"
-    }
+      "question": "Which loop is used to iterate a sequence?",
+      "options": ["for", "while", "loop"],
+      "answer": "for"
+    },
+    "category": "Beginner"
   },
   {
     "id": 7,
-    "category": "Intermediate",
-    "title": "Exceptions",
-    "content": "Handle errors with try/except.",
-    "code": "try:\n    x = 1/0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero')",
+    "title": "Functions",
+    "content": "Encapsulate reusable code.",
+    "code": "def greet(name):\n    return 'Hello ' + name\nprint(greet('Bob'))",
     "quiz": {
-      "question": "Which block handles errors?",
-      "options": ["try", "catch", "except", "error"],
-      "answer": "except"
-    }
+      "question": "What keyword defines a function?",
+      "options": ["function", "def", "func"],
+      "answer": "def"
+    },
+    "category": "Beginner"
   },
   {
     "id": 8,
-    "category": "Intermediate",
-    "title": "Modules",
-    "content": "Import and use external modules.",
-    "code": "import math\nprint(math.sqrt(16))",
+    "title": "Exceptions",
+    "content": "Handle runtime errors with try/except.",
+    "code": "try:\n    x = int('hello')\nexcept ValueError:\n    print('Error!')",
     "quiz": {
-      "question": "Which keyword imports a module?",
-      "options": ["module", "use", "import", "require"],
-      "answer": "import"
-    }
+      "question": "What keyword catches errors?",
+      "options": ["catch", "except", "handle"],
+      "answer": "except"
+    },
+    "category": "Intermediate"
   },
   {
     "id": 9,
-    "category": "Intermediate",
-    "title": "Libraries",
-    "content": "Use Python’s standard and third-party libraries.",
-    "code": "import random\nprint(random.randint(1,10))",
+    "title": "Modules",
+    "content": "Reuse code with modules.",
+    "code": "import math\nprint(math.sqrt(16))",
     "quiz": {
-      "question": "Which module generates random numbers?",
-      "options": ["rand", "random", "numbers", "math"],
-      "answer": "random"
-    }
+      "question": "Which module gives math functions?",
+      "options": ["random", "math", "os"],
+      "answer": "math"
+    },
+    "category": "Intermediate"
   },
   {
     "id": 10,
-    "category": "Intermediate",
     "title": "File I/O",
-    "content": "Read and write files in Python.",
-    "code": "with open('test.txt','w') as f:\n    f.write('Hello File!')",
+    "content": "Read and write files.",
+    "code": "with open('data.txt','w') as f:\n    f.write('Hello file!')",
     "quiz": {
-      "question": "Which function opens a file?",
-      "options": ["open()", "file()", "read()", "load()"],
-      "answer": "open()"
-    }
+      "question": "Which mode opens file for writing?",
+      "options": ["r", "w", "a"],
+      "answer": "w"
+    },
+    "category": "Intermediate"
   },
   {
     "id": 11,
-    "category": "Advanced",
-    "title": "Decorators",
-    "content": "Decorators modify functions.",
-    "code": "def log(func):\n    def wrapper():\n        print('Running...')\n        func()\n    return wrapper\n\n@log\ndef hello():\n    print('Hello')\n\nhello()",
+    "title": "Libraries",
+    "content": "Use pip-installed libraries.",
+    "code": "import requests\nprint(requests.get('https://example.com').status_code)",
     "quiz": {
-      "question": "Which symbol applies a decorator?",
-      "options": ["@", "#", "&", "%"],
-      "answer": "@"
-    }
+      "question": "Which tool installs Python packages?",
+      "options": ["npm", "pip", "brew"],
+      "answer": "pip"
+    },
+    "category": "Intermediate"
   },
   {
     "id": 12,
-    "category": "Advanced",
-    "title": "Generators",
-    "content": "Generators yield values one at a time.",
-    "code": "def gen():\n    for i in range(3):\n        yield i\n\nfor x in gen():\n    print(x)",
+    "title": "Decorators",
+    "content": "Modify functions with decorators.",
+    "code": "def decorator(func):\n    def wrapper():\n        print('Before')\n        func()\n    return wrapper\n\n@decorator\ndef hello():\n    print('Hello!')\n\nhello()",
     "quiz": {
-      "question": "Which keyword yields values?",
-      "options": ["return", "yield", "next", "send"],
-      "answer": "yield"
-    }
+      "question": "Which symbol applies a decorator?",
+      "options": ["@", "#", "&"],
+      "answer": "@"
+    },
+    "category": "Advanced"
   },
   {
     "id": 13,
-    "category": "Advanced",
+    "title": "Generators",
+    "content": "Yield values lazily with generators.",
+    "code": "def counter():\n    for i in range(3):\n        yield i\nfor x in counter():\n    print(x)",
+    "quiz": {
+      "question": "What keyword creates a generator?",
+      "options": ["yield", "return", "gen"],
+      "answer": "yield"
+    },
+    "category": "Advanced"
+  },
+  {
+    "id": 14,
     "title": "Async Programming",
     "content": "Use async/await for concurrency.",
     "code": "import asyncio\n\nasync def main():\n    print('Hello')\n    await asyncio.sleep(1)\n    print('World')\n\nasyncio.run(main())",
     "quiz": {
-      "question": "Which keyword declares an async function?",
-      "options": ["async", "await", "future", "task"],
-      "answer": "async"
-    }
-  },
-  {
-    "id": 14,
-    "category": "Advanced",
-    "title": "NumPy Basics",
-    "content": "NumPy enables fast array operations.",
-    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr*2)",
-    "quiz": {
-      "question": "Which library is used for arrays?",
-      "options": ["numpy", "pandas", "math", "scipy"],
-      "answer": "numpy"
-    }
+      "question": "Which keyword runs concurrently?",
+      "options": ["await", "async", "both"],
+      "answer": "both"
+    },
+    "category": "Advanced"
   },
   {
     "id": 15,
-    "category": "Advanced",
-    "title": "Flask Basics",
-    "content": "Flask builds web applications.",
-    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n\nif __name__ == '__main__':\n    app.run()",
+    "title": "NumPy Basics",
+    "content": "Work with arrays using NumPy.",
+    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr * 2)",
     "quiz": {
-      "question": "Which decorator defines a route?",
-      "options": ["@url", "@route", "@app.route", "@path"],
-      "answer": "@app.route"
-    }
+      "question": "Which library is used for arrays?",
+      "options": ["Pandas", "NumPy", "SciPy"],
+      "answer": "NumPy"
+    },
+    "category": "Advanced"
   },
   {
     "id": 16,
-    "category": "Advanced",
-    "title": "OOP Classes",
-    "content": "Define classes and objects.",
-    "code": "class Dog:\n    def __init__(self,name):\n        self.name = name\n\nfido = Dog('Fido')\nprint(fido.name)",
+    "title": "Flask Basics",
+    "content": "Build a simple web app with Flask.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'",
     "quiz": {
-      "question": "What keyword defines a class?",
-      "options": ["object", "class", "define", "struct"],
-      "answer": "class"
-    }
+      "question": "Which decorator defines a route?",
+      "options": ["@app.route", "@route", "@flask.route"],
+      "answer": "@app.route"
+    },
+    "category": "Advanced"
   },
   {
     "id": 17,
-    "category": "Expert",
-    "title": "Context Managers",
-    "content": "Use `with` to manage resources.",
-    "code": "class MyResource:\n    def __enter__(self):\n        print('Enter')\n        return self\n    def __exit__(self, exc_type, exc, tb):\n        print('Exit')\n\nwith MyResource() as r:\n    print('Inside')",
+    "title": "Pandas Basics",
+    "content": "Work with tabular data using Pandas.",
+    "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2],'b':[3,4]})\nprint(df)",
     "quiz": {
-      "question": "Which keyword is used with context managers?",
-      "options": ["use", "with", "context", "manage"],
-      "answer": "with"
-    }
+      "question": "Which library is best for DataFrames?",
+      "options": ["Pandas", "NumPy", "Matplotlib"],
+      "answer": "Pandas"
+    },
+    "category": "Advanced"
   },
   {
     "id": 18,
-    "category": "Expert",
-    "title": "Metaclasses",
-    "content": "Control class creation with metaclasses.",
-    "code": "class Meta(type):\n    def __new__(cls,name,bases,attrs):\n        attrs['created'] = True\n        return super().__new__(cls,name,bases,attrs)\n\nclass MyClass(metaclass=Meta):\n    pass\n\nprint(MyClass.created)",
+    "title": "Object-Oriented Programming",
+    "content": "Define classes and objects.",
+    "code": "class Dog:\n    def __init__(self,name):\n        self.name = name\n\n    def bark(self):\n        print(self.name + ' says woof!')\n\nfido = Dog('Fido')\nfido.bark()",
     "quiz": {
-      "question": "Which argument defines a metaclass?",
-      "options": ["superclass", "parent", "metaclass", "type"],
-      "answer": "metaclass"
-    }
+      "question": "What method initializes a class?",
+      "options": ["__init__", "start", "create"],
+      "answer": "__init__"
+    },
+    "category": "Intermediate"
   },
   {
     "id": 19,
-    "category": "Expert",
-    "title": "C Extensions",
-    "content": "Extend Python with C modules for speed.",
-    "code": "# Example placeholder: actual C code needed\nprint('C extensions require compilation')",
+    "title": "Virtual Environments",
+    "content": "Isolate dependencies with venv.",
+    "code": "python -m venv myenv\nsource myenv/bin/activate",
     "quiz": {
-      "question": "What language are CPython extensions typically written in?",
-      "options": ["C", "Java", "Rust", "Go"],
-      "answer": "C"
-    }
+      "question": "What command creates a venv?",
+      "options": ["pip venv", "python -m venv", "mkvenv"],
+      "answer": "python -m venv"
+    },
+    "category": "Advanced"
   },
   {
     "id": 20,
-    "category": "Expert",
-    "title": "Multiprocessing",
-    "content": "Use multiple processes for parallelism.",
-    "code": "from multiprocessing import Process\n\ndef worker():\n    print('Working')\n\np = Process(target=worker)\np.start()\np.join()",
+    "title": "Unit Testing",
+    "content": "Test code with unittest.",
+    "code": "import unittest\n\nclass TestMath(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(2+2,4)\n\nunittest.main()",
     "quiz": {
-      "question": "Which module enables parallel processes?",
-      "options": ["threading", "asyncio", "multiprocessing", "parallel"],
-      "answer": "multiprocessing"
-    }
+      "question": "Which module is for testing?",
+      "options": ["unittest", "pytest", "both"],
+      "answer": "unittest"
+    },
+    "category": "Expert"
   },
   {
     "id": 21,
-    "category": "Expert",
-    "title": "Cython",
-    "content": "Write Python with C-like performance.",
-    "code": "# Example: Requires Cython installed\nprint('Cython allows C speed in Python code')",
+    "title": "APIs with Flask",
+    "content": "Create REST APIs in Flask.",
+    "code": "from flask import Flask, jsonify\napp = Flask(__name__)\n\n@app.route('/api')\ndef api():\n    return jsonify({'msg':'Hello API'})",
     "quiz": {
-      "question": "Which tool compiles Python-like syntax to C?",
-      "options": ["PyPy", "JIT", "Cython", "Numba"],
-      "answer": "Cython"
-    }
+      "question": "Which function returns JSON?",
+      "options": ["return()", "jsonify()", "toJSON()"],
+      "answer": "jsonify()"
+    },
+    "category": "Expert"
   },
   {
     "id": 22,
-    "category": "Expert",
-    "title": "Async Web with FastAPI",
-    "content": "Build modern async APIs.",
-    "code": "from fastapi import FastAPI\napp = FastAPI()\n\n@app.get('/')\ndef read_root():\n    return {'Hello':'World'}",
+    "title": "Data Visualization",
+    "content": "Plot data with Matplotlib.",
+    "code": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[4,5,6])\nplt.show()",
     "quiz": {
-      "question": "Which keyword defines a FastAPI route?",
-      "options": ["@url", "@app.get", "@route", "@fastapi"],
-      "answer": "@app.get"
-    }
+      "question": "Which library plots graphs?",
+      "options": ["Matplotlib", "Flask", "Seaborn"],
+      "answer": "Matplotlib"
+    },
+    "category": "Expert"
   },
   {
     "id": 23,
-    "category": "Expert",
-    "title": "Machine Learning with scikit-learn",
-    "content": "Train models with scikit-learn.",
-    "code": "from sklearn.linear_model import LinearRegression\nimport numpy as np\nX = np.array([[1],[2],[3]])\ny = np.array([2,4,6])\nmodel = LinearRegression().fit(X,y)\nprint(model.predict([[4]]))",
+    "title": "Web Scraping",
+    "content": "Extract data with BeautifulSoup.",
+    "code": "import requests\nfrom bs4 import BeautifulSoup\nhtml = requests.get('https://example.com').text\nsoup = BeautifulSoup(html,'html.parser')\nprint(soup.title.string)",
     "quiz": {
-      "question": "Which library provides ML algorithms?",
-      "options": ["numpy", "scikit-learn", "matplotlib", "keras"],
-      "answer": "scikit-learn"
-    }
+      "question": "Which library parses HTML?",
+      "options": ["requests", "BeautifulSoup", "json"],
+      "answer": "BeautifulSoup"
+    },
+    "category": "Expert"
   },
   {
     "id": 24,
-    "category": "Expert",
-    "title": "Data Visualization with Matplotlib",
-    "content": "Plot charts and graphs.",
-    "code": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[2,4,6])\nplt.show()",
+    "title": "Django Basics",
+    "content": "Web framework for large apps.",
+    "code": "django-admin startproject mysite",
     "quiz": {
-      "question": "Which function displays a plot?",
-      "options": ["draw()", "plot()", "show()", "render()"],
-      "answer": "show()"
-    }
+      "question": "Which command creates a Django project?",
+      "options": ["flask new", "django-admin startproject", "django new"],
+      "answer": "django-admin startproject"
+    },
+    "category": "Expert"
   },
   {
     "id": 25,
-    "category": "Expert",
-    "title": "Deep Learning with TensorFlow",
-    "content": "Use TensorFlow for neural networks.",
-    "code": "import tensorflow as tf\nprint(tf.__version__)",
+    "title": "Machine Learning Intro",
+    "content": "Use scikit-learn for ML.",
+    "code": "from sklearn.linear_model import LinearRegression\nmodel = LinearRegression()",
     "quiz": {
-      "question": "Which library is widely used for deep learning?",
-      "options": ["TensorFlow", "Pandas", "NumPy", "Matplotlib"],
-      "answer": "TensorFlow"
-    }
+      "question": "Which library is for ML?",
+      "options": ["sklearn", "flask", "numpy"],
+      "answer": "sklearn"
+    },
+    "category": "Expert"
   }
 ]
