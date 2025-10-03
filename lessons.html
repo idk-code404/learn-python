@@ -1,25 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Python Lessons</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Python Lessons</h1>
 
   <div id="lessons-wrapper">
     <!-- Sidebar TOC -->
-    <div id="toc">
+    <aside id="toc" aria-label="Table of contents and tips">
       <h2>Table of Contents</h2>
       <ul id="toc-list"></ul>
-    </div>
+
+      <!-- Quick Coding Tips -->
+      <div id="toc-tips" aria-label="Quick coding tips">
+        <h3>💡 Quick Coding Tips</h3>
+        <ul>
+          <li>
+            <span class="tip-text">Use meaningful variable names (e.g. <code>total_price</code>).</span>
+            <button class="tip-copy" onclick="copyTip('Use meaningful variable names (e.g. total_price).')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Keep functions small — one job per function.</span>
+            <button class="tip-copy" onclick="copyTip('Keep functions small — one job per function.')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Use <code>print()</code> to debug quickly while learning.</span>
+            <button class="tip-copy" onclick="copyTip(\"Use print() to debug quickly while learning.\")">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Stick to 4-space indentation (PEP 8 style).</span>
+            <button class="tip-copy" onclick="copyTip('Stick to 4-space indentation (PEP 8 style).')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Comment tricky logic with <code>#</code> so you (and others) understand it later.</span>
+            <button class="tip-copy" onclick="copyTip('Comment tricky logic with # so you (and others) understand it later.')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Prefer list comprehensions for simple transformations.</span>
+            <button class="tip-copy" onclick="copyTip('Prefer list comprehensions for simple transformations.')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Use virtual environments: <code>python -m venv env</code>.</span>
+            <button class="tip-copy" onclick="copyTip('Use virtual environments: python -m venv env')">Copy</button>
+          </li>
+          <li>
+            <span class="tip-text">Read error messages — they usually tell you what's wrong and where.</span>
+            <button class="tip-copy" onclick="copyTip('Read error messages — they usually tell you what\\'s wrong and where.')">Copy</button>
+          </li>
+        </ul>
+
+        <p class="tips-note">Tip: click a Copy button, then use <strong>Try Code</strong> to paste into the playground.</p>
+      </div>
+    </aside>
 
     <!-- Lessons content -->
-    <div id="lessons"></div>
+    <main id="lessons" role="main"></main>
   </div>
 
   <p><a href="index.html">⬅ Back to Home</a></p>
+
+  <script>
+    // copyTip helper — uses global copyToClipboard if present, otherwise uses navigator.clipboard
+    function copyTip(text) {
+      if (typeof copyToClipboard === "function") {
+        copyToClipboard(text);
+        return;
+      }
+      // fallback
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("✅ Tip copied to clipboard");
+        }).catch(() => {
+          alert("⚠️ Couldn't copy the tip. Try selecting & copying manually.");
+        });
+      } else {
+        // very old fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          alert("✅ Tip copied to clipboard");
+        } catch {
+          alert("⚠️ Couldn't copy the tip. Try selecting & copying manually.");
+        } finally {
+          document.body.removeChild(ta);
+        }
+      }
+    }
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
