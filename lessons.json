@@ -68,7 +68,7 @@
   {
     "id": 7,
     "title": "Lists and Tuples",
-    "content": "Lists are mutable sequences, tuples are immutable. Example: list = [1,2,3], tuple = (1,2,3).",
+    "content": "Lists are mutable sequences, tuples are immutable.",
     "code": "fruits = ['apple', 'banana', 'cherry']\nprint(fruits[0])\nfruits.append('orange')\nprint(fruits)",
     "quiz": {
       "question": "Which method adds an element to a list?",
@@ -101,12 +101,122 @@
   {
     "id": 10,
     "title": "File Handling",
-    "content": "Python can read and write files with open(). Example: f = open('file.txt','r').",
+    "content": "Python can read and write files with open().",
     "code": "with open('example.txt','w') as f:\n    f.write('Hello file!')\n\nwith open('example.txt','r') as f:\n    print(f.read())",
     "quiz": {
       "question": "Which mode opens a file for writing?",
       "options": ["'r'", "'rw'", "'w'", "'write'"],
       "answer": "'w'"
+    }
+  },
+  {
+    "id": 11,
+    "title": "Exceptions and Error Handling",
+    "content": "Errors can be caught using try/except blocks.",
+    "code": "try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
+    "quiz": {
+      "question": "Which keyword handles errors in Python?",
+      "options": ["catch", "except", "handle", "error"],
+      "answer": "except"
+    }
+  },
+  {
+    "id": 12,
+    "title": "Modules and Imports",
+    "content": "Python code can be organized into modules. Use 'import' to reuse them.",
+    "code": "import math\nprint(math.sqrt(16))",
+    "quiz": {
+      "question": "Which keyword is used to include a module?",
+      "options": ["use", "import", "require", "include"],
+      "answer": "import"
+    }
+  },
+  {
+    "id": 13,
+    "title": "Standard Library",
+    "content": "Python’s standard library includes datetime, random, os, sys, etc.",
+    "code": "import random\nprint(random.randint(1, 10))",
+    "quiz": {
+      "question": "Which module generates random numbers?",
+      "options": ["math", "random", "os", "numbers"],
+      "answer": "random"
+    }
+  },
+  {
+    "id": 14,
+    "title": "Working with APIs (requests)",
+    "content": "You can fetch data from web APIs using the requests library.",
+    "code": "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)",
+    "quiz": {
+      "question": "Which library is commonly used for HTTP requests?",
+      "options": ["http", "urllib", "requests", "net"],
+      "answer": "requests"
+    }
+  },
+  {
+    "id": 15,
+    "title": "Virtual Environments & pip",
+    "content": "Virtual environments isolate dependencies. pip installs libraries.",
+    "code": "# In terminal:\n# python -m venv env\n# source env/bin/activate\n# pip install requests",
+    "quiz": {
+      "question": "Which tool installs Python packages?",
+      "options": ["npm", "pip", "brew", "apt"],
+      "answer": "pip"
+    }
+  },
+  {
+    "id": 16,
+    "title": "Decorators",
+    "content": "Decorators modify functions. Defined with @ syntax.",
+    "code": "def debug(func):\n    def wrapper(*args, **kwargs):\n        print('Calling', func.__name__)\n        return func(*args, **kwargs)\n    return wrapper\n\n@debug\ndef say_hello():\n    print('Hello!')\n\nsay_hello()",
+    "quiz": {
+      "question": "Which symbol is used for decorators?",
+      "options": ["@", "#", "&", "$"],
+      "answer": "@"
+    }
+  },
+  {
+    "id": 17,
+    "title": "Generators",
+    "content": "Generators yield values lazily using 'yield'.",
+    "code": "def count_up_to(n):\n    i = 1\n    while i <= n:\n        yield i\n        i += 1\n\nfor num in count_up_to(5):\n    print(num)",
+    "quiz": {
+      "question": "Which keyword produces values in generators?",
+      "options": ["return", "yield", "give", "next"],
+      "answer": "yield"
+    }
+  },
+  {
+    "id": 18,
+    "title": "Async and Await",
+    "content": "Python supports asynchronous programming with async/await.",
+    "code": "import asyncio\n\nasync def hello():\n    await asyncio.sleep(1)\n    print('Hello async!')\n\nasyncio.run(hello())",
+    "quiz": {
+      "question": "Which keyword runs asynchronous functions?",
+      "options": ["await", "asyncio.run()", "start()", "future.run()"],
+      "answer": "asyncio.run()"
+    }
+  },
+  {
+    "id": 19,
+    "title": "NumPy for Data Science",
+    "content": "NumPy provides arrays and math operations for data science.",
+    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr * 2)",
+    "quiz": {
+      "question": "Which library is core to scientific computing in Python?",
+      "options": ["pandas", "math", "numpy", "scipy"],
+      "answer": "numpy"
+    }
+  },
+  {
+    "id": 20,
+    "title": "Web Development with Flask",
+    "content": "Flask is a lightweight web framework for Python.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello, Flask!'\n\nif __name__ == '__main__':\n    app.run(debug=True)",
+    "quiz": {
+      "question": "Which decorator defines a route in Flask?",
+      "options": ["@endpoint", "@route", "@url", "@app.route"],
+      "answer": "@app.route"
     }
   }
 ]
