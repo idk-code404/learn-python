@@ -114,3 +114,15 @@ button:hover {
     margin-left: 0;
   }
 }
+/* Toast already created dynamically, but style fallback: */
+#toast-notice {
+  transition: opacity 0.25s;
+}
+
+/* Optional: small style tweak for the "Open Playground" button */
+.lesson button {
+  margin-right: 8px;
+}
+.lesson button[title="Open the playground (paste code there)"] {
+  background: #2ecc71;
+}
