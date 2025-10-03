@@ -14,7 +14,7 @@
       <h2>Table of Contents</h2>
       <ul id="toc-list"></ul>
 
-      <!-- Quick Coding Tips (no copy buttons) -->
+      <!-- Quick Coding Tips (read-only) -->
       <div id="toc-tips" aria-label="Quick coding tips">
         <h3>💡 Quick Coding Tips</h3>
         <ul>
@@ -36,7 +36,13 @@
     <main id="lessons" role="main"></main>
   </div>
 
-  <p><a href="index.html">⬅ Back to Home</a></p>
+  <!-- UPDATED Back to Home button -->
+  <p class="back-link-wrap">
+    <a class="back-link" href="index.html" aria-label="Back to Home">
+      <span class="back-arrow" aria-hidden="true">⬅</span>
+      <span class="back-text">Back to Home</span>
+    </a>
+  </p>
 
   <script src="script.js"></script>
 </body>
