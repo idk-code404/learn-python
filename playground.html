@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Python Playground</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.2/full/pyodide.js"></script>
+</head>
+<body>
+  <header>
+    <h1>🐍 Python Playground</h1>
+  </header>
+
+  <main>
+    <textarea id="code" rows="8" cols="60">print("Hello, Python!")</textarea><br>
+    <button id="run">Run Code</button>
+    <pre id="output"></pre>
+  </main>
+
+  <script>
+    let pyodide;
+    async function loadPyodideAndPackages() {
+      pyodide = await loadPyodide();
+    }
+    loadPyodideAndPackages();
+
+    document.getElementById("run").addEventListener("click", async () => {
+      let code = document.getElementById("code").value;
+      try {
+        let result = await pyodide.runPythonAsync(code);
+        document.getElementById("output").textContent = result ?? "";
+      } catch (err) {
+        document.getElementById("output").textContent = err;
+      }
+    });
+  </script>
+</body>
+</html>
