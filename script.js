@@ -1,3 +1,17 @@
+function checkAnswer(selected, correct, lessonId) {
+  if (selected === correct) {
+    alert("✅ Correct!");
+    localStorage.setItem(`lesson-${lessonId}`, "completed");
+  } else {
+    alert("❌ Try again.");
+  }
+}
+
+function openPlayground(code) {
+  const url = `playground.html?code=${code}`;
+  window.open(url, "_blank");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const lessonsContainer = document.getElementById("lessons");
   const tocList = document.getElementById("toc-list");
@@ -28,10 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const header = document.createElement("h2");
           header.textContent = category;
-          header.className = "category-header";
-          header.addEventListener("click", () => {
-            section.classList.toggle("collapsed");
-          });
+          section.appendChild(header);
 
           const lessonsList = document.createElement("div");
           lessonsList.className = "lessons-list";
@@ -54,10 +65,30 @@ document.addEventListener("DOMContentLoaded", () => {
             lessonsList.appendChild(div);
           });
 
-          section.appendChild(header);
           section.appendChild(lessonsList);
           lessonsContainer.appendChild(section);
         }
+
+        // Scroll Spy
+        const tocLinks = document.querySelectorAll("#toc a");
+        const sections = document.querySelectorAll(".category");
+
+        window.addEventListener("scroll", () => {
+          let current = "";
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop - 80;
+            if (window.scrollY >= sectionTop) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          tocLinks.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === "#" + current) {
+              link.classList.add("active");
+            }
+          });
+        });
       })
       .catch(err => {
         lessonsContainer.innerHTML = "<p>Failed to load lessons.</p>";
@@ -83,16 +114,3 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 });
-
-function checkAnswer(selected, correct, lessonId) {
-  if (selected === correct) {
-    alert("✅ Correct!");
-    localStorage.setItem(`lesson-${lessonId}`, "completed");
-  } else {
-    alert("❌ Try again.");
-  }
-}
-
-function openPlayground(code) {
-  window.location.href = `playground.html?code=${code}`;
-}
