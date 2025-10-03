@@ -1,5 +1,5 @@
 // script.js
-// Full script: renders lessons + TOC, handles copy+open playground, quizzes, progress, and scroll-spy.
+// Handles lesson rendering, TOC, progress, quiz, clipboard copy + auto-open playground.
 
 function checkAnswer(selected, correct, lessonId) {
   if (selected === correct) {
@@ -10,10 +10,19 @@ function checkAnswer(selected, correct, lessonId) {
   }
 }
 
-function openPlaygroundWithCode(code) {
-  // Open playground in a new tab with encoded code in the URL
+function openPlaygroundWithCodeInNewTab(code, newTabRef = null) {
   const url = `playground.html?code=${encodeURIComponent(code)}`;
-  window.open(url, "_blank");
+  // If we were given a tab/window reference, navigate it; otherwise open a new tab.
+  try {
+    if (newTabRef && !newTabRef.closed) {
+      newTabRef.location = url;
+    } else {
+      window.open(url, "_blank");
+    }
+  } catch (e) {
+    // Fallback
+    window.open(url, "_blank");
+  }
 }
 
 async function copyToClipboard(text) {
@@ -36,12 +45,12 @@ async function copyToClipboard(text) {
     return true;
   } catch (err) {
     console.error("Copy failed", err);
-    showToast("⚠️ Failed to copy (see console)");
+    showToast("⚠️ Failed to copy to clipboard");
     return false;
   }
 }
 
-function showToast(msg, duration = 1600) {
+function showToast(msg, duration = 1800) {
   let t = document.getElementById("toast-notice");
   if (!t) {
     t = document.createElement("div");
@@ -58,7 +67,7 @@ function showToast(msg, duration = 1600) {
     t.style.fontFamily = "system-ui, Arial, sans-serif";
     t.style.fontSize = "14px";
     t.style.opacity = "0";
-    t.style.transition = "opacity 0.24s ease";
+    t.style.transition = "opacity 0.2s ease";
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -135,29 +144,54 @@ document.addEventListener("DOMContentLoaded", () => {
             const btnRow = document.createElement("div");
             btnRow.style.marginTop = "8px";
 
-            // Try Code button (copies code to clipboard AND opens playground)
+            // Try Code button (copy + open playground)
             const tryBtn = document.createElement("button");
-            tryBtn.textContent = "▶ Try Code";
-            tryBtn.title = "Copy this lesson's code to clipboard and open Playground";
+            tryBtn.textContent = "▶ Try Code (Copy & Open)";
+            tryBtn.title = "Copy this lesson's code and open the playground";
+
             tryBtn.addEventListener("click", async () => {
-              // copy first, then open playground
-              const ok = await copyToClipboard(lesson.code);
-              if (ok) {
-                // small delay so toast is visible before new tab steals focus (optional)
-                setTimeout(() => openPlaygroundWithCode(lesson.code), 200);
+              // Open a blank tab first to avoid popup blockers
+              let newTab = null;
+              try {
+                newTab = window.open("", "_blank");
+                // If the browser blocks blank pages, newTab may be null
+              } catch (e) {
+                newTab = null;
+              }
+
+              // Attempt copy
+              const success = await copyToClipboard(lesson.code);
+
+              // Now navigate the opened tab (or open a new one) to playground with code param
+              if (newTab) {
+                // If we opened a blank tab, navigate it
+                openPlaygroundWithCodeInNewTab(lesson.code, newTab);
               } else {
-                // still open playground so user can paste manually
-                openPlaygroundWithCode(lesson.code);
+                // No prior tab (blocked), open a new one now (user gesture already occurred)
+                openPlaygroundWithCodeInNewTab(lesson.code, null);
+              }
+
+              // If copying failed, we already showed a toast; optionally show additional note in the opened tab
+              if (!success) {
+                // small delay to ensure tab opened
+                setTimeout(() => {
+                  try {
+                    // we cannot reliably inject into cross-origin frames; so just leave it
+                    // the playground page shows the code param as a suggested snippet (it alerts or displays)
+                  } catch (e) {
+                    // ignore
+                  }
+                }, 400);
               }
             });
 
-            // Optional: separate "Open Playground" button (green)
+            // Open Playground button (explicit open)
             const openBtn = document.createElement("button");
             openBtn.textContent = "Open Playground";
             openBtn.title = "Open the playground (paste code there)";
             openBtn.style.background = "#2ecc71";
             openBtn.addEventListener("click", () => {
-              openPlaygroundWithCode(lesson.code);
+              openPlaygroundWithCodeInNewTab(lesson.code, null);
             });
 
             btnRow.appendChild(tryBtn);
@@ -181,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             quizDiv.appendChild(optionsRow);
 
-            // Assemble
+            // Assemble lesson block
             div.appendChild(title);
             div.appendChild(desc);
             div.appendChild(pre);
@@ -196,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
           lessonsContainer.appendChild(section);
         }
 
-        // Scroll spy for TOC highlighting (only after DOM sections exist)
+        // Scroll spy for TOC highlighting (after DOM sections exist)
         const tocLinks = document.querySelectorAll("#toc a");
         const sections = document.querySelectorAll(".category");
         window.addEventListener("scroll", () => {
