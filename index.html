@@ -4,14 +4,102 @@
   <meta charset="UTF-8">
   <title>Learn Python</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Homepage specific tweaks */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+    }
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .nav-links a {
+      background: #f4f4f9;
+      padding: 0.8rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #333;
+      transition: background 0.3s;
+    }
+    .nav-links a:hover {
+      background: #e0e0e0;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .feature-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .feature-card h3 {
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Learn Python</h1>
-  <nav>
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>🐍 Learn Python</h1>
+    <p>Step from beginner to expert with interactive lessons, quizzes, and a live coding playground.</p>
+  </header>
+
+  <!-- Quick Nav -->
+  <nav class="nav-links">
     <a href="lessons.html">📘 Lessons</a>
     <a href="playground.html">💻 Playground</a>
-    <a href="dashboard.html">📊 Progress Dashboard</a>
+    <a href="dashboard.html">📊 Dashboard</a>
   </nav>
-  <p>This site will help you learn Python step by step, from beginner to expert!</p>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="feature-card">
+      <h3>📚 Structured Lessons</h3>
+      <p>Learn Python step-by-step, from basics to advanced concepts like Flask and Machine Learning.</p>
+    </div>
+    <div class="feature-card">
+      <h3>📝 Quizzes</h3>
+      <p>Reinforce your learning with quick quizzes after each lesson.</p>
+    </div>
+    <div class="feature-card">
+      <h3>💻 Live Coding</h3>
+      <p>Practice instantly with our embedded Python playground powered by Trinket.</p>
+    </div>
+    <div class="feature-card">
+      <h3>📊 Progress Tracking</h3>
+      <p>Track your journey and see how far you’ve come with the dashboard.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Made with ❤️ for learners everywhere.</p>
+  </footer>
 </body>
 </html>
