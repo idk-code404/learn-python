@@ -112,111 +112,111 @@
   {
     "id": 11,
     "title": "Exceptions and Error Handling",
-    "content": "Errors can be caught using try/except blocks.",
-    "code": "try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
+    "content": "Use try/except to handle errors gracefully.",
+    "code": "try:\n    num = int('hello')\nexcept ValueError:\n    print('Invalid number!')",
     "quiz": {
-      "question": "Which keyword handles errors in Python?",
-      "options": ["catch", "except", "handle", "error"],
-      "answer": "except"
+      "question": "Which keyword starts an error handling block?",
+      "options": ["catch", "try", "error", "except"],
+      "answer": "try"
     }
   },
   {
     "id": 12,
     "title": "Modules and Imports",
-    "content": "Python code can be organized into modules. Use 'import' to reuse them.",
+    "content": "Modules let you reuse code. Use import to bring them in.",
     "code": "import math\nprint(math.sqrt(16))",
     "quiz": {
-      "question": "Which keyword is used to include a module?",
-      "options": ["use", "import", "require", "include"],
+      "question": "Which keyword imports a module?",
+      "options": ["require", "include", "import", "use"],
       "answer": "import"
     }
   },
   {
     "id": 13,
-    "title": "Standard Library",
-    "content": "Python’s standard library includes datetime, random, os, sys, etc.",
-    "code": "import random\nprint(random.randint(1, 10))",
-    "quiz": {
-      "question": "Which module generates random numbers?",
-      "options": ["math", "random", "os", "numbers"],
-      "answer": "random"
-    }
-  },
-  {
-    "id": 14,
-    "title": "Working with APIs (requests)",
-    "content": "You can fetch data from web APIs using the requests library.",
+    "title": "Libraries (requests)",
+    "content": "Python has many libraries. 'requests' lets you fetch web pages.",
     "code": "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)",
     "quiz": {
       "question": "Which library is commonly used for HTTP requests?",
-      "options": ["http", "urllib", "requests", "net"],
+      "options": ["urllib", "http", "requests", "fetch"],
       "answer": "requests"
     }
   },
   {
-    "id": 15,
-    "title": "Virtual Environments & pip",
-    "content": "Virtual environments isolate dependencies. pip installs libraries.",
-    "code": "# In terminal:\n# python -m venv env\n# source env/bin/activate\n# pip install requests",
-    "quiz": {
-      "question": "Which tool installs Python packages?",
-      "options": ["npm", "pip", "brew", "apt"],
-      "answer": "pip"
-    }
-  },
-  {
-    "id": 16,
+    "id": 14,
     "title": "Decorators",
-    "content": "Decorators modify functions. Defined with @ syntax.",
-    "code": "def debug(func):\n    def wrapper(*args, **kwargs):\n        print('Calling', func.__name__)\n        return func(*args, **kwargs)\n    return wrapper\n\n@debug\ndef say_hello():\n    print('Hello!')\n\nsay_hello()",
+    "content": "Decorators let you modify functions.",
+    "code": "def logger(func):\n    def wrapper():\n        print('Function is running...')\n        func()\n    return wrapper\n\n@logger\ndef hello():\n    print('Hello!')\n\nhello()",
     "quiz": {
       "question": "Which symbol is used for decorators?",
-      "options": ["@", "#", "&", "$"],
+      "options": ["@", "#", "$", "&"],
       "answer": "@"
     }
   },
   {
-    "id": 17,
+    "id": 15,
     "title": "Generators",
-    "content": "Generators yield values lazily using 'yield'.",
-    "code": "def count_up_to(n):\n    i = 1\n    while i <= n:\n        yield i\n        i += 1\n\nfor num in count_up_to(5):\n    print(num)",
+    "content": "Generators produce values lazily using yield.",
+    "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(3):\n    print(num)",
     "quiz": {
-      "question": "Which keyword produces values in generators?",
-      "options": ["return", "yield", "give", "next"],
+      "question": "Which keyword creates a generator?",
+      "options": ["yield", "gen", "next", "iterator"],
       "answer": "yield"
     }
   },
   {
-    "id": 18,
-    "title": "Async and Await",
-    "content": "Python supports asynchronous programming with async/await.",
-    "code": "import asyncio\n\nasync def hello():\n    await asyncio.sleep(1)\n    print('Hello async!')\n\nasyncio.run(hello())",
+    "id": 16,
+    "title": "Async Programming",
+    "content": "Use async and await for concurrency.",
+    "code": "import asyncio\n\nasync def greet():\n    await asyncio.sleep(1)\n    print('Hello async!')\n\nasyncio.run(greet())",
     "quiz": {
-      "question": "Which keyword runs asynchronous functions?",
-      "options": ["await", "asyncio.run()", "start()", "future.run()"],
-      "answer": "asyncio.run()"
+      "question": "Which keyword defines an asynchronous function?",
+      "options": ["async", "await", "defasync", "future"],
+      "answer": "async"
+    }
+  },
+  {
+    "id": 17,
+    "title": "NumPy Basics",
+    "content": "NumPy is a library for numerical computing.",
+    "code": "import numpy as np\narr = np.array([1, 2, 3, 4])\nprint(arr * 2)",
+    "quiz": {
+      "question": "Which library is used for numerical arrays?",
+      "options": ["Pandas", "NumPy", "SciPy", "Math"],
+      "answer": "NumPy"
+    }
+  },
+  {
+    "id": 18,
+    "title": "Flask Web Apps",
+    "content": "Flask is a micro web framework.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n\nif __name__ == '__main__':\n    app.run()",
+    "quiz": {
+      "question": "Which decorator defines a route in Flask?",
+      "options": ["@endpoint", "@path", "@url", "@app.route"],
+      "answer": "@app.route"
     }
   },
   {
     "id": 19,
-    "title": "NumPy for Data Science",
-    "content": "NumPy provides arrays and math operations for data science.",
-    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr * 2)",
+    "title": "APIs with Flask",
+    "content": "You can build APIs with Flask by returning JSON.",
+    "code": "from flask import Flask, jsonify\napp = Flask(__name__)\n\n@app.route('/api')\ndef api():\n    return jsonify(message='Hello API!')",
     "quiz": {
-      "question": "Which library is core to scientific computing in Python?",
-      "options": ["pandas", "math", "numpy", "scipy"],
-      "answer": "numpy"
+      "question": "Which Flask function returns JSON?",
+      "options": ["json()", "return()", "jsonify()", "dict()"],
+      "answer": "jsonify()"
     }
   },
   {
     "id": 20,
-    "title": "Web Development with Flask",
-    "content": "Flask is a lightweight web framework for Python.",
-    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello, Flask!'\n\nif __name__ == '__main__':\n    app.run(debug=True)",
+    "title": "Capstone Project",
+    "content": "Combine your skills to build a project (e.g., a web app using Flask + NumPy).",
+    "code": "# Example: Flask API using NumPy\nfrom flask import Flask, jsonify\nimport numpy as np\n\napp = Flask(__name__)\n\n@app.route('/double')\ndef double():\n    arr = np.array([1,2,3])\n    return jsonify(result=(arr*2).tolist())\n\nif __name__ == '__main__':\n    app.run()",
     "quiz": {
-      "question": "Which decorator defines a route in Flask?",
-      "options": ["@endpoint", "@route", "@url", "@app.route"],
-      "answer": "@app.route"
+      "question": "Which two technologies are combined in this project?",
+      "options": ["Flask + NumPy", "Requests + JSON", "Pandas + Django", "SciPy + SQL"],
+      "answer": "Flask + NumPy"
     }
   }
 ]
