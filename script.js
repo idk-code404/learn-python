@@ -2,28 +2,56 @@ document.addEventListener("DOMContentLoaded", () => {
   const lessonsContainer = document.getElementById("lessons");
   const progressContainer = document.getElementById("progress");
 
-  // Load lessons
   if (lessonsContainer) {
     fetch("lessons.json")
       .then(response => response.json())
       .then(lessons => {
+        // Group lessons by category
+        const categories = {};
         lessons.forEach(lesson => {
-          const div = document.createElement("div");
-          div.className = "lesson";
-          div.innerHTML = `
-            <h2>${lesson.title}</h2>
-            <p>${lesson.content}</p>
-            <pre><code>${lesson.code}</code></pre>
-            <button onclick="openPlayground(\`${encodeURIComponent(lesson.code)}\`)">▶ Try Code</button>
-            <div class="quiz">
-              <p><strong>Quiz:</strong> ${lesson.quiz.question}</p>
-              ${lesson.quiz.options.map(opt =>
-                `<button onclick="checkAnswer('${opt}','${lesson.quiz.answer}',${lesson.id})">${opt}</button>`
-              ).join("")}
-            </div>
-          `;
-          lessonsContainer.appendChild(div);
+          if (!categories[lesson.category]) {
+            categories[lesson.category] = [];
+          }
+          categories[lesson.category].push(lesson);
         });
+
+        // Render categories
+        for (const category in categories) {
+          const section = document.createElement("div");
+          section.className = "category";
+
+          const header = document.createElement("h2");
+          header.textContent = category;
+          header.className = "category-header";
+          header.addEventListener("click", () => {
+            section.classList.toggle("collapsed");
+          });
+
+          const lessonsList = document.createElement("div");
+          lessonsList.className = "lessons-list";
+
+          categories[category].forEach(lesson => {
+            const div = document.createElement("div");
+            div.className = "lesson";
+            div.innerHTML = `
+              <h3>${lesson.title}</h3>
+              <p>${lesson.content}</p>
+              <pre><code>${lesson.code}</code></pre>
+              <button onclick="openPlayground(\`${encodeURIComponent(lesson.code)}\`)">▶ Try Code</button>
+              <div class="quiz">
+                <p><strong>Quiz:</strong> ${lesson.quiz.question}</p>
+                ${lesson.quiz.options.map(opt =>
+                  `<button onclick="checkAnswer('${opt}','${lesson.quiz.answer}',${lesson.id})">${opt}</button>`
+                ).join("")}
+              </div>
+            `;
+            lessonsList.appendChild(div);
+          });
+
+          section.appendChild(header);
+          section.appendChild(lessonsList);
+          lessonsContainer.appendChild(section);
+        }
       })
       .catch(err => {
         lessonsContainer.innerHTML = "<p>Failed to load lessons.</p>";
