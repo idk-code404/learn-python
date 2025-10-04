@@ -3,25 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <title>Python Playground</title>
-  <link rel="stylesheet" href="style.css" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    /* small page-specific overrides so the editor fills the screen */
-    html,body { height: 100%; margin: 0; }
+    /* Page-specific tweaks to keep the playground full-height and tidy */
+    html, body { height: 100%; margin: 0; }
     body { display: flex; flex-direction: column; }
-    .hero {
-      text-align: center;
-      padding: 10px 12px;
-      background: linear-gradient(135deg,#2196F3,#1565C0);
-      color: white;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    }
-    .hero h1 { font-size: 1.2rem; margin: 0 0 4px 0; }
-    .hero p { margin: 0; font-size: 0.95rem; opacity: 0.95; }
 
-    main.playground-container {
-      /* take remaining space */
+    /* Keep a small spacer below the sticky header */
+    .page-top-spacer { height: 12px; }
+
+    /* Main playground container fills remaining viewport */
+    .playground-container {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -33,7 +26,7 @@
       box-sizing: border-box;
     }
 
-    /* the iframe expands to fill the container */
+    /* Embedded editor frame expands to fill the container */
     .playground-frame {
       flex: 1;
       min-height: 360px;
@@ -52,49 +45,46 @@
       flex-wrap:wrap;
     }
 
-    .hint {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    footer.playground-footer {
-      text-align: center;
-      padding: 10px 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+    .hint { color: var(--muted); font-size: 0.95rem; }
 
     @media (max-width: 820px) {
-      .hero h1 { font-size: 1.05rem; }
-      main.playground-container { margin: 8px; padding: 0 12px 12px; }
+      .playground-container { margin: 8px; padding: 0 12px 12px; }
     }
   </style>
 </head>
 <body>
-  <header class="page-header hero">
-    <div class="header-inner" style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
-      <div style="display:flex;flex-direction:column">
-        <h1>💻 Python Playground</h1>
-        <p class="lead" style="margin-top:6px;font-size:0.95rem;color:rgba(255,255,255,0.95)">Try lesson examples — copy & paste (or use Try Code from lessons).</p>
+  <!-- Header that matches other pages (brand + mini-nav + Home/back) -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>🐍 Learn Python</h1>
+        <p class="lead">Try code in the embedded playground</p>
       </div>
 
-      <div class="header-actions" style="gap:8px;">
-        <nav class="mini-nav" aria-label="Main navigation" style="background:rgba(255,255,255,0.9);padding:6px;border-radius:8px;">
+      <div class="header-actions">
+        <!-- Mini nav -->
+        <nav class="mini-nav" aria-label="Main navigation">
           <a href="lessons.html" class="mini-nav-link">Lessons</a>
           <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
           <a href="playground.html" class="mini-nav-link" aria-current="page">Playground</a>
         </nav>
+
+        <!-- Home button -->
         <a href="index.html" class="back-btn" aria-label="Back to Home">
-          <span class="arrow">⬅</span><span class="text">Home</span>
+          <span class="arrow">⬅</span>
+          <span class="text">Home</span>
         </a>
       </div>
     </div>
   </header>
 
-  <main class="playground-container">
+  <!-- small spacer so the sticky header doesn't overlap content -->
+  <div class="page-top-spacer" aria-hidden="true"></div>
+
+  <!-- Fullscreen-friendly playground area -->
+  <main class="playground-container" role="main">
     <div class="controls">
-      <div class="hint">Tip: click “Try Code” on a lesson to copy the snippet and open the playground automatically.</div>
-      <!-- you can add extra buttons here if desired -->
+      <div class="hint">Tip: use the "Try Code" button on lessons to copy a snippet and open the playground automatically.</div>
     </div>
 
     <!-- The iframe will flex to fill the available area -->
@@ -109,21 +99,23 @@
     </div>
   </main>
 
-  <footer class="playground-footer">Made with ❤️ — paste examples into the editor and hit Run</footer>
+  <footer style="text-align:center;padding:10px 0;color:var(--muted);font-size:0.9rem;">
+    Made with ❤️ — paste examples into the editor and hit Run
+  </footer>
 
   <script>
-    // If code is passed via ?code= in URL, show a subtle non-blocking hint, and try to place the code in clipboard (best effort)
+    // If ?code= is present, try to copy to clipboard and show a short hint toast
     (function() {
       const params = new URLSearchParams(window.location.search);
       if (!params.has('code')) return;
-      const raw = params.get('code');
-      const code = decodeURIComponent(raw || '');
-      // Attempt to write to clipboard so the user can immediately paste into the editor
+      const raw = params.get('code') || '';
+      const code = decodeURIComponent(raw);
+
+      // Try to copy to clipboard (best-effort)
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(code).then(() => {
-          // small non-blocking floating notice
           const n = document.createElement('div');
-          n.textContent = '✅ Code copied to clipboard — paste into the editor (Ctrl+V)';
+          n.textContent = '✅ Code copied to clipboard — paste into the editor (Ctrl/Cmd+V)';
           Object.assign(n.style, {
             position: 'fixed', top: '86px', right: '22px',
             padding: '10px 14px', background: 'rgba(0,0,0,0.75)', color: '#fff',
@@ -131,11 +123,11 @@
           });
           document.body.appendChild(n);
           setTimeout(()=> {
-            n.style.transition = 'opacity 0.25s'; n.style.opacity = '0';
-            setTimeout(()=>n.remove(),600);
+            n.style.transition = 'opacity 0.3s'; n.style.opacity = '0';
+            setTimeout(()=>n.remove(),700);
           }, 2200);
         }).catch(()=> {
-          // ignore failure (clipboard permission may be blocked)
+          // ignore clipboard failures silently
         });
       }
     })();
