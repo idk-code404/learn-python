@@ -1,277 +1,348 @@
 // script.js
-// Handles lesson rendering, TOC, progress, quiz, clipboard copy + auto-open playground.
+// Full renderer for lessons + exercises, with copy & run behavior
 
-function checkAnswer(selected, correct, lessonId) {
-  if (selected === correct) {
-    alert("✅ Correct!");
-    localStorage.setItem(`lesson-${lessonId}`, "completed");
-  } else {
-    alert("❌ Try again.");
-  }
-}
-
-function openPlaygroundWithCodeInNewTab(code, newTabRef = null) {
-  const url = `playground.html?code=${encodeURIComponent(code)}`;
-  // If we were given a tab/window reference, navigate it; otherwise open a new tab.
-  try {
-    if (newTabRef && !newTabRef.closed) {
-      newTabRef.location = url;
-    } else {
-      window.open(url, "_blank");
-    }
-  } catch (e) {
-    // Fallback
-    window.open(url, "_blank");
-  }
-}
+/* ---------- Helpers (copy, toast, open) ---------- */
 
 async function copyToClipboard(text) {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(text);
     } else {
-      // fallback for older browsers
-      const ta = document.createElement("textarea");
+      const ta = document.createElement('textarea');
       ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
       document.body.appendChild(ta);
       ta.focus();
       ta.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       document.body.removeChild(ta);
     }
-    showToast("✅ Code copied to clipboard");
+    showToast('✅ Copied to clipboard');
     return true;
   } catch (err) {
-    console.error("Copy failed", err);
-    showToast("⚠️ Failed to copy to clipboard");
+    console.error('Copy failed', err);
+    showToast('⚠️ Copy failed');
     return false;
   }
 }
 
-function showToast(msg, duration = 1800) {
-  let t = document.getElementById("toast-notice");
+function showToast(msg, duration = 1600) {
+  let t = document.getElementById('toast-notice');
   if (!t) {
-    t = document.createElement("div");
-    t.id = "toast-notice";
-    t.style.position = "fixed";
-    t.style.bottom = "24px";
-    t.style.right = "24px";
-    t.style.padding = "10px 14px";
-    t.style.background = "rgba(0,0,0,0.85)";
-    t.style.color = "white";
-    t.style.borderRadius = "8px";
-    t.style.boxShadow = "0 6px 18px rgba(0,0,0,0.2)";
-    t.style.zIndex = 9999;
-    t.style.fontFamily = "system-ui, Arial, sans-serif";
-    t.style.fontSize = "14px";
-    t.style.opacity = "0";
-    t.style.transition = "opacity 0.2s ease";
+    t = document.createElement('div');
+    t.id = 'toast-notice';
+    Object.assign(t.style, {
+      position: 'fixed',
+      bottom: '22px',
+      right: '22px',
+      padding: '10px 14px',
+      background: 'rgba(0,0,0,0.85)',
+      color: '#fff',
+      borderRadius: '8px',
+      boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+      zIndex: 9999,
+      fontWeight: 700,
+      opacity: '0',
+      transition: 'opacity 0.18s',
+    });
     document.body.appendChild(t);
   }
   t.textContent = msg;
-  t.style.opacity = "1";
+  t.style.opacity = '1';
   clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => {
-    t.style.opacity = "0";
-  }, duration);
+  t._timeout = setTimeout(() => { t.style.opacity = '0'; }, duration);
 }
 
-// Build lessons, TOC, progress etc.
-document.addEventListener("DOMContentLoaded", () => {
-  const lessonsContainer = document.getElementById("lessons");
-  const tocList = document.getElementById("toc-list");
-  const progressContainer = document.getElementById("progress");
+function openPlaygroundWithCodeInNewTab(code, newTabRef = null) {
+  const url = `playground.html?code=${encodeURIComponent(code)}`;
+  try {
+    if (newTabRef && !newTabRef.closed) {
+      newTabRef.location = url;
+    } else {
+      window.open(url, '_blank');
+    }
+  } catch (e) {
+    window.open(url, '_blank');
+  }
+}
 
-  // Load lessons and render
-  if (lessonsContainer) {
-    fetch("lessons.json")
-      .then(response => response.json())
-      .then(lessons => {
-        // Group lessons by category
-        const categories = {};
-        lessons.forEach(lesson => {
-          const cat = lesson.category || "Uncategorized";
-          if (!categories[cat]) categories[cat] = [];
-          categories[cat].push(lesson);
-        });
+/* ---------- Rendering: lessons + exercises ---------- */
 
-        // Build sections and TOC
-        for (const category of Object.keys(categories)) {
-          const sectionId = category.toLowerCase().replace(/\s+/g, "-");
+document.addEventListener('DOMContentLoaded', () => {
+  const lessonsContainer = document.getElementById('lessons');
+  const tocList = document.getElementById('toc-list');
 
-          // TOC entry
-          if (tocList) {
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = `#${sectionId}`;
-            a.textContent = category;
-            li.appendChild(a);
-            tocList.appendChild(li);
-          }
+  if (!lessonsContainer) return;
 
-          // Section wrapper
-          const section = document.createElement("div");
-          section.className = "category";
-          section.id = sectionId;
+  fetch('lessons.json')
+    .then(res => res.json())
+    .then(lessons => {
+      // Group lessons by category
+      const categories = {};
+      lessons.forEach(l => {
+        const cat = l.category || 'Uncategorized';
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(l);
+      });
 
-          const header = document.createElement("h2");
-          header.textContent = category;
-          header.className = "category-header";
-          header.addEventListener("click", () => section.classList.toggle("collapsed"));
+      // Render categories and TOC
+      for (const category of Object.keys(categories)) {
+        const sectionId = category.toLowerCase().replace(/\s+/g, '-');
 
-          const lessonsList = document.createElement("div");
-          lessonsList.className = "lessons-list";
-
-          // Render each lesson
-          categories[category].forEach(lesson => {
-            const div = document.createElement("div");
-            div.className = "lesson";
-
-            const title = document.createElement("h3");
-            title.textContent = lesson.title;
-
-            const desc = document.createElement("p");
-            desc.textContent = lesson.content;
-
-            const pre = document.createElement("pre");
-            const codeEl = document.createElement("code");
-            codeEl.textContent = lesson.code;
-            pre.appendChild(codeEl);
-
-            // Buttons container
-            const btnRow = document.createElement("div");
-            btnRow.style.marginTop = "8px";
-
-            // Try Code button (copy + open playground)
-            const tryBtn = document.createElement("button");
-            tryBtn.textContent = "▶ Try Code (Copy & Open)";
-            tryBtn.title = "Copy this lesson's code and open the playground";
-
-            tryBtn.addEventListener("click", async () => {
-              // Open a blank tab first to avoid popup blockers
-              let newTab = null;
-              try {
-                newTab = window.open("", "_blank");
-                // If the browser blocks blank pages, newTab may be null
-              } catch (e) {
-                newTab = null;
-              }
-
-              // Attempt copy
-              const success = await copyToClipboard(lesson.code);
-
-              // Now navigate the opened tab (or open a new one) to playground with code param
-              if (newTab) {
-                // If we opened a blank tab, navigate it
-                openPlaygroundWithCodeInNewTab(lesson.code, newTab);
-              } else {
-                // No prior tab (blocked), open a new one now (user gesture already occurred)
-                openPlaygroundWithCodeInNewTab(lesson.code, null);
-              }
-
-              // If copying failed, we already showed a toast; optionally show additional note in the opened tab
-              if (!success) {
-                // small delay to ensure tab opened
-                setTimeout(() => {
-                  try {
-                    // we cannot reliably inject into cross-origin frames; so just leave it
-                    // the playground page shows the code param as a suggested snippet (it alerts or displays)
-                  } catch (e) {
-                    // ignore
-                  }
-                }, 400);
-              }
-            });
-
-            // Open Playground button (explicit open)
-            const openBtn = document.createElement("button");
-            openBtn.textContent = "Open Playground";
-            openBtn.title = "Open the playground (paste code there)";
-            openBtn.style.background = "#2ecc71";
-            openBtn.addEventListener("click", () => {
-              openPlaygroundWithCodeInNewTab(lesson.code, null);
-            });
-
-            btnRow.appendChild(tryBtn);
-            btnRow.appendChild(openBtn);
-
-            // Quiz block
-            const quizDiv = document.createElement("div");
-            quizDiv.className = "quiz";
-            quizDiv.style.marginTop = "10px";
-
-            const qP = document.createElement("p");
-            qP.innerHTML = `<strong>Quiz:</strong> ${lesson.quiz.question}`;
-            quizDiv.appendChild(qP);
-
-            const optionsRow = document.createElement("div");
-            lesson.quiz.options.forEach(opt => {
-              const optBtn = document.createElement("button");
-              optBtn.textContent = opt;
-              optBtn.addEventListener("click", () => checkAnswer(opt, lesson.quiz.answer, lesson.id));
-              optionsRow.appendChild(optBtn);
-            });
-            quizDiv.appendChild(optionsRow);
-
-            // Assemble lesson block
-            div.appendChild(title);
-            div.appendChild(desc);
-            div.appendChild(pre);
-            div.appendChild(btnRow);
-            div.appendChild(quizDiv);
-
-            lessonsList.appendChild(div);
-          });
-
-          section.appendChild(header);
-          section.appendChild(lessonsList);
-          lessonsContainer.appendChild(section);
+        // Add TOC link
+        if (tocList) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `#${sectionId}`;
+          a.textContent = category;
+          li.appendChild(a);
+          tocList.appendChild(li);
         }
 
-        // Scroll spy for TOC highlighting (after DOM sections exist)
-        const tocLinks = document.querySelectorAll("#toc a");
-        const sections = document.querySelectorAll(".category");
-        window.addEventListener("scroll", () => {
-          let current = "";
-          sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            if (rect.top <= 120) {
-              current = section.id;
-            }
-          });
-          tocLinks.forEach(link => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === "#" + current) {
-              link.classList.add("active");
-            }
-          });
-        });
+        // Category section
+        const section = document.createElement('div');
+        section.className = 'category';
+        section.id = sectionId;
 
-      })
-      .catch(err => {
-        lessonsContainer.innerHTML = "<p>Failed to load lessons.</p>";
-        console.error(err);
-      });
-  }
+        const header = document.createElement('h2');
+        header.textContent = category;
+        header.className = 'category-header';
+        header.addEventListener('click', () => section.classList.toggle('collapsed'));
 
-  // Progress dashboard partial rendering
-  if (progressContainer) {
-    fetch("lessons.json")
-      .then(response => response.json())
-      .then(lessons => {
-        let completed = 0;
-        const total = lessons.length;
-        lessons.forEach(lesson => {
-          if (localStorage.getItem(`lesson-${lesson.id}`) === "completed") {
-            completed++;
+        const lessonsList = document.createElement('div');
+        lessonsList.className = 'lessons-list';
+
+        categories[category].forEach(lesson => {
+          // Lesson block
+          const lessonEl = document.createElement('div');
+          lessonEl.className = 'lesson';
+          lessonEl.id = `lesson-${lesson.id}`;
+
+          const title = document.createElement('h3');
+          title.textContent = lesson.title;
+
+          const desc = document.createElement('p');
+          desc.textContent = lesson.content;
+
+          const pre = document.createElement('pre');
+          const codeEl = document.createElement('code');
+          codeEl.textContent = lesson.code || '';
+          pre.appendChild(codeEl);
+
+          // Buttons for lesson (Try Code & Open)
+          const btnRow = document.createElement('div');
+          btnRow.style.marginTop = '8px';
+          btnRow.style.display = 'flex';
+          btnRow.style.gap = '8px';
+          btnRow.style.flexWrap = 'wrap';
+
+          const tryBtn = document.createElement('button');
+          tryBtn.className = 'try-copy';
+          tryBtn.textContent = '▶ Try Code (Copy & Open)';
+          tryBtn.title = 'Copy lesson code and open playground';
+          tryBtn.addEventListener('click', async () => {
+            let newTab = null;
+            try { newTab = window.open('', '_blank'); } catch (e) { newTab = null; }
+            await copyToClipboard(lesson.code || '');
+            if (newTab) openPlaygroundWithCodeInNewTab(lesson.code || '', newTab);
+            else openPlaygroundWithCodeInNewTab(lesson.code || '', null);
+          });
+
+          const openBtn = document.createElement('button');
+          openBtn.className = 'playground-open';
+          openBtn.textContent = 'Open Playground';
+          openBtn.title = 'Open playground (paste the code)';
+          openBtn.style.background = '#2ecc71';
+          openBtn.addEventListener('click', () => {
+            openPlaygroundWithCodeInNewTab(lesson.code || '', null);
+          });
+
+          btnRow.appendChild(tryBtn);
+          btnRow.appendChild(openBtn);
+
+          // Exercises area (if any)
+          let exercisesContainer = null;
+          if (Array.isArray(lesson.exercises) && lesson.exercises.length > 0) {
+            // Toggle control
+            const toggle = document.createElement('button');
+            toggle.textContent = 'Show exercises';
+            toggle.className = 'btn';
+            toggle.style.background = 'transparent';
+            toggle.style.border = '1px solid rgba(0,0,0,0.06)';
+            toggle.style.color = 'var(--primary)';
+            toggle.style.fontWeight = '700';
+
+            exercisesContainer = document.createElement('div');
+            exercisesContainer.className = 'exercises';
+            exercisesContainer.style.display = 'none';
+            exercisesContainer.style.marginTop = '12px';
+
+            toggle.addEventListener('click', () => {
+              const open = exercisesContainer.style.display === 'block';
+              exercisesContainer.style.display = open ? 'none' : 'block';
+              toggle.textContent = open ? 'Show exercises' : 'Hide exercises';
+            });
+
+            // Render each exercise
+            lesson.exercises.forEach((ex, exIndex) => {
+              const exCard = document.createElement('div');
+              exCard.className = 'lesson';
+              exCard.style.background = '#fff';
+              exCard.style.border = '1px solid rgba(0,0,0,0.04)';
+              exCard.style.padding = '10px';
+              exCard.style.marginBottom = '10px';
+
+              const exTitle = document.createElement('h4');
+              exTitle.textContent = `Exercise ${exIndex + 1}`;
+
+              const exPrompt = document.createElement('p');
+              exPrompt.textContent = ex.prompt;
+
+              // starter code block
+              const exPre = document.createElement('pre');
+              const exCode = document.createElement('code');
+              exCode.textContent = ex.starter_code || '';
+              exPre.appendChild(exCode);
+
+              // hint toggle
+              const hintBtn = document.createElement('button');
+              hintBtn.textContent = 'Show hint';
+              hintBtn.className = 'btn';
+              hintBtn.style.background = 'transparent';
+              hintBtn.style.border = '1px solid rgba(0,0,0,0.06)';
+              hintBtn.style.color = 'var(--primary)';
+              hintBtn.style.fontWeight = '700';
+              hintBtn.style.marginRight = '8px';
+
+              const hintText = document.createElement('div');
+              hintText.textContent = ex.hint || '';
+              hintText.style.display = 'none';
+              hintText.style.marginTop = '8px';
+              hintText.style.color = 'var(--muted)';
+              hintText.style.fontSize = '0.95rem';
+
+              hintBtn.addEventListener('click', () => {
+                const showing = hintText.style.display === 'block';
+                hintText.style.display = showing ? 'none' : 'block';
+                hintBtn.textContent = showing ? 'Show hint' : 'Hide hint';
+              });
+
+              // exercise buttons: Copy Starter, Run Starter
+              const exBtns = document.createElement('div');
+              exBtns.style.display = 'flex';
+              exBtns.style.gap = '8px';
+              exBtns.style.marginTop = '8px';
+              exBtns.style.flexWrap = 'wrap';
+
+              const copyStarter = document.createElement('button');
+              copyStarter.className = 'try-copy';
+              copyStarter.textContent = 'Copy Starter';
+              copyStarter.addEventListener('click', async () => {
+                await copyToClipboard(ex.starter_code || '');
+              });
+
+              const runStarter = document.createElement('button');
+              runStarter.className = 'playground-open';
+              runStarter.textContent = 'Run Starter (Copy & Open)';
+              runStarter.style.background = '#2ecc71';
+              runStarter.addEventListener('click', async () => {
+                let newTab = null;
+                try { newTab = window.open('', '_blank'); } catch (e) { newTab = null; }
+                await copyToClipboard(ex.starter_code || '');
+                if (newTab) openPlaygroundWithCodeInNewTab(ex.starter_code || '', newTab);
+                else openPlaygroundWithCodeInNewTab(ex.starter_code || '', null);
+              });
+
+              exBtns.appendChild(copyStarter);
+              exBtns.appendChild(runStarter);
+
+              // solution reveal toggle (optional small "Show solution" button)
+              const solBtn = document.createElement('button');
+              solBtn.textContent = 'Show solution';
+              solBtn.className = 'btn';
+              solBtn.style.background = 'transparent';
+              solBtn.style.border = '1px solid rgba(0,0,0,0.06)';
+              solBtn.style.color = 'var(--primary)';
+              solBtn.style.marginLeft = '8px';
+
+              const solText = document.createElement('pre');
+              const solCode = document.createElement('code');
+              solCode.textContent = ex.solution || '';
+              solText.appendChild(solCode);
+              solText.style.display = 'none';
+              solText.style.marginTop = '10px';
+              solText.style.background = '#f6f8fa';
+              solText.style.padding = '10px';
+              solText.style.borderRadius = '6px';
+
+              solBtn.addEventListener('click', () => {
+                const showing = solText.style.display === 'block';
+                solText.style.display = showing ? 'none' : 'block';
+                solBtn.textContent = showing ? 'Show solution' : 'Hide solution';
+              });
+
+              // assemble exercise card
+              exCard.appendChild(exTitle);
+              exCard.appendChild(exPrompt);
+              exCard.appendChild(exPre);
+              exCard.appendChild(exBtns);
+              exCard.appendChild(hintBtn);
+              exCard.appendChild(solBtn);
+              exCard.appendChild(hintText);
+              exCard.appendChild(solText);
+
+              exercisesContainer.appendChild(exCard);
+            });
+
+            // add toggle and container to lesson
+            lessonEl.appendChild(toggle);
+            lessonEl.appendChild(exercisesContainer);
           }
+
+          // assemble lesson
+          lessonEl.appendChild(title);
+          lessonEl.appendChild(desc);
+          lessonEl.appendChild(pre);
+          lessonEl.appendChild(btnRow);
+
+          lessonsList.appendChild(lessonEl);
         });
-        progressContainer.innerHTML = `
-          <p>You have completed ${completed} of ${total} lessons.</p>
-          <progress value="${completed}" max="${total}" style="width:100%"></progress>
-        `;
+
+        section.appendChild(header);
+        section.appendChild(lessonsList);
+        lessonsContainer.appendChild(section);
+      }
+
+      // Scroll-spy for TOC highlighting
+      const tocLinks = document.querySelectorAll('#toc a');
+      const sections = document.querySelectorAll('.category');
+      window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 120) current = section.id;
+        });
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
       });
-  }
+
+      // If a hash targets lesson-<id>, smooth scroll it into view
+      if (location.hash && location.hash.startsWith('#lesson-')) {
+        const target = document.querySelector(location.hash);
+        if (target) {
+          setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+          // briefly highlight
+          target.style.transition = 'box-shadow 0.6s ease';
+          target.style.boxShadow = '0 6px 22px rgba(46,204,113,0.12)';
+          setTimeout(() => { target.style.boxShadow = ''; }, 1800);
+        }
+      }
+    })
+    .catch(err => {
+      lessonsContainer.innerHTML = '<p>Failed to load lessons.</p>';
+      console.error(err);
+    });
 });
