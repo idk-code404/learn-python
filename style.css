@@ -173,7 +173,6 @@ button:hover {
 
 /* The pill button */
 .back-link {
-  display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 8px 14px;
