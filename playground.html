@@ -1,73 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <title>Python Playground</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    .hero {
-      text-align: center;
-      padding: 1rem;
-      background: linear-gradient(135deg, #2196F3, #1565C0);
-      color: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .hero h1 {
-      font-size: 1.6rem;
-      margin: 0.3rem 0;
-    }
-    .hero p {
-      font-size: 1rem;
-      opacity: 0.85;
-      margin: 0;
-    }
-    .container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-    }
-    iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-      border-radius: 0;
-    }
-    .back-link {
-      text-align: center;
-      padding: 0.7rem;
-      background: #f4f4f9;
-      text-decoration: none;
-      font-weight: bold;
-      color: #333;
-      border-top: 1px solid #ddd;
-      transition: background 0.3s;
-    }
-    .back-link:hover {
-      background: #e0e0e0;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Compact Hero -->
-  <header class="hero">
-    <h1>💻 Python Playground</h1>
-    <p>Experiment with Python directly in your browser</p>
+  <!-- Shared header: brand + mini-nav + home/back -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>🐍 Learn Python</h1>
+        <p class="lead">Try code in the embedded playground</p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Mini nav -->
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link">Lessons</a>
+          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link" aria-current="page">Playground</a>
+        </nav>
+
+        <!-- Home button -->
+        <a href="index.html" class="back-btn" aria-label="Back to Home">
+          <span class="arrow">⬅</span>
+          <span class="text">Home</span>
+        </a>
+      </div>
+    </div>
   </header>
 
-  <!-- Fullscreen Playground -->
-  <main class="container">
-    <iframe src="https://trinket.io/embed/python3/055c60f8a0"
-            allowfullscreen>
-    </iframe>
-    <a href="index.html" class="back-link">⬅ Back to Home</a>
+  <!-- Compact hero (small) -->
+  <header class="hero" style="margin-top:12px; border-radius:12px; padding:16px;">
+    <div class="container">
+      <h1 style="margin:0 0 6px 0">💻 Python Playground</h1>
+      <p style="margin:0; color:var(--muted)">Experiment with Python in the embedded editor — copy/paste examples from lessons.</p>
+    </div>
+  </header>
+
+  <!-- Fullscreen-friendly playground area -->
+  <main style="display:flex; flex-direction:column; height: calc(100vh - 220px); max-width:1200px; margin:16px auto; padding:0 16px;">
+    <iframe id="trinketFrame" class="playground-frame"
+            src="https://trinket.io/embed/python3/055c60f8a0"
+            allowfullscreen></iframe>
+
+    <div style="margin-top:12px; display:flex; gap:10px; justify-content:flex-start; align-items:center;">
+      <a href="lessons.html" class="back-btn" style="display:inline-flex;">← Browse Lessons</a>
+      <a href="index.html" class="back-btn" style="display:inline-flex;">Home</a>
+    </div>
   </main>
+
+  <script>
+    // If code is passed via ?code= in URL, show a gentle hint note (no blocking)
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('code')) {
+      const decoded = decodeURIComponent(params.get('code'));
+      // Show a non-blocking toast-like hint (reusing the toast styling if available)
+      const t = document.createElement('div');
+      t.id = 'playground-hint';
+      t.style.position = 'fixed';
+      t.style.top = '84px';
+      t.style.right = '22px';
+      t.style.padding = '10px 14px';
+      t.style.background = 'rgba(0,0,0,0.75)';
+      t.style.color = 'white';
+      t.style.borderRadius = '8px';
+      t.style.zIndex = 9999;
+      t.style.fontWeight = 600;
+      t.textContent = 'Tip: code suggested — copy was placed into your clipboard';
+      document.body.appendChild(t);
+      setTimeout(() => {
+        t.style.transition = 'opacity 0.3s';
+        t.style.opacity = '0';
+        setTimeout(()=>t.remove(), 700);
+      }, 2200);
+    }
+  </script>
 </body>
 </html>
