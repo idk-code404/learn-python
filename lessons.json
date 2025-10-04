@@ -309,7 +309,21 @@
       "options": ["upper()", "lower()", "capitalize()", "toUpper()"],
       "answer": "upper()"
     },
-    "category": "Beginner"
+    "category": "Beginner",
+    "exercises": [
+      {
+        "prompt": "Write code that asks the user for a sentence and prints the sentence in uppercase.",
+        "starter_code": "s = input('Enter a sentence: ')\n# your code here",
+        "hint": "Use the .upper() string method.",
+        "solution": "s = input('Enter a sentence: ')\nprint(s.upper())"
+      },
+      {
+        "prompt": "Split the string 'apple,banana,cherry' into a list and print the second item.",
+        "starter_code": "s = 'apple,banana,cherry'\n# your code here",
+        "hint": "Use .split(',') and list indexing.",
+        "solution": "s = 'apple,banana,cherry'\nfruits = s.split(',')\nprint(fruits[1])  # banana"
+      }
+    ]
   },
   {
     "id": 27,
@@ -321,7 +335,21 @@
       "options": ["input()", "raw_input()", "readline()", "scan()"],
       "answer": "input()"
     },
-    "category": "Beginner"
+    "category": "Beginner",
+    "exercises": [
+      {
+        "prompt": "Ask the user for their age and print 'You are X years old' where X is the input.",
+        "starter_code": "age = input('How old are you? ')\n# your code here",
+        "hint": "You can use string concatenation or an f-string.",
+        "solution": "age = input('How old are you? ')\nprint(f'You are {age} years old')"
+      },
+      {
+        "prompt": "Prompt for two numbers, add them (remember input() returns a string), and print the numeric sum.",
+        "starter_code": "a = input('First number: ')\nb = input('Second number: ')\n# your code here",
+        "hint": "Convert inputs to int() or float() before adding.",
+        "solution": "a = int(input('First number: '))\nb = int(input('Second number: '))\nprint(a + b)"
+      }
+    ]
   },
   {
     "id": 28,
@@ -333,7 +361,21 @@
       "options": ["f'{name}'", "'{name}'", "format('{name}')", "%s" ],
       "answer": "f'{name}'"
     },
-    "category": "Beginner"
+    "category": "Beginner",
+    "exercises": [
+      {
+        "prompt": "Use an f-string to print 'Alice scored 95.5% on the test' using variables name and score.",
+        "starter_code": "name = 'Alice'\nscore = 95.5\n# your code here",
+        "hint": "Start the string with f and put variables in {}.",
+        "solution": "name = 'Alice'\nscore = 95.5\nprint(f'{name} scored {score}% on the test')"
+      },
+      {
+        "prompt": "Recreate the same output using str.format() instead of an f-string.",
+        "starter_code": "name = 'Alice'\nscore = 95.5\n# your code here",
+        "hint": "Use '{}'.format(...) pattern.",
+        "solution": "name = 'Alice'\nscore = 95.5\nprint('{} scored {}% on the test'.format(name, score))"
+      }
+    ]
   },
   {
     "id": 29,
@@ -345,7 +387,21 @@
       "options": ["s[-1]", "s[last]", "s[0]", "s(end)"],
       "answer": "s[-1]"
     },
-    "category": "Beginner"
+    "category": "Beginner",
+    "exercises": [
+      {
+        "prompt": "Given s = 'programming', print the substring 'gram'.",
+        "starter_code": "s = 'programming'\n# your code here",
+        "hint": "Find the start and end indices for slice s[start:end].",
+        "solution": "s = 'programming'\nprint(s[3:7])  # 'gram'"
+      },
+      {
+        "prompt": "Print the last 3 characters of a string using negative indices.",
+        "starter_code": "s = 'development'\n# your code here",
+        "hint": "Use s[-3:] to get the last three characters.",
+        "solution": "s = 'development'\nprint(s[-3:])  # 'ent'"
+      }
+    ]
   },
   {
     "id": 30,
@@ -357,6 +413,20 @@
       "options": ["==", "=", "===", "equals()"],
       "answer": "=="
     },
-    "category": "Beginner"
+    "category": "Beginner",
+    "exercises": [
+      {
+        "prompt": "Write a program that asks for a number and prints whether it is even or odd.",
+        "starter_code": "n = int(input('Enter an integer: '))\n# your code here",
+        "hint": "Use the % (modulo) operator: n % 2 == 0 means even.",
+        "solution": "n = int(input('Enter an integer: '))\nif n % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')"
+      },
+      {
+        "prompt": "Ask for a user's age and print 'Adult' if age >= 18, otherwise print 'Minor'.",
+        "starter_code": "age = int(input('Your age: '))\n# your code here",
+        "hint": "Use an if/else and the >= operator.",
+        "solution": "age = int(input('Your age: '))\nif age >= 18:\n    print('Adult')\nelse:\n    print('Minor')"
+      }
+    ]
   }
 ]
