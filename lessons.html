@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Slim header with cleaner Back to Home button -->
+  <!-- Slim header with Back button + Mini Nav -->
   <header class="page-header">
     <div class="header-inner">
       <div class="brand">
@@ -15,11 +15,17 @@
       </div>
 
       <div class="header-actions">
-        <a href="index.html" class="back-btn" aria-label="Back to home">
-          <svg class="back-icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path fill="currentColor" d="M20 11H7.83l5.58-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-          </svg>
-          <span class="back-text">Back to home</span>
+        <!-- Mini nav (Lessons | Dashboard | Playground) -->
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link" aria-current="page">Lessons</a>
+          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <!-- Back button -->
+        <a href="index.html" class="back-btn" aria-label="Back to Home">
+          <span class="arrow">⬅</span>
+          <span class="text">Home</span>
         </a>
       </div>
     </div>
@@ -31,7 +37,7 @@
       <h2>Table of Contents</h2>
       <ul id="toc-list"></ul>
 
-      <!-- Quick Coding Tips -->
+      <!-- Quick Coding Tips (read-only) -->
       <div id="toc-tips" aria-label="Quick coding tips">
         <h3>💡 Quick Coding Tips</h3>
         <ul>
@@ -44,6 +50,7 @@
           <li><span class="tip-text">Use virtual environments: <code>python -m venv env</code>.</span></li>
           <li><span class="tip-text">Read error messages — they usually tell you what's wrong and where.</span></li>
         </ul>
+
         <p class="tips-note">Tip: use the Try Code button to paste examples into the playground.</p>
       </div>
     </aside>
