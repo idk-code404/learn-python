@@ -1,144 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <title>Progress Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .hero {
-      text-align: center;
-      padding: 3rem 2rem;
-      background: linear-gradient(135deg, #FF9800, #F57C00);
-      color: white;
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    .progress-summary {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .progress-summary h2 {
-      margin-bottom: 0.5rem;
-    }
-    .progress-bar {
-      width: 100%;
-      background: #eee;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 25px;
-      margin: 0.5rem 0;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .progress-fill {
-      background: linear-gradient(90deg, #4CAF50, #2E7D32);
-      height: 100%;
-      width: 0;
-      transition: width 0.6s ease;
-    }
-    .lessons-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-    .lesson-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .lesson-card.completed {
-      border: 2px solid #4CAF50;
-      background: #f6fff6;
-    }
-    .lesson-card h3 {
-      margin-bottom: 0.5rem;
-    }
-    .back-link {
-      display: block;
-      margin: 2rem auto;
-      padding: 0.6rem 1.2rem;
-      background: #f4f4f9;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-      text-align: center;
-      width: 180px;
-      transition: background 0.3s;
-    }
-    .back-link:hover {
-      background: #e0e0e0;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Hero Section -->
-  <header class="hero">
-    <h1>📊 Progress Dashboard</h1>
-    <p>Track your Python learning journey and see how far you’ve come.</p>
+  <!-- Shared header: brand + mini-nav + home/back -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>🐍 Learn Python</h1>
+        <p class="lead">Track your learning progress</p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Mini nav -->
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link">Lessons</a>
+          <a href="dashboard.html" class="mini-nav-link" aria-current="page">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <!-- Home button -->
+        <a href="index.html" class="back-btn" aria-label="Back to Home">
+          <span class="arrow">⬅</span>
+          <span class="text">Home</span>
+        </a>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
-    <!-- Summary Progress -->
+  <!-- Hero (dashboard-specific) -->
+  <header class="hero" style="margin-top:12px; border-radius:12px; padding:20px;">
+    <div class="container">
+      <h1 style="margin:0 0 6px 0">📊 Progress Dashboard</h1>
+      <p style="margin:0; color:var(--muted)">See your overall progress and quick lesson status.</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:18px; max-width:1100px;">
     <div class="progress-summary">
-      <h2>Overall Progress</h2>
-      <div class="progress-bar">
-        <div class="progress-fill" id="overall-progress"></div>
+      <h2 style="margin-bottom:8px">Overall Progress</h2>
+      <div class="progress-bar" aria-hidden="true" style="margin-bottom:8px;">
+        <div id="overall-progress" class="progress-fill" style="width:0%"></div>
       </div>
-      <p id="progress-text">0% complete</p>
+      <p id="progress-text" class="small">0% complete</p>
     </div>
 
-    <!-- Lessons Grid -->
-    <section class="lessons-list" id="lessons-list">
-      <!-- JS will load lesson cards -->
+    <section id="lessons-list" class="lessons-list grid">
+      <!-- JS will populate lesson cards here -->
     </section>
 
-    <a href="index.html" class="back-link">⬅ Back to Home</a>
+    <a href="lessons.html" class="back-btn" style="margin:28px auto; display:inline-flex;">← Browse Lessons</a>
   </main>
 
   <script>
-    // Load lessons.json + progress from localStorage
+    // Load lessons and progress (keeps using lessons.json & localStorage like script.js)
     fetch('lessons.json')
       .then(res => res.json())
       .then(lessons => {
         const list = document.getElementById('lessons-list');
-        const progress = JSON.parse(localStorage.getItem('progress') || '{}');
-
+        const progressStore = {}; // using the same key names as script.js
         let completed = 0;
 
+        // Count completions and build cards
         lessons.forEach(lesson => {
+          const done = localStorage.getItem(`lesson-${lesson.id}`) === 'completed';
+          if (done) completed++;
+
           const card = document.createElement('div');
-          card.className = 'lesson-card';
-          if (progress[lesson.id]) {
-            card.classList.add('completed');
-            completed++;
-          }
+          card.className = 'lesson-card' + (done ? ' completed' : '');
           card.innerHTML = `
-            <h3>${lesson.title}</h3>
-            <p>${lesson.category}</p>
-            <p>${progress[lesson.id] ? '✅ Completed' : '❌ Not started'}</p>
+            <h3 style="margin-top:0">${lesson.title}</h3>
+            <p class="small" style="margin:6px 0 10px 0">${lesson.category || ''}</p>
+            <p style="margin:0 0 12px 0">${done ? '✅ Completed' : '❌ Not started'}</p>
+            <div style="display:flex; justify-content:center; gap:8px;">
+              <a class="back-btn" href="lesson.html?id=${lesson.id}" style="padding:6px 10px; text-decoration:none;">Open Lesson</a>
+            </div>
           `;
           list.appendChild(card);
         });
 
-        // Update progress bar
+        // Update overall progress UI
         const percent = Math.round((completed / lessons.length) * 100);
         document.getElementById('overall-progress').style.width = percent + '%';
         document.getElementById('progress-text').textContent = `${percent}% complete`;
+      })
+      .catch(err => {
+        document.getElementById('lessons-list').innerHTML = '<p>Failed to load lessons.</p>';
+        console.error(err);
       });
   </script>
 </body>
