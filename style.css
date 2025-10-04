@@ -181,7 +181,6 @@ button:hover {
   color: #2c3e50;
   text-decoration: none;
   font-weight: 600;
-  border-radius: 999px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
@@ -193,15 +192,6 @@ button:hover {
   display: inline-block;
   transform: translateX(-1px);
   color: #2c3e50;
-}
-
-/* hover/focus states */
-.back-link:hover,
-.back-link:focus {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
-  background: #f4f7fb;
-  outline: none;
 }
 
 /* subtle active press */
