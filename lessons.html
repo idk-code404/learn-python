@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Python Lessons</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Python Lessons</h1>
+
+  <div id="lessons-wrapper">
+    <!-- Sidebar TOC -->
+    <aside id="toc" aria-label="Table of contents and tips">
+      <h2>Table of Contents</h2>
+      <ul id="toc-list"></ul>
+
+      <!-- Quick Coding Tips (no copy buttons) -->
+      <div id="toc-tips" aria-label="Quick coding tips">
+        <h3>💡 Quick Coding Tips</h3>
+        <ul>
+          <li><span class="tip-text"><code>total_price</code> — use meaningful variable names.</span></li>
+          <li><span class="tip-text">Keep functions small — one job per function.</span></li>
+          <li><span class="tip-text">Use <code>print()</code> to debug quickly while learning.</span></li>
+          <li><span class="tip-text">Stick to 4-space indentation (PEP 8 style).</span></li>
+          <li><span class="tip-text">Comment tricky logic with <code>#</code> for future you.</span></li>
+          <li><span class="tip-text">Prefer list comprehensions for simple transformations.</span></li>
+          <li><span class="tip-text">Use virtual environments: <code>python -m venv env</code>.</span></li>
+          <li><span class="tip-text">Read error messages — they usually tell you what's wrong and where.</span></li>
+        </ul>
+
+        <p class="tips-note">Tip: use the Try Code button to paste examples into the playground.</p>
+      </div>
+    </aside>
+
+    <!-- Lessons content -->
+    <main id="lessons" role="main"></main>
+  </div>
+
+  <p><a href="index.html" class="back-link">⬅ Back to Home</a></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
