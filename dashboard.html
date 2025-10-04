@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Progress Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 </head>
 <body>
   <!-- Shared header: brand + mini-nav + home/back -->
@@ -35,7 +36,7 @@
   <header class="hero" style="margin-top:12px; border-radius:12px; padding:20px;">
     <div class="container">
       <h1 style="margin:0 0 6px 0">📊 Progress Dashboard</h1>
-      <p style="margin:0; color:var(--muted)">See your overall progress and quick lesson status.</p>
+      <p style="margin:0; color:var(--muted)">See your overall progress and quickly jump to lessons.</p>
     </div>
   </header>
 
@@ -56,27 +57,29 @@
   </main>
 
   <script>
-    // Load lessons and progress (keeps using lessons.json & localStorage like script.js)
+    // Load lessons and progress (keeps using lessons.json & localStorage)
     fetch('lessons.json')
       .then(res => res.json())
       .then(lessons => {
         const list = document.getElementById('lessons-list');
-        const progressStore = {}; // using the same key names as script.js
         let completed = 0;
 
-        // Count completions and build cards
+        // Sort or keep order — we'll render
         lessons.forEach(lesson => {
           const done = localStorage.getItem(`lesson-${lesson.id}`) === 'completed';
           if (done) completed++;
 
           const card = document.createElement('div');
           card.className = 'lesson-card' + (done ? ' completed' : '');
+          // Create controls area with an explicit button that links to the exact lesson anchor in lessons.html
+          const openHref = `lessons.html#lesson-${lesson.id}`;
           card.innerHTML = `
             <h3 style="margin-top:0">${lesson.title}</h3>
             <p class="small" style="margin:6px 0 10px 0">${lesson.category || ''}</p>
             <p style="margin:0 0 12px 0">${done ? '✅ Completed' : '❌ Not started'}</p>
-            <div style="display:flex; justify-content:center; gap:8px;">
-              <a class="back-btn" href="lesson.html?id=${lesson.id}" style="padding:6px 10px; text-decoration:none;">Open Lesson</a>
+            <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+              <a class="btn" href="${openHref}" style="text-decoration:none; background:var(--blue);">Open Lesson</a>
+              <a class="btn" href="playground.html" style="background:var(--green); text-decoration:none;">Open Playground</a>
             </div>
           `;
           list.appendChild(card);
