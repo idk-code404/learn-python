@@ -134,8 +134,8 @@
   {
     "id": 12,
     "title": "Decorators",
-    "content": "Modify functions with decorators.",
-    "code": "def decorator(func):\n    def wrapper():\n        print('Before')\n        func()\n    return wrapper\n\n@decorator\ndef hello():\n    print('Hello!')\n\nhello()",
+    "content": "Decorators modify functions.",
+    "code": "def log(func):\n    def wrapper():\n        print('Running...')\n        func()\n    return wrapper\n\n@log\ndef hello():\n    print('Hello')\n\nhello()",
     "quiz": {
       "question": "Which symbol applies a decorator?",
       "options": ["@", "#", "&"],
@@ -161,9 +161,9 @@
     "content": "Use async/await for concurrency.",
     "code": "import asyncio\n\nasync def main():\n    print('Hello')\n    await asyncio.sleep(1)\n    print('World')\n\nasyncio.run(main())",
     "quiz": {
-      "question": "Which keyword runs concurrently?",
-      "options": ["await", "async", "both"],
-      "answer": "both"
+      "question": "Which keyword declares an async function?",
+      "options": ["async", "await", "future", "task"],
+      "answer": "async"
     },
     "category": "Advanced"
   },
@@ -298,5 +298,65 @@
       "answer": "sklearn"
     },
     "category": "Expert"
+  },
+  {
+    "id": 26,
+    "title": "Strings & Common Methods",
+    "content": "Work with strings and common methods like upper(), lower(), and split().",
+    "code": "s = 'Hello, Python!'\nprint(s.upper())\nprint(s.lower())\nprint(s.split(','))",
+    "quiz": {
+      "question": "Which method converts a string to uppercase?",
+      "options": ["upper()", "lower()", "capitalize()", "toUpper()"],
+      "answer": "upper()"
+    },
+    "category": "Beginner"
+  },
+  {
+    "id": 27,
+    "title": "User Input",
+    "content": "Get input from users using input() and use that value in your program.",
+    "code": "name = input('What is your name? ')\nprint('Hello,', name)",
+    "quiz": {
+      "question": "Which function reads a line from user input?",
+      "options": ["input()", "raw_input()", "readline()", "scan()"],
+      "answer": "input()"
+    },
+    "category": "Beginner"
+  },
+  {
+    "id": 28,
+    "title": "f-Strings & String Formatting",
+    "content": "Format strings easily with f-strings (Python 3.6+).",
+    "code": "name = 'Alice'\nage = 30\nprint(f'{name} is {age} years old')\nprint('Name: {} Age: {}'.format(name, age))",
+    "quiz": {
+      "question": "Which of these is an f-string?",
+      "options": ["f'{name}'", "'{name}'", "format('{name}')", "%s" ],
+      "answer": "f'{name}'"
+    },
+    "category": "Beginner"
+  },
+  {
+    "id": 29,
+    "title": "String Slicing",
+    "content": "Extract parts of strings using slicing and negative indices.",
+    "code": "s = 'Python'\nprint(s[0:2])  # 'Py'\nprint(s[-1])   # last character",
+    "quiz": {
+      "question": "How do you access the last character of a string s?",
+      "options": ["s[-1]", "s[last]", "s[0]", "s(end)"],
+      "answer": "s[-1]"
+    },
+    "category": "Beginner"
+  },
+  {
+    "id": 30,
+    "title": "Booleans & Comparisons",
+    "content": "Compare values using ==, !=, >, < and combine conditions with and/or/not.",
+    "code": "print(5 > 3)\nprint(5 == 5)\nprint(5 != 3)\nprint((5 > 3) and (3 > 1))",
+    "quiz": {
+      "question": "Which operator checks equality?",
+      "options": ["==", "=", "===", "equals()"],
+      "answer": "=="
+    },
+    "category": "Beginner"
   }
 ]
