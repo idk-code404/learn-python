@@ -3,23 +3,23 @@
     "id": 1,
     "title": "Hello World",
     "category": "Beginner",
-    "content": "Your first Python program! Use the print() function to display text on the screen.",
-    "codeExample": "print('Hello, World!')",
+    "content": "Your first Python program — use print() to display text.",
+    "code": "print('Hello, World!')",
     "quiz": {
-      "question": "If you want your Python program to greet the user with 'Hello, World!', which function should you use?",
-      "options": ["display()", "echo()", "print()", "say()"],
+      "question": "You want your program to display 'Hello, World!'. Which function should you use?",
+      "options": ["print()", "echo()", "write()", "display()"],
       "answer": "print()"
     }
   },
   {
     "id": 2,
-    "title": "Variables and Data Types",
+    "title": "Variables & Types",
     "category": "Beginner",
-    "content": "Variables store data in Python. You can store strings, numbers, or booleans.",
-    "codeExample": "name = 'Alice'\nage = 25\nis_student = True",
+    "content": "Store values in variables (int, float, str, bool).",
+    "code": "name = 'Alice'\nage = 25\nis_student = True",
     "quiz": {
-      "question": "You want to store a user's age as 25. What’s the correct Python syntax?",
-      "options": ["int age = 25", "age = 25", "age := 25", "let age = 25"],
+      "question": "Which statement correctly assigns the integer 25 to the variable age?",
+      "options": ["age = 25", "int age = 25", "age := 25", "let age = 25"],
       "answer": "age = 25"
     }
   },
@@ -27,47 +27,47 @@
     "id": 3,
     "title": "User Input",
     "category": "Beginner",
-    "content": "Use input() to take input from users. It always returns a string.",
-    "codeExample": "name = input('What is your name? ')\nprint('Hello', name)",
+    "content": "Read text from users using input(), which returns a string.",
+    "code": "name = input('What is your name? ')\nprint('Hello', name)",
     "quiz": {
-      "question": "If you want to ask the user for their name and then greet them, which function should you use to collect that information?",
-      "options": ["print()", "input()", "get()", "ask()"],
+      "question": "Which function reads a line of input from the user?",
+      "options": ["input()", "read()", "scan()", "get()"],
       "answer": "input()"
     }
   },
   {
     "id": 4,
-    "title": "Conditional Statements",
+    "title": "Conditionals",
     "category": "Beginner",
-    "content": "Use if, elif, and else to control program flow.",
-    "codeExample": "if age >= 18:\n    print('Adult')\nelse:\n    print('Minor')",
+    "content": "Control flow with if / elif / else using indentation.",
+    "code": "x = 10\nif x > 5:\n    print('Big')\nelse:\n    print('Small')",
     "quiz": {
-      "question": "You need to check if a user is old enough to vote. Which keyword helps you run different code paths depending on a condition?",
-      "options": ["switch", "if", "match", "loop"],
-      "answer": "if"
+      "question": "What happens if code under an if-statement is not indented?",
+      "options": ["It runs normally", "A SyntaxError is raised", "It is ignored", "Python auto-indents"],
+      "answer": "A SyntaxError is raised"
     }
   },
   {
     "id": 5,
-    "title": "Loops",
+    "title": "Loops: for, while",
     "category": "Beginner",
-    "content": "Use loops to repeat actions. for is used for sequences, while for repeated conditions.",
-    "codeExample": "for i in range(5):\n    print(i)",
+    "content": "Repeat actions using for loops over sequences or while loops with conditions.",
+    "code": "for i in range(3):\n    print(i)\n\n# while example\ncount = 0\nwhile count < 3:\n    print(count)\n    count += 1",
     "quiz": {
-      "question": "If you want to print numbers from 0 to 4, which looping structure should you use?",
-      "options": ["while i < 5", "for i in range(5)", "repeat(5)", "do until i == 5"],
-      "answer": "for i in range(5)"
+      "question": "Which construct lets you iterate over a sequence of numbers?",
+      "options": ["for i in range(n)", "while i in range(n)", "repeat n times", "loop(range(n))"],
+      "answer": "for i in range(n)"
     }
   },
   {
     "id": 6,
     "title": "Functions",
     "category": "Beginner",
-    "content": "Functions organize reusable code. Define with def and call them by name.",
-    "codeExample": "def greet(name):\n    print('Hello', name)",
+    "content": "Define reusable blocks with def and return values.",
+    "code": "def greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('Sam'))",
     "quiz": {
-      "question": "You want to reuse a block of code that greets users by name. Which Python keyword defines such reusable blocks?",
-      "options": ["def", "func", "lambda", "declare"],
+      "question": "Which keyword defines a function in Python?",
+      "options": ["def", "function", "func", "define"],
       "answer": "def"
     }
   },
@@ -75,96 +75,95 @@
     "id": 7,
     "title": "Lists",
     "category": "Beginner",
-    "content": "Lists store ordered collections of items, which can be changed after creation.",
-    "codeExample": "fruits = ['apple', 'banana', 'cherry']",
+    "content": "Ordered, mutable sequences of values.",
+    "code": "fruits = ['apple', 'banana', 'cherry']\nprint(fruits[1])",
     "quiz": {
-      "question": "You need to store multiple fruit names and be able to add more later. Which Python data type should you use?",
-      "options": ["tuple", "set", "list", "dict"],
-      "answer": "list"
+      "question": "Given fruits = ['apple','banana'], what does fruits.append('pear') do?",
+      "options": ["Adds 'pear' to the end", "Replaces 'banana'", "Deletes 'banana'", "Creates a new list"],
+      "answer": "Adds 'pear' to the end"
     }
   },
   {
     "id": 8,
     "title": "Dictionaries",
     "category": "Beginner",
-    "content": "Dictionaries store key-value pairs, useful for structured data.",
-    "codeExample": "person = {'name': 'Alice', 'age': 25}",
+    "content": "Key-value mapping useful for structured data.",
+    "code": "person = {'name':'Alice','age':25}\nprint(person['name'])",
     "quiz": {
-      "question": "You want to store a user’s name and age as labeled data. Which data type uses key-value pairs for this purpose?",
-      "options": ["set", "tuple", "dict", "list"],
+      "question": "Which data type stores key-value pairs?",
+      "options": ["dict", "list", "tuple", "set"],
       "answer": "dict"
     }
   },
   {
     "id": 9,
-    "title": "String Formatting",
+    "title": "Strings & Formatting",
     "category": "Beginner",
-    "content": "Use f-strings or format() to create dynamic text.",
-    "codeExample": "name = 'Alice'\nprint(f'Hello, {name}!')",
+    "content": "Work with text and format via f-strings.",
+    "code": "name = 'Alice'\nprint(f'{name} is learning Python')",
     "quiz": {
-      "question": "How would you insert a variable named 'user' into a greeting string?",
-      "options": ["'Hello, ' + user", "print(f'Hello, {user}!')", "print('Hello, ${user}')", "printf('Hello, user')"],
-      "answer": "print(f'Hello, {user}!')"
+      "question": "Which syntax is an f-string to insert variable name into a string?",
+      "options": ["f'{name}'", "'{name}'", '"%s" % name', "format(name)"],
+      "answer": "f'{name}'"
     }
   },
   {
     "id": 10,
-    "title": "Comments",
+    "title": "Comments & Style",
     "category": "Beginner",
-    "content": "Comments help explain code. Use # for single lines.",
-    "codeExample": "# This is a comment\nprint('Hello')",
+    "content": "Use # for comments and follow PEP8 basics (4 spaces).",
+    "code": "# This is a comment\nprint('Hello')",
     "quiz": {
-      "question": "When writing code, how can you add a note for yourself that Python will ignore?",
-      "options": ["//", "/* */", "#", "--"],
-      "answer": "#"
+      "question": "How do you write a single-line comment in Python?",
+      "options": ["# comment", "// comment", "/* comment */", "<!-- comment -->"],
+      "answer": "# comment"
     }
   },
-
   {
     "id": 11,
-    "title": "File Handling",
+    "title": "File I/O",
     "category": "Intermediate",
-    "content": "Use open() to read or write files safely with context managers.",
-    "codeExample": "with open('data.txt', 'r') as f:\n    content = f.read()",
+    "content": "Read and write files safely with with open(...).",
+    "code": "with open('data.txt','r') as f:\n    content = f.read()",
     "quiz": {
-      "question": "If you need to open a file and make sure it automatically closes when done, what Python structure should you use?",
-      "options": ["try/except", "context manager (with)", "finally block", "loop"],
-      "answer": "context manager (with)"
+      "question": "Why use with open('file') as f: rather than open() alone?",
+      "options": ["It auto-closes the file", "It runs faster", "It prevents reading", "It compresses the file"],
+      "answer": "It auto-closes the file"
     }
   },
   {
     "id": 12,
     "title": "Error Handling",
     "category": "Intermediate",
-    "content": "Use try, except, and finally to catch and handle runtime errors.",
-    "codeExample": "try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print('Cannot divide by zero!')",
+    "content": "Handle runtime exceptions with try/except/finally.",
+    "code": "try:\n    x = int('abc')\nexcept ValueError:\n    print('Not a number')",
     "quiz": {
-      "question": "You expect some code might fail due to a bad file or division. Which structure lets you handle those errors gracefully?",
-      "options": ["guard", "try/except", "if/else", "switch"],
-      "answer": "try/except"
+      "question": "What does except ValueError do in a try/except block?",
+      "options": ["Catches ValueError errors", "Raises ValueError", "Ignores all errors", "Retries the operation"],
+      "answer": "Catches ValueError errors"
     }
   },
   {
     "id": 13,
-    "title": "Modules and Imports",
+    "title": "Modules & Imports",
     "category": "Intermediate",
-    "content": "Use import to reuse Python files or libraries.",
-    "codeExample": "import math\nprint(math.sqrt(16))",
+    "content": "Break code into modules and import functions or modules.",
+    "code": "import math\nprint(math.sqrt(16))",
     "quiz": {
-      "question": "If you need to reuse functions from another file or library, what statement brings them into your program?",
-      "options": ["include", "require", "import", "fromfile"],
-      "answer": "import"
+      "question": "Which statement imports the sqrt function directly from math?",
+      "options": ["from math import sqrt", "import sqrt from math", "import math.sqrt", "use math.sqrt"],
+      "answer": "from math import sqrt"
     }
   },
   {
     "id": 14,
     "title": "List Comprehensions",
     "category": "Intermediate",
-    "content": "Create new lists from existing data with a single line of code.",
-    "codeExample": "[x**2 for x in range(5)]",
+    "content": "Concise syntax to create lists from iterables.",
+    "code": "squares = [x**2 for x in range(5)]\nprint(squares)",
     "quiz": {
-      "question": "You want to create a list of squares from 0 to 4. Which concise Python expression can do that?",
-      "options": ["for x in range(5): squares.append(x**2)", "[x**2 for x in range(5)]", "map(square, range(5))", "x^2 for x in range(5)"],
+      "question": "Which creates a list of squares from 0 to 4?",
+      "options": ["[x**2 for x in range(5)]", "for x in range(5): x**2", "map(lambda x: x*x, range(5))", "[x^2 for x in range(5)]"],
       "answer": "[x**2 for x in range(5)]"
     }
   },
@@ -172,144 +171,143 @@
     "id": 15,
     "title": "Functions with Parameters",
     "category": "Intermediate",
-    "content": "Functions can take parameters to customize behavior.",
-    "codeExample": "def add(a, b):\n    return a + b",
+    "content": "Functions accept arguments, have defaults and return values.",
+    "code": "def add(a, b=0):\n    return a + b\nprint(add(2,3))",
     "quiz": {
-      "question": "You want a function that adds any two numbers you give it. How can you define such a function?",
-      "options": ["def add(a, b): return a + b", "func add(a,b): return a+b", "def add(a+b)", "add(a,b) = a + b"],
-      "answer": "def add(a, b): return a + b"
+      "question": "How do you define a function with a default parameter b=0?",
+      "options": ["def func(a, b=0):", "def func(a, b): b=0", "def func(a, b?):", "func def(a, b=0):"],
+      "answer": "def func(a, b=0):"
     }
   },
   {
     "id": 16,
-    "title": "Working with JSON",
+    "title": "JSON & APIs",
     "category": "Intermediate",
-    "content": "Use the json module to serialize and deserialize data.",
-    "codeExample": "import json\ndata = json.loads('{\"name\":\"Alice\"}')",
+    "content": "Use json to parse and requests to call APIs.",
+    "code": "import json\nobj = json.loads('{\"name\":\"Alice\"}')\nprint(obj['name'])",
     "quiz": {
-      "question": "If you receive data in JSON format from an API, which library should you use to convert it into a Python dictionary?",
-      "options": ["pickle", "csv", "json", "yaml"],
+      "question": "Which module converts JSON text to Python objects?",
+      "options": ["json", "pickle", "xml", "csv"],
       "answer": "json"
     }
   },
   {
     "id": 17,
-    "title": "Lambda Functions",
+    "title": "Lambda & Functional Tools",
     "category": "Intermediate",
-    "content": "Anonymous small functions, often used in filters or maps.",
-    "codeExample": "square = lambda x: x ** 2",
+    "content": "Quick one-line functions and map/filter usage.",
+    "code": "double = lambda x: x*2\nprint(list(map(double,[1,2,3])))",
     "quiz": {
-      "question": "You want to quickly define a one-line function to double a number. What Python keyword creates such short functions?",
-      "options": ["lambda", "inline", "def", "func"],
-      "answer": "lambda"
+      "question": "What does lambda x: x*2 create?",
+      "options": ["An anonymous function", "A list", "A loop", "A decorator"],
+      "answer": "An anonymous function"
     }
   },
   {
     "id": 18,
-    "title": "OOP: Classes",
+    "title": "OOP Basics",
     "category": "Intermediate",
-    "content": "Organize data and behavior using classes and objects.",
-    "codeExample": "class Dog:\n    def __init__(self, name):\n        self.name = name",
+    "content": "Use classes and instances to model data and behavior.",
+    "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n    def bark(self):\n        return f'{self.name} says woof'\nprint(Dog('Fido').bark())",
     "quiz": {
-      "question": "You need to model a Dog with properties like name and breed. What Python keyword defines such a structure?",
-      "options": ["object", "class", "def", "structure"],
-      "answer": "class"
+      "question": "Which method runs when you create a new class instance?",
+      "options": ["__init__", "__start__", "__create__", "__new__"],
+      "answer": "__init__"
     }
   },
   {
     "id": 19,
-    "title": "Docstrings",
+    "title": "Docstrings & Help",
     "category": "Intermediate",
-    "content": "Use triple quotes under a function or class for documentation.",
-    "codeExample": "def greet():\n    \"\"\"Say hello\"\"\"\n    print('Hi!')",
+    "content": "Document functions and classes using triple-quoted strings.",
+    "code": "def add(a,b):\n    \"\"\"Add two numbers\"\"\"\n    return a+b\nprint(add.__doc__)",
     "quiz": {
-      "question": "How can you add documentation that can be accessed using help()?",
-      "options": ["# comment", "''' triple quotes '''", "/* block */", "doc()"],
-      "answer": "''' triple quotes '''"
+      "question": "Where is a function’s docstring stored and accessible?",
+      "options": ["__doc__", "__info__", "__help__", "__docstr__"],
+      "answer": "__doc__"
     }
   },
   {
     "id": 20,
     "title": "Virtual Environments",
     "category": "Intermediate",
-    "content": "Keep projects isolated using venv or virtualenv.",
-    "codeExample": "python -m venv myenv",
+    "content": "Isolate dependencies using venv or virtualenv.",
+    "code": "python -m venv myenv\n# then activate the environment",
     "quiz": {
-      "question": "If you want to isolate dependencies per project, what Python tool should you use?",
-      "options": ["virtualenv", "docker", "conda", "pipenv"],
-      "answer": "virtualenv"
+      "question": "Which command creates a virtual environment named myenv?",
+      "options": ["python -m venv myenv", "venv create myenv", "pipenv install myenv", "mkvenv myenv"],
+      "answer": "python -m venv myenv"
     }
   },
-
   {
     "id": 21,
-    "title": "Iterators and Generators",
+    "title": "Generators & Iterators",
     "category": "Advanced",
-    "content": "Generators yield data lazily, saving memory.",
-    "codeExample": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1",
+    "content": "Yield values lazily using generators to save memory.",
+    "code": "def counter(n):\n    for i in range(n):\n        yield i\nfor x in counter(3): print(x)",
     "quiz": {
-      "question": "You need to process a huge file line by line without loading it all at once. Which Python feature allows you to yield data lazily?",
-      "options": ["iterator", "generator", "recursion", "lambda"],
-      "answer": "generator"
+      "question": "Why prefer a generator for large sequences?",
+      "options": ["It uses less memory", "It runs faster always", "It can be indexed", "It stores all values"],
+      "answer": "It uses less memory"
     }
   },
   {
     "id": 22,
     "title": "Decorators",
     "category": "Advanced",
-    "content": "Decorators modify function behavior without changing their code.",
-    "codeExample": "def log(func):\n    def wrapper():\n        print('Running...')\n        func()\n    return wrapper",
+    "content": "Wrap functions to enhance behavior without changing their code.",
+    "code": "def log(func):\n    def wrapper(*a, **k):\n        print('running', func.__name__)\n        return func(*a, **k)\n    return wrapper\n\n@log\ndef say():\n    print('hi')\nsay()",
     "quiz": {
-      "question": "You want to automatically log each time a function is run. Which Python concept allows you to wrap functions with extra behavior?",
-      "options": ["closures", "decorators", "generators", "classes"],
-      "answer": "decorators"
+      "question": "What symbol applies a decorator above a function definition?",
+      "options": ["@", "#", "%", "&"],
+      "answer": "@"
     }
   },
   {
     "id": 23,
-    "title": "Async Programming",
+    "title": "Async / await",
     "category": "Advanced",
-    "content": "Use async/await to handle concurrent operations efficiently.",
-    "codeExample": "async def fetch_data():\n    await asyncio.sleep(1)",
+    "content": "Write asynchronous code using async/await for concurrency.",
+    "code": "import asyncio\nasync def main():\n    await asyncio.sleep(1)\n    print('done')\nasyncio.run(main())",
     "quiz": {
-      "question": "You need to fetch data from multiple APIs at the same time. Which Python keywords help handle concurrency easily?",
-      "options": ["async/await", "thread/run", "multi/process", "yield/next"],
-      "answer": "async/await"
+      "question": "What does calling an async function without await return?",
+      "options": ["Coroutine object", "Result immediately", "None", "Error"],
+      "answer": "Coroutine object"
     }
   },
   {
     "id": 24,
     "title": "Regular Expressions",
     "category": "Advanced",
-    "content": "Use re to find and manipulate text patterns.",
-    "codeExample": "import re\nre.findall(r'\\d+', 'abc123xyz')",
+    "content": "Use re to search and extract patterns from text.",
+    "code": "import re\nnums = re.findall(r'\\d+', 'abc123def45')\nprint(nums)",
     "quiz": {
-      "question": "You need to find all numbers inside a long text string. Which Python library helps you use search patterns?",
-      "options": ["string", "search", "re", "regexlib"],
+      "question": "Which module is used for pattern matching with regex?",
+      "options": ["re", "regex", "match", "pattern"],
       "answer": "re"
     }
   },
   {
     "id": 25,
-    "title": "APIs and Requests",
+    "title": "HTTP & APIs (requests)",
     "category": "Advanced",
-    "content": "Use requests library to communicate with web APIs.",
-    "codeExample": "import requests\nres = requests.get('https://api.github.com')",
+    "content": "Fetch data from web APIs with requests (install via pip).",
+    "code": "import requests\nr = requests.get('https://api.github.com')\nprint(r.status_code)",
     "quiz": {
-      "question": "To send a GET request and fetch data from an online API, which Python package would you use?",
-      "options": ["urllib", "requests", "api", "http"],
-      "answer": "requests"
+      "question": "What type of object does requests.get(...) return?",
+      "options": ["Response object", "JSON dict", "Tuple", "String"],
+      "answer": "Response object"
     }
   },
   {
     "id": 26,
-    "title": "File Paths and OS Module",
+    "title": "Filesystem & pathlib",
     "category": "Advanced",
-    "content": "Use os and pathlib to manage file paths across systems.",
-    "codeExample": "from pathlib import Path\nprint(Path.cwd())",
+    "content": "Use pathlib for cross-platform path handling.",
+    "code": "from pathlib import Path\np = Path.cwd()\nprint(p)",
     "quiz": {
-      "question": "You want your Python script to work on both Windows and Linux. Which module helps handle file paths safely?",
-      "options": ["sys", "os", "pathlib", "glob"],
+      "question": "Which module helps safely manipulate file paths across OSes?",
+      "options": ["pathlib", "os.path", "sys", "glob"],
       "answer": "pathlib"
     }
   },
@@ -317,71 +315,71 @@
     "id": 27,
     "title": "Logging",
     "category": "Advanced",
-    "content": "Log program events for debugging and monitoring.",
-    "codeExample": "import logging\nlogging.basicConfig(level=logging.INFO)",
+    "content": "Record application events using the logging module.",
+    "code": "import logging\nlogging.basicConfig(level=logging.INFO)\nlogging.info('hello')",
     "quiz": {
-      "question": "You want to record important events or errors while your program runs. Which built-in Python module provides this functionality?",
-      "options": ["debug", "trace", "log", "logging"],
-      "answer": "logging"
+      "question": "Why use logging instead of print for production apps?",
+      "options": ["Level control and persistence", "It's faster", "It avoids errors", "It prints prettier"],
+      "answer": "Level control and persistence"
     }
   },
   {
     "id": 28,
     "title": "NumPy Basics",
     "category": "Advanced",
-    "content": "NumPy enables fast array operations for numerical computing.",
-    "codeExample": "import numpy as np\narr = np.array([1,2,3])",
+    "content": "Fast, vectorized operations on arrays via NumPy.",
+    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr * 2)",
     "quiz": {
-      "question": "Which library provides high-speed array and matrix operations, ideal for scientific computing?",
-      "options": ["SciPy", "NumPy", "Matplotlib", "TensorFlow"],
-      "answer": "NumPy"
+      "question": "How does numpy array multiplication differ from list multiplication?",
+      "options": ["NumPy multiplies elements; list repeats sequence", "Both repeat sequence", "Both multiply elements", "NumPy errors"],
+      "answer": "NumPy multiplies elements; list repeats sequence"
     }
   },
   {
     "id": 29,
     "title": "Matplotlib",
     "category": "Advanced",
-    "content": "Matplotlib creates visual plots and charts for data analysis.",
-    "codeExample": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[4,5,6])",
+    "content": "Create visual charts and figures using matplotlib.",
+    "code": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[4,5,6])\nplt.show()",
     "quiz": {
-      "question": "Which Python library helps you create line charts and visual plots?",
-      "options": ["Pandas", "NumPy", "Matplotlib", "Plotly"],
+      "question": "Which library is commonly used for plotting in Python?",
+      "options": ["Matplotlib", "Flask", "Pandas", "NumPy"],
       "answer": "Matplotlib"
     }
   },
   {
     "id": 30,
-    "title": "Flask Web Framework",
+    "title": "Flask Web Apps",
     "category": "Advanced",
-    "content": "Flask allows lightweight web applications using Python.",
-    "codeExample": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef home(): return 'Hello!'",
+    "content": "Lightweight web framework for small APIs and apps.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n# app.run()",
     "quiz": {
-      "question": "Which lightweight Python web framework is perfect for building small APIs or web apps?",
-      "options": ["Django", "Flask", "FastAPI", "Tornado"],
-      "answer": "Flask"
+      "question": "Which decorator defines a route in Flask?",
+      "options": ["@app.route", "@route", "@flask.route", "@app.url"],
+      "answer": "@app.route"
     }
   },
   {
     "id": 31,
-    "title": "Machine Learning Basics",
+    "title": "Machine Learning Intro",
     "category": "Expert",
-    "content": "Learn basic ML concepts like features, labels, and models.",
-    "codeExample": "from sklearn.linear_model import LinearRegression",
+    "content": "Overview of ML concepts and scikit-learn basics.",
+    "code": "from sklearn.linear_model import LinearRegression\nmodel = LinearRegression()",
     "quiz": {
-      "question": "Which Python library provides ready-made models like LinearRegression?",
-      "options": ["NumPy", "Pandas", "scikit-learn", "TensorFlow"],
+      "question": "Which library provides ready-made classical ML models like LinearRegression?",
+      "options": ["scikit-learn", "TensorFlow", "NumPy", "Pandas"],
       "answer": "scikit-learn"
     }
   },
   {
     "id": 32,
-    "title": "Pandas for DataFrames",
+    "title": "Pandas DataFrames",
     "category": "Expert",
-    "content": "Pandas provides flexible DataFrames for data manipulation.",
-    "codeExample": "import pandas as pd\ndf = pd.DataFrame({'A':[1,2]})",
+    "content": "Use DataFrames for tabular data processing and cleaning.",
+    "code": "import pandas as pd\ndf = pd.DataFrame({'A':[1,2],'B':[3,4]})\nprint(df.head())",
     "quiz": {
-      "question": "You have tabular CSV data to clean and filter. Which library should you use?",
-      "options": ["NumPy", "Pandas", "Matplotlib", "Seaborn"],
+      "question": "Which library provides the DataFrame structure for tabular data?",
+      "options": ["Pandas", "NumPy", "Matplotlib", "Seaborn"],
       "answer": "Pandas"
     }
   },
@@ -389,11 +387,11 @@
     "id": 33,
     "title": "Web Scraping",
     "category": "Expert",
-    "content": "Use BeautifulSoup to extract data from web pages.",
-    "codeExample": "from bs4 import BeautifulSoup",
+    "content": "Use requests + BeautifulSoup to extract data from HTML.",
+    "code": "import requests\nfrom bs4 import BeautifulSoup\nhtml = requests.get('https://example.com').text\nsoup = BeautifulSoup(html,'html.parser')\nprint(soup.title.string)",
     "quiz": {
-      "question": "Which library is best for parsing HTML content when scraping data from websites?",
-      "options": ["requests", "BeautifulSoup", "urllib", "Scrapy"],
+      "question": "Which library helps parse HTML when scraping pages?",
+      "options": ["BeautifulSoup", "requests", "selenium", "urllib"],
       "answer": "BeautifulSoup"
     }
   },
@@ -401,35 +399,35 @@
     "id": 34,
     "title": "Testing with pytest",
     "category": "Expert",
-    "content": "pytest automates testing and ensures code reliability.",
-    "codeExample": "def test_sum(): assert sum([1,2]) == 3",
+    "content": "Write readable automated tests using pytest.",
+    "code": "def test_sum():\n    assert sum([1,2]) == 3",
     "quiz": {
-      "question": "You want to automatically verify your Python functions work correctly. Which framework helps automate such testing?",
-      "options": ["unittest", "pytest", "doctest", "testify"],
+      "question": "Which framework simplifies writing tests compared to unittest?",
+      "options": ["pytest", "doctest", "unittest2", "nose"],
       "answer": "pytest"
     }
   },
   {
     "id": 35,
-    "title": "Async APIs",
+    "title": "Async APIs (aiohttp)",
     "category": "Expert",
-    "content": "Combine async with APIs for concurrent data fetching.",
-    "codeExample": "import aiohttp",
+    "content": "Concurrent HTTP calls using aiohttp for async I/O.",
+    "code": "import aiohttp\nimport asyncio\n# use aiohttp.ClientSession() in async functions",
     "quiz": {
-      "question": "You need to fetch 10 APIs at once for speed. Which Python library supports asynchronous HTTP requests?",
-      "options": ["requests", "urllib", "aiohttp", "flask"],
+      "question": "Which library supports asynchronous HTTP requests in Python?",
+      "options": ["aiohttp", "requests", "urllib", "httpx (sync only)"],
       "answer": "aiohttp"
     }
   },
   {
     "id": 36,
-    "title": "Parallel Processing",
+    "title": "Multiprocessing",
     "category": "Expert",
-    "content": "Use multiprocessing for CPU-bound tasks.",
-    "codeExample": "from multiprocessing import Pool",
+    "content": "Use multiprocessing for CPU-bound parallelism.",
+    "code": "from multiprocessing import Pool\nwith Pool(4) as p:\n    print(p.map(lambda x: x*x, [1,2,3,4]))",
     "quiz": {
-      "question": "Your program must compute across 8 CPU cores simultaneously. Which module helps achieve this?",
-      "options": ["asyncio", "threading", "multiprocessing", "concurrent"],
+      "question": "Which module lets you run code across multiple CPU cores?",
+      "options": ["multiprocessing", "asyncio", "threading", "concurrent.futures (threads)"],
       "answer": "multiprocessing"
     }
   },
@@ -437,23 +435,23 @@
     "id": 37,
     "title": "Django Basics",
     "category": "Expert",
-    "content": "Django is a full-featured web framework for Python.",
-    "codeExample": "django-admin startproject mysite",
+    "content": "Django is a batteries-included web framework with ORM.",
+    "code": "django-admin startproject mysite",
     "quiz": {
-      "question": "Which Python framework follows the MVC pattern and includes an ORM?",
-      "options": ["Flask", "Django", "FastAPI", "Bottle"],
+      "question": "Which framework includes an ORM and MVC-like structure for large apps?",
+      "options": ["Django", "Flask", "Bottle", "FastAPI"],
       "answer": "Django"
     }
   },
   {
     "id": 38,
-    "title": "Data Visualization with Seaborn",
+    "title": "Seaborn Visualizations",
     "category": "Expert",
-    "content": "Seaborn simplifies statistical data visualization.",
-    "codeExample": "import seaborn as sns\nsns.barplot(x='A', y='B', data=df)",
+    "content": "Seaborn makes statistical plotting easier on top of Matplotlib.",
+    "code": "import seaborn as sns\nsns.barplot(x='A', y='B', data=df)",
     "quiz": {
-      "question": "You want to plot elegant and informative charts easily. Which Python library builds on Matplotlib for this?",
-      "options": ["Plotly", "Seaborn", "Bokeh", "Dash"],
+      "question": "Which library builds on Matplotlib for polished statistical plots?",
+      "options": ["Seaborn", "Plotly", "Bokeh", "Altair"],
       "answer": "Seaborn"
     }
   },
@@ -461,23 +459,23 @@
     "id": 39,
     "title": "Deploying Flask Apps",
     "category": "Expert",
-    "content": "Learn how to deploy Flask apps using Gunicorn or Render.",
-    "codeExample": "gunicorn app:app",
+    "content": "Deploy production apps with Gunicorn, uWSGI, or hosts like Render/Heroku.",
+    "code": "gunicorn app:app",
     "quiz": {
-      "question": "Which command runs a Flask app in production using Gunicorn?",
-      "options": ["python app.py", "flask run", "gunicorn app:app", "uwsgi app.py"],
+      "question": "What command runs a Flask app with Gunicorn in production?",
+      "options": ["gunicorn app:app", "flask run", "python app.py", "uwsgi app.py"],
       "answer": "gunicorn app:app"
     }
   },
   {
     "id": 40,
-    "title": "AI with OpenAI API",
+    "title": "AI & OpenAI API",
     "category": "Expert",
-    "content": "Use OpenAI's API for intelligent text generation and chatbots.",
-    "codeExample": "import openai",
+    "content": "Use the OpenAI API to generate text, code, or build chatbots.",
+    "code": "import openai\n# client = openai.OpenAI(api_key='...')",
     "quiz": {
-      "question": "You want your Python app to generate natural language responses. Which API can do this?",
-      "options": ["Google Translate API", "OpenAI API", "Azure ML API", "TensorFlow API"],
+      "question": "Which API can your Python app call to generate natural language text?",
+      "options": ["OpenAI API", "Google Maps API", "Stripe API", "GitHub API"],
       "answer": "OpenAI API"
     }
   }
