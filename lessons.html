@@ -1,67 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python Lessons</title>
-  <link rel="stylesheet" href="style.css" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Slim header with Back button + Mini Nav -->
-  <header class="page-header">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Step-by-step lessons from Beginner → Expert</p>
-      </div>
-
-      <div class="header-actions">
-        <!-- Mini nav (Lessons | Dashboard | Playground) -->
-        <nav class="mini-nav" aria-label="Main navigation">
-          <a href="lessons.html" class="mini-nav-link" aria-current="page">Lessons</a>
-          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-          <a href="playground.html" class="mini-nav-link">Playground</a>
-        </nav>
-
-        <!-- Back button -->
-        <a href="index.html" class="back-btn" aria-label="Back to Home">
-          <span class="arrow">⬅</span>
-          <span class="text">Home</span>
-        </a>
-      </div>
-    </div>
+  <header>
+    <h1>🐍 Python Lessons</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="playground.html">Playground</a>
+      <a href="questions.html">Questions</a>
+    </nav>
   </header>
 
-  <div id="lessons-wrapper">
-    <!-- Sidebar TOC + Tips -->
-    <aside id="toc" aria-label="Table of contents and tips">
-      <h2>Table of Contents</h2>
-      <ul id="toc-list"></ul>
+  <aside id="toc">
+    <h3>📚 Table of Contents</h3>
+    <ul id="tocList"></ul>
+    <div id="tips">
+      <h4>💡 Python Tips</h4>
+      <ul>
+        <li>Use descriptive variable names.</li>
+        <li>Indentation matters in Python — use 4 spaces.</li>
+        <li>Use `try/except` to handle errors safely.</li>
+        <li>Experiment with code to truly understand it.</li>
+      </ul>
+    </div>
+  </aside>
 
-      <!-- Quick Coding Tips (read-only) -->
-      <div id="toc-tips" aria-label="Quick coding tips">
-        <h3>💡 Quick Coding Tips</h3>
-        <ul>
-          <li><span class="tip-text"><code>total_price</code> — use meaningful variable names.</span></li>
-          <li><span class="tip-text">Keep functions small — one job per function.</span></li>
-          <li><span class="tip-text">Use <code>print()</code> to debug quickly while learning.</span></li>
-          <li><span class="tip-text">Stick to 4-space indentation (PEP 8 style).</span></li>
-          <li><span class="tip-text">Comment tricky logic with <code>#</code> for future you.</span></li>
-          <li><span class="tip-text">Prefer list comprehensions for simple transformations.</span></li>
-          <li><span class="tip-text">Use virtual environments: <code>python -m venv env</code>.</span></li>
-          <li><span class="tip-text">Read error messages — they usually tell you what's wrong and where.</span></li>
-        </ul>
+  <main id="lessonContainer"></main>
 
-        <p class="tips-note">Tip: use the Try Code / Run Starter buttons to copy examples and open the playground.</p>
-      </div>
-    </aside>
+  <script>
+    async function loadLessons() {
+      const res = await fetch('lessons.json');
+      const lessons = await res.json();
 
-    <!-- Lessons content -->
-    <main id="lessons" role="main"></main>
-  </div>
+      const container = document.getElementById('lessonContainer');
+      const tocList = document.getElementById('tocList');
 
-  <p style="text-align:center; margin-top:18px;"><a href="index.html" class="back-btn">⬅ Back to Home</a></p>
+      let categories = {};
+      lessons.forEach(l => {
+        if (!categories[l.category]) categories[l.category] = [];
+        categories[l.category].push(l);
+      });
 
-  <script src="script.js"></script>
+      for (const cat of Object.keys(categories)) {
+        const section = document.createElement('section');
+        section.id = cat.toLowerCase();
+        section.innerHTML = `<h2>${cat}</h2>`;
+        container.appendChild(section);
+
+        const catLink = document.createElement('li');
+        catLink.innerHTML = `<a href="#${cat.toLowerCase()}">${cat}</a>`;
+        tocList.appendChild(catLink);
+
+        categories[cat].forEach(lesson => {
+          const div = document.createElement('div');
+          div.classList.add('lesson');
+          div.innerHTML = `
+            <h3>${lesson.title}</h3>
+            <p>${lesson.content}</p>
+            <pre><code>${lesson.code}</code></pre>
+            <button class="try-btn" onclick="tryCode('${encodeURIComponent(lesson.code)}')">▶ Try Code</button>
+            <button class="quiz-btn" onclick="takeQuiz('${lesson.id}')">Take Quiz</button>
+          `;
+          section.appendChild(div);
+        });
+      }
+
+      // Sticky TOC highlight
+      window.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('main section');
+        let scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
+        sections.forEach(sec => {
+          const top = sec.offsetTop - 120;
+          const bottom = top + sec.offsetHeight;
+          const link = document.querySelector(`#toc a[href="#${sec.id}"]`);
+          if (scrollPos >= top && scrollPos < bottom) {
+            document.querySelectorAll('#toc a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      });
+    }
+
+    function tryCode(encodedCode) {
+      const code = decodeURIComponent(encodedCode);
+      navigator.clipboard.writeText(code);
+      window.open('playground.html', '_blank');
+    }
+
+    async function takeQuiz(id) {
+      const res = await fetch('lessons.json');
+      const lessons = await res.json();
+      const lesson = lessons.find(l => l.id == id);
+      if (!lesson.quiz) return alert('No quiz for this lesson.');
+
+      const userAns = prompt(lesson.quiz.question + '\n\n' + lesson.quiz.options.join('\n'));
+      if (userAns === lesson.quiz.answer) {
+        alert('✅ Correct!');
+        const progress = JSON.parse(localStorage.getItem('progress')) || {};
+        progress[id] = true;
+        localStorage.setItem('progress', JSON.stringify(progress));
+      } else {
+        alert('❌ Incorrect. Correct answer: ' + lesson.quiz.answer);
+      }
+    }
+
+    loadLessons();
+  </script>
 </body>
 </html>
