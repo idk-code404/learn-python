@@ -10,8 +10,11 @@
   <header class="page-header">
     <div class="header-inner">
       <div class="brand">
-        <h1>🧠 Quizzes</h1>
-        <p class="lead">Pick a level and measure your progress</p>
+        <div class="logo">Py</div>
+        <div>
+          <h1>Quizzes</h1>
+          <p class="lead">Pick a level and measure your progress</p>
+        </div>
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;">
@@ -27,7 +30,7 @@
     </div>
   </header>
 
-  <main class="quiz-wrap">
+  <main class="quiz-wrap container">
     <div class="quiz-panel">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
         <div>
@@ -122,7 +125,6 @@
         b.textContent = o;
         b.onclick = () => {
           answers[current] = o;
-          // disable buttons
           document.querySelectorAll('.option-btn').forEach(x => x.disabled = true);
           const fb = document.getElementById('qFeedback');
           fb.textContent = o === q.answer ? '✅ Correct!' : `❌ Incorrect — correct: ${q.answer}`;
@@ -130,7 +132,6 @@
         opts.appendChild(b);
       });
 
-      // set feedback if already answered
       const fb = document.getElementById('qFeedback');
       fb.textContent = answers[current] ? (answers[current] === q.answer ? '✅ Correct!' : `❌ Incorrect — correct: ${q.answer}`) : '';
 
@@ -138,7 +139,6 @@
       document.getElementById('nextBtn').style.display = current < quizQuestions.length - 1 ? 'inline-flex' : 'none';
       document.getElementById('finishBtn').style.display = current === quizQuestions.length - 1 ? 'inline-flex' : 'none';
 
-      // progress bar
       const pct = Math.round((current / Math.max(1, quizQuestions.length - 1)) * 100);
       document.getElementById('qFill').style.width = pct + '%';
       document.getElementById('qMeta').textContent = `Question ${current + 1} / ${quizQuestions.length}`;
@@ -155,8 +155,50 @@
       });
       const percent = Math.round((correct / quizQuestions.length) * 100);
 
-      // save per-user stats
       const profile = window.learnApp.getCurrentProfile();
       const userId = profile && profile.id ? profile.id : 'user_guest';
       const stats = window.learnApp.getUserQuizStats(userId);
-      if (!stats[selectedCategory]) stats[selectedCate]()
+      if (!stats[selectedCategory]) stats[selectedCategory] = { attempts: 0, scores: [] };
+      stats[selectedCategory].attempts++;
+      stats[selectedCategory].scores.push(percent);
+      window.learnApp.saveUserQuizStats(userId, stats);
+
+      const prog = window.learnApp.getUserProgress(userId);
+      details.forEach(d => { if (d.ok && d.lessonId) prog[d.lessonId] = true; });
+      window.learnApp.saveUserProgress(userId, prog);
+
+      const ra = document.getElementById('resultArea');
+      ra.style.display = 'block';
+      ra.innerHTML = `
+        <div class="quiz-panel">
+          <h2>${selectedCategory} Quiz Results</h2>
+          <p class="small">You scored ${percent}% — ${correct} / ${quizQuestions.length} correct.</p>
+          <div id="detailList"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+            <button class="btn" onclick="location.reload()">Back</button>
+            <a class="btn ghost" href="lessons.html">Open Lessons</a>
+          </div>
+        </div>
+      `;
+      const detailList = document.getElementById('detailList');
+      detailList.innerHTML = details.map((d, i) => `
+        <div style="padding:8px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;">
+          <strong>Q${i+1} — ${escapeHtml(d.title)}</strong>
+          <div class="small" style="margin-top:6px">${escapeHtml(d.question)}</div>
+          <div style="margin-top:8px">Your: <strong>${d.chosen || '—'}</strong> ${d.ok ? '✅' : '❌'}</div>
+          ${d.ok ? '' : `<div style="margin-top:6px">Answer: <strong>${d.answer}</strong></div>`}
+        </div>
+      `).join('');
+      document.getElementById('quizArea').style.display = 'none';
+    }
+
+    function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    (function maybeStartFromQuery() {
+      const params = new URLSearchParams(location.search);
+      const cat = params.get('category');
+      if (cat) setTimeout(()=> startQuiz(cat), 160);
+    })();
+  </script>
+</body>
+</html>
