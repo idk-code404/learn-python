@@ -5,133 +5,139 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Dashboard — Learn Python</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .dashboard-grid { max-width:1200px; margin:18px auto; padding:0 16px; display:grid; grid-template-columns: 1fr 360px; gap:18px; }
-    .left, .right { background:var(--card-bg); padding:16px; border-radius:10px; box-shadow: 0 6px 16px rgba(0,0,0,0.04); }
-    .lessons-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; }
-    .lesson-card { padding:12px; border-radius:8px; border:1px solid rgba(0,0,0,0.04); background:#fff; }
-    .controls { display:flex; gap:8px; justify-content:flex-end; margin-bottom:10px; }
-    @media (max-width:900px) { .dashboard-grid { grid-template-columns: 1fr; } }
-  </style>
 </head>
 <body>
   <header class="page-header">
     <div class="header-inner">
       <div class="brand">
-        <h1>📊 Progress Dashboard</h1>
-        <p class="lead">See lesson progress and quiz performance</p>
+        <div class="logo">Py</div>
+        <div>
+          <h1>Progress Dashboard</h1>
+          <p class="lead">Per-user progress and quiz stats</p>
+        </div>
       </div>
-      <nav class="mini-nav" aria-label="Main navigation">
-        <a href="lessons.html" class="mini-nav-link">Lessons</a>
-        <a href="questions.html" class="mini-nav-link">Quizzes</a>
-        <a href="dashboard.html" class="mini-nav-link" aria-current="page">Dashboard</a>
-        <a href="playground.html" class="mini-nav-link">Playground</a>
-      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link">Lessons</a>
+          <a href="questions.html" class="mini-nav-link">Quizzes</a>
+          <a href="dashboard.html" class="mini-nav-link" aria-current="page">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <div id="profileWidget"></div>
+      </div>
     </div>
   </header>
 
-  <main class="dashboard-grid">
-    <section class="left">
-      <div class="controls">
-        <button id="resetProgressBtn" class="btn">Reset Progress</button>
-        <button id="resetQuizBtn" class="btn">Reset Quiz Stats</button>
+  <main class="dashboard-grid container">
+    <section class="left card">
+      <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div>
+          <button id="resetProgress" class="btn ghost">Reset Progress</button>
+          <button id="resetStats" class="btn ghost">Reset Quiz Stats</button>
+        </div>
+        <div>
+          <button id="exportBtn" class="btn">Export Progress</button>
+          <label class="btn ghost" style="cursor:pointer">
+            Import
+            <input id="importFile" type="file" accept=".json" style="display:none" />
+          </label>
+        </div>
       </div>
 
-      <h2>Lessons</h2>
-      <div id="lessonsContainer" class="lessons-grid" aria-live="polite">
-        <!-- lesson cards -->
-      </div>
+      <h3>Lessons</h3>
+      <div id="lessonsList" class="lessons-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px"></div>
     </section>
 
-    <aside class="right" aria-labelledby="stats-heading">
-      <h3 id="stats-heading">Summary</h3>
-      <div id="summaryArea">
-        <!-- stats render here -->
-      </div>
-      <hr style="margin:12px 0">
+    <aside class="right card">
+      <h3>Summary</h3>
+      <div id="summaryArea"></div>
+      <hr style="margin:12px 0" />
       <h4>Quiz Breakdown</h4>
       <div id="quizBreakdown"></div>
     </aside>
   </main>
 
+  <script src="app.js"></script>
   <script>
-    // Utility: read lessons.json and render dashboard
+    window.learnApp.renderHeaderProfile('#profileWidget');
+
     async function loadLessons() {
-      const res = await fetch('lessons.json');
-      return res.json();
-    }
-
-    function getProgress() {
-      return JSON.parse(localStorage.getItem('progress')) || {};
-    }
-
-    function getQuizStats() {
-      return JSON.parse(localStorage.getItem('quizStats')) || {};
-    }
-
-    function saveProgress(progress) {
-      localStorage.setItem('progress', JSON.stringify(progress));
-    }
-
-    function saveQuizStats(stats) {
-      localStorage.setItem('quizStats', JSON.stringify(stats));
+      const res = await fetch('lessons.json'); return res.json();
     }
 
     (async function init() {
       const lessons = await loadLessons();
-      const container = document.getElementById('lessonsContainer');
-      const progress = getProgress();
-      container.innerHTML = '';
+      const profile = window.learnApp.getCurrentProfile();
+      const userId = (profile && profile.id) ? profile.id : 'user_guest';
+
+      const list = document.getElementById('lessonsList');
+      list.innerHTML = '';
+      const progress = window.learnApp.getUserProgress(userId);
       lessons.forEach(l => {
-        const card = document.createElement('div');
-        card.className = 'lesson-card';
+        const div = document.createElement('div');
+        div.className = 'lesson-card';
         const done = !!progress[l.id];
-        card.innerHTML = `
+        div.innerHTML = `
           <h4 style="margin:4px 0">${l.title}</h4>
-          <p class="small" style="margin:6px 0;color:var(--muted)">${l.category}</p>
-          <p style="margin:6px 0">${done ? '✅ Completed' : '⚪ Not completed'}</p>
-          <div style="display:flex;gap:8px;justify-content:flex-end;">
-            <a class="btn" href="lessons.html#lesson-${l.id}">Open</a>
+          <div class="small" style="color:var(--muted)">${l.category}</div>
+          <p style="margin-top:10px">${done ? '✅ Completed' : '⚪ Not completed'}</p>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <a class="btn ghost" href="lessons.html#lesson-${l.id}">Open</a>
           </div>
         `;
-        container.appendChild(card);
+        list.appendChild(div);
       });
 
-      // Summary area
       const total = lessons.length;
-      const progressObj = getProgress();
-      const completedCount = Object.values(progressObj).filter(v => v === true).length;
-      const summary = document.getElementById('summaryArea');
-      summary.innerHTML = `
+      const completedCount = Object.values(progress).filter(v => v === true).length;
+      document.getElementById('summaryArea').innerHTML = `
         <p><strong>${completedCount}</strong> / ${total} lessons completed</p>
-        <div class="progress-bar" style="margin-bottom:10px;"><div class="progress-fill" style="width:${Math.round((completedCount/total)*100)}%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${Math.round((completedCount/total)*100)}%"></div></div>
       `;
 
-      // Quiz breakdown
-      const quizStats = getQuizStats();
+      const stats = window.learnApp.getUserQuizStats(userId);
       const breakdown = document.getElementById('quizBreakdown');
-      if (Object.keys(quizStats).length === 0) {
-        breakdown.innerHTML = '<p class="small">No quiz data yet — take a quiz to begin.</p>';
+      if (!stats || Object.keys(stats).length === 0) {
+        breakdown.innerHTML = '<p class="small">No quiz data yet</p>';
       } else {
-        let html = '';
-        for (const cat of Object.keys(quizStats)) {
-          const data = quizStats[cat];
-          const avg = data.scores.length ? Math.round(data.scores.reduce((a,b)=>a+b,0)/data.scores.length) : 0;
-          const best = data.scores.length ? Math.max(...data.scores) : 0;
-          html += `<div style="margin-bottom:10px"><strong>${cat}</strong><div class="small">Attempts: ${data.attempts} • Avg: ${avg}% • Best: ${best}%</div></div>`;
+        const rows = [];
+        for (const k in stats) {
+          const s = stats[k];
+          const avg = s.scores.length ? Math.round(s.scores.reduce((a,b)=>a+b,0)/s.scores.length) : 0;
+          const best = s.scores.length ? Math.max(...s.scores) : 0;
+          rows.push(`<div style="margin-bottom:10px"><strong>${k}</strong><div class="small">Attempts: ${s.attempts} • Avg: ${avg}% • Best: ${best}%</div></div>`);
         }
-        breakdown.innerHTML = html;
+        breakdown.innerHTML = rows.join('');
       }
 
-      // Reset handlers
-      document.getElementById('resetProgressBtn').addEventListener('click', () => {
-        if (!confirm('Reset lesson progress? This cannot be undone.')) return;
-        localStorage.removeItem('progress');
+      document.getElementById('exportBtn').addEventListener('click', () => {
+        const prof = window.learnApp.getCurrentProfile();
+        const id = prof && prof.id ? prof.id : 'user_guest';
+        window.learnApp.exportUserData(id, `${(prof.name||'progress')}-${id}.json`);
+      });
+
+      document.getElementById('importFile').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+          await window.learnApp.importUserDataFromFile(file);
+          window.learnApp.renderHeaderProfile('#profileWidget');
+          location.reload();
+        } catch (err) {
+          alert('Import failed: ' + (err.message || err));
+        }
+      });
+
+      document.getElementById('resetProgress').addEventListener('click', () => {
+        if (!confirm('Reset lesson progress for this profile?')) return;
+        window.learnApp.saveUserProgress(userId, {});
         location.reload();
       });
-      document.getElementById('resetQuizBtn').addEventListener('click', () => {
-        if (!confirm('Reset quiz stats? This will erase saved attempts.')) return;
-        localStorage.removeItem('quizStats');
+      document.getElementById('resetStats').addEventListener('click', () => {
+        if (!confirm('Reset quiz stats for this profile?')) return;
+        window.learnApp.saveUserQuizStats(userId, {});
         location.reload();
       });
     })();
