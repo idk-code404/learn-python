@@ -1,136 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python Playground</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Page-specific tweaks to keep the playground full-height and tidy */
-    html, body { height: 100%; margin: 0; }
-    body { display: flex; flex-direction: column; }
-
-    /* Keep a small spacer below the sticky header */
-    .page-top-spacer { height: 12px; }
-
-    /* Main playground container fills remaining viewport */
-    .playground-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 1300px;
-      width: 100%;
-      margin: 12px auto;
-      padding: 0 16px 16px;
-      box-sizing: border-box;
-    }
-
-    /* Embedded editor frame expands to fill the container */
-    .playground-frame {
-      flex: 1;
-      min-height: 360px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(16,24,40,0.06);
-      display: block;
-    }
-
-    .controls {
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .hint { color: var(--muted); font-size: 0.95rem; }
-
-    @media (max-width: 820px) {
-      .playground-container { margin: 8px; padding: 0 12px 12px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header that matches other pages (brand + mini-nav + Home/back) -->
-  <header class="page-header">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Try code in the embedded playground</p>
-      </div>
+<header>
+  <h1>💡 Python Playground</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="lessons.html">Lessons</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="questions.html">Questions</a>
+  </nav>
+</header>
 
-      <div class="header-actions">
-        <!-- Mini nav -->
-        <nav class="mini-nav" aria-label="Main navigation">
-          <a href="lessons.html" class="mini-nav-link">Lessons</a>
-          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-          <a href="playground.html" class="mini-nav-link" aria-current="page">Playground</a>
-        </nav>
-
-        <!-- Home button -->
-        <a href="index.html" class="back-btn" aria-label="Back to Home">
-          <span class="arrow">⬅</span>
-          <span class="text">Home</span>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- small spacer so the sticky header doesn't overlap content -->
-  <div class="page-top-spacer" aria-hidden="true"></div>
-
-  <!-- Fullscreen-friendly playground area -->
-  <main class="playground-container" role="main">
-    <div class="controls">
-      <div class="hint">Tip: use the "Try Code" button on lessons to copy a snippet and open the playground automatically.</div>
-    </div>
-
-    <!-- The iframe will flex to fill the available area -->
-    <iframe id="trinketFrame" class="playground-frame"
-            src="https://trinket.io/embed/python3/055c60f8a0"
-            allowfullscreen
-            title="Embedded Python 3 Playground"></iframe>
-
-    <div style="display:flex;gap:10px;align-items:center;">
-      <a href="lessons.html" class="back-btn" style="display:inline-flex;">← Browse Lessons</a>
-      <a href="dashboard.html" class="back-btn" style="display:inline-flex;">Dashboard</a>
-    </div>
-  </main>
-
-  <footer style="text-align:center;padding:10px 0;color:var(--muted);font-size:0.9rem;">
-    Made with ❤️ — paste examples into the editor and hit Run
-  </footer>
-
-  <script>
-    // If ?code= is present, try to copy to clipboard and show a short hint toast
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      if (!params.has('code')) return;
-      const raw = params.get('code') || '';
-      const code = decodeURIComponent(raw);
-
-      // Try to copy to clipboard (best-effort)
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(() => {
-          const n = document.createElement('div');
-          n.textContent = '✅ Code copied to clipboard — paste into the editor (Ctrl/Cmd+V)';
-          Object.assign(n.style, {
-            position: 'fixed', top: '86px', right: '22px',
-            padding: '10px 14px', background: 'rgba(0,0,0,0.75)', color: '#fff',
-            borderRadius: '8px', zIndex: 9999, fontWeight: 600
-          });
-          document.body.appendChild(n);
-          setTimeout(()=> {
-            n.style.transition = 'opacity 0.3s'; n.style.opacity = '0';
-            setTimeout(()=>n.remove(),700);
-          }, 2200);
-        }).catch(()=> {
-          // ignore clipboard failures silently
-        });
-      }
-    })();
-  </script>
+<main class="playground-container">
+  <iframe src="https://trinket.io/embed/python3/055c60f8a0" width="100%" height="700" frameborder="0" allowfullscreen></iframe>
+</main>
 </body>
 </html>
