@@ -3,50 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Your Progress Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>📈 Progress Dashboard</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="lessons.html">Lessons</a>
-    <a href="playground.html">Playground</a>
-    <a href="questions.html">Questions</a>
-  </nav>
-</header>
+  <header>
+    <h1>📊 Your Progress Dashboard</h1>
+    <nav class="mini-nav">
+      <a href="lessons.html">Lessons</a>
+      <a href="questions.html">Quizzes</a>
+      <a href="playground.html">Playground</a>
+    </nav>
+  </header>
 
-<main class="center">
-  <div id="progressList"></div>
-</main>
+  <main>
+    <section id="progressList"></section>
+  </main>
 
-<script>
-  const progress = JSON.parse(localStorage.getItem('progress')) || {};
-  const total = Object.keys(progress).length;
-  const completed = Object.values(progress).filter(v => v === true).length;
+  <script>
+    const progress = JSON.parse(localStorage.getItem('progress')) || {};
+    const total = Object.keys(progress).length;
+    const completed = Object.values(progress).filter(v => v === true).length;
 
-  const quizStats = JSON.parse(localStorage.getItem('quizStats')) || { attempts: 0, scores: [] };
-  const attempts = quizStats.attempts;
-  const scores = quizStats.scores;
-  const avgScore = scores.length ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : 0;
-  const bestScore = scores.length ? Math.max(...scores) : 0;
+    const quizStats = JSON.parse(localStorage.getItem('quizStats')) || {};
+    const quizSummary = Object.entries(quizStats).map(([level, data]) => {
+      const avg = data.scores.length ? 
+        Math.round(data.scores.reduce((a,b) => a+b, 0) / data.scores.length) : 0;
+      const best = data.scores.length ? Math.max(...data.scores) : 0;
+      return `
+        <div class="quiz-summary">
+          <h3>${level} Quiz</h3>
+          <p>Attempts: ${data.attempts}</p>
+          <p>Average Score: ${avg}%</p>
+          <p>Best Score: ${best}%</p>
+        </div>`;
+    }).join('');
 
-  const container = document.getElementById('progressList');
-  container.innerHTML = `
-    <div class="progress-summary">
-      <h3>Lesson Progress</h3>
-      <p><strong>${completed}</strong> of <strong>${total}</strong> lessons completed</p>
-      <div class="progress-bar"><div class="progress-fill" style="width: ${(completed/total)*100 || 0}%"></div></div>
-    </div>
-
-    <div class="quiz-summary">
-      <h3>Quiz Performance</h3>
-      <p>Attempts: <strong>${attempts}</strong></p>
-      <p>Average Score: <strong>${avgScore}%</strong></p>
-      <p>Best Score: <strong>${bestScore}%</strong></p>
-    </div>
-  `;
-</script>
+    document.getElementById('progressList').innerHTML = `
+      <div class="progress-summary">
+        <h3>Lesson Progress</h3>
+        <p><strong>${completed}</strong> of <strong>${total}</strong> lessons completed</p>
+        <div class="progress-bar"><div class="progress-fill" style="width: ${(completed/total)*100 || 0}%"></div></div>
+      </div>
+      <h2>Quiz Performance</h2>
+      ${quizSummary || '<p>No quiz data yet.</p>'}
+    `;
+  </script>
 </body>
 </html>
