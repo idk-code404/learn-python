@@ -5,25 +5,25 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quizzes — Learn Python</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .quiz-wrap { max-width:900px; margin:24px auto; padding:0 16px; }
-    .quiz-levels { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:18px; }
-    .quiz-panel { background:var(--card-bg); padding:16px; border-radius:12px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
-    .options { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-    .progress-inline { height:10px; background:#eee; border-radius:6px; overflow:hidden; }
-    .progress-fill { height:100%; background:var(--accent); width:0%; transition:width .3s; }
-  </style>
 </head>
 <body>
   <header class="page-header">
     <div class="header-inner">
-      <div class="brand"><h1>🧠 Quizzes</h1><p class="lead">Pick a level and test your knowledge</p></div>
-      <nav class="mini-nav" aria-label="Main navigation">
-        <a href="lessons.html" class="mini-nav-link">Lessons</a>
-        <a href="questions.html" class="mini-nav-link" aria-current="page">Quizzes</a>
-        <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-        <a href="playground.html" class="mini-nav-link">Playground</a>
-      </nav>
+      <div class="brand">
+        <h1>🧠 Quizzes</h1>
+        <p class="lead">Pick a level and measure your progress</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link">Lessons</a>
+          <a href="questions.html" class="mini-nav-link" aria-current="page">Quizzes</a>
+          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <div id="profileWidget"></div>
+      </div>
     </div>
   </header>
 
@@ -31,8 +31,8 @@
     <div class="quiz-panel">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
         <div>
-          <h2 style="margin:0">Choose difficulty</h2>
-          <p class="small" style="margin:6px 0 0 0">Select which category of lessons the quiz should draw from.</p>
+          <h2 style="margin:0">Choose a level</h2>
+          <p class="small">Select the category to draw questions from.</p>
         </div>
         <div>
           <label class="small">Questions:
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div class="quiz-levels" style="margin-top:14px;">
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn" onclick="startQuiz('Beginner')">Beginner</button>
         <button class="btn" onclick="startQuiz('Intermediate')">Intermediate</button>
         <button class="btn" onclick="startQuiz('Advanced')">Advanced</button>
@@ -49,187 +49,114 @@
       </div>
     </div>
 
-    <div id="quizArea" style="display:none;margin-top:18px;">
-      <div class="quiz-panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <strong id="quizHeader">Quiz</strong>
-          <div style="min-width:220px;">
-            <div class="progress-inline" aria-hidden="true"><div id="qProgress" class="progress-fill"></div></div>
-            <div class="small" id="qMeta" style="text-align:right;margin-top:6px"></div>
-          </div>
-        </div>
-
-        <h3 id="questionText" style="margin-top:14px"></h3>
-        <div id="options" class="options"></div>
-
-        <div style="display:flex;gap:8px;margin-top:14px;justify-content:flex-end;">
-          <button id="prevBtn" class="btn" style="display:none">Previous</button>
-          <button id="nextBtn" class="btn">Next</button>
-          <button id="endBtn" class="btn" style="display:none">Finish</button>
-        </div>
-        <p id="feedback" class="small" style="margin-top:10px;color:var(--muted)"></p>
-      </div>
-    </div>
-
-    <div id="resultArea" style="display:none;margin-top:18px;">
-      <div class="quiz-panel">
-        <h2 id="resultTitle">Results</h2>
-        <p id="resultSummary"></p>
-        <div id="detailedAnswers" style="margin-top:12px"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
-          <button class="btn" onclick="location.reload()">Back</button>
-          <a id="reviewLessons" class="btn" href="lessons.html">Open Lessons</a>
-        </div>
-      </div>
-    </div>
+    <div id="quizArea" style="display:none;margin-top:18px;"></div>
+    <div id="resultArea" style="display:none;margin-top:18px;"></div>
   </main>
 
+  <script src="app.js"></script>
   <script>
+    window.learnApp.renderHeaderProfile('#profileWidget');
+
     let lessons = [];
     let quizQuestions = [];
-    let answers = []; // user answers
-    let currentIdx = 0;
-    let selectedLevel = '';
-    const qArea = document.getElementById('quizArea');
-    const resultArea = document.getElementById('resultArea');
+    let answers = [];
+    let current = 0;
+    let selectedCategory = '';
 
-    async function loadLessonsIfNeeded() {
-      if (lessons.length) return;
+    async function loadLessons() {
+      if (lessons.length) return lessons;
       const res = await fetch('lessons.json');
       lessons = await res.json();
+      return lessons;
     }
 
-    async function startQuiz(level) {
-      await loadLessonsIfNeeded();
-      selectedLevel = level;
-      const available = lessons.filter(l => l.category === level && l.quiz);
-      if (available.length === 0) {
-        alert('No questions available for this level.');
-        return;
-      }
+    async function startQuiz(category) {
+      await loadLessons();
+      selectedCategory = category;
       const num = parseInt(document.getElementById('numQuestions').value, 10) || 10;
-      // pick randomized set (max available)
-      const shuffled = available.sort(() => Math.random() - 0.5);
-      const chosen = shuffled.slice(0, Math.min(num, shuffled.length));
-      quizQuestions = chosen.map(l => ({
-        question: l.quiz.question,
-        options: l.quiz.options.slice(), // copy
-        answer: l.quiz.answer,
-        title: l.title,
-        lessonId: l.id
-      }));
+      const available = lessons.filter(l => l.category === category && l.quiz);
+      if (available.length === 0) { alert('No questions for this level'); return; }
+      const chosen = available.sort(() => Math.random()-0.5).slice(0, Math.min(num, available.length));
+      quizQuestions = chosen.map(l => ({ question: l.quiz.question, options: l.quiz.options.slice(), answer: l.quiz.answer, lessonId: l.id, title: l.title }));
       answers = Array(quizQuestions.length).fill(null);
-      currentIdx = 0;
+      current = 0;
+      renderQuizArea();
+    }
+
+    function renderQuizArea() {
+      const qa = document.getElementById('quizArea');
+      qa.style.display = 'block';
+      qa.innerHTML = `
+        <div class="quiz-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <strong>${selectedCategory} Quiz</strong>
+            <div style="min-width:200px;">
+              <div class="progress-bar"><div id="qFill" class="progress-fill" style="width:0%"></div></div>
+              <div class="small" id="qMeta" style="text-align:right;margin-top:6px"></div>
+            </div>
+          </div>
+          <h3 id="qText" style="margin-top:12px"></h3>
+          <div id="qOptions" class="options"></div>
+          <p id="qFeedback" class="small" style="margin-top:12px"></p>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button id="prevBtn" class="btn ghost" style="display:none">Previous</button>
+            <button id="nextBtn" class="btn">Next</button>
+            <button id="finishBtn" class="btn" style="display:none">Finish</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('nextBtn').addEventListener('click', () => { current++; renderQuestion(); });
+      document.getElementById('prevBtn').addEventListener('click', () => { current--; renderQuestion(); });
+      document.getElementById('finishBtn').addEventListener('click', finishQuiz);
       renderQuestion();
-      qArea.style.display = 'block';
-      resultArea.style.display = 'none';
-      document.getElementById('quizHeader').textContent = `${level} Quiz`;
-      updateProgressUI();
     }
 
     function renderQuestion() {
-      const q = quizQuestions[currentIdx];
-      if (!q) return;
-      document.getElementById('questionText').textContent = q.question;
-      const opts = document.getElementById('options');
-      opts.innerHTML = '';
-      // shuffle options for display
-      const shuffledOptions = q.options.sort(() => Math.random() - 0.5);
-      shuffledOptions.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.textContent = opt;
-        btn.onclick = () => selectOption(opt, q);
-        if (answers[currentIdx] !== null) btn.disabled = true;
-        opts.appendChild(btn);
+      const q = quizQuestions[current];
+      document.getElementById('qText').textContent = q.question;
+      const opts = document.getElementById('qOptions'); opts.innerHTML = '';
+      const shuffled = q.options.sort(() => Math.random() - 0.5);
+      shuffled.forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'option-btn';
+        b.textContent = o;
+        b.onclick = () => {
+          answers[current] = o;
+          // disable buttons
+          document.querySelectorAll('.option-btn').forEach(x => x.disabled = true);
+          const fb = document.getElementById('qFeedback');
+          fb.textContent = o === q.answer ? '✅ Correct!' : `❌ Incorrect — correct: ${q.answer}`;
+        };
+        opts.appendChild(b);
       });
-      document.getElementById('feedback').textContent = answers[currentIdx] ? (answers[currentIdx] === q.answer ? '✅ Correct' : `❌ Was: ${q.answer}`) : '';
-      // Prev/Next/End buttons
-      document.getElementById('prevBtn').style.display = currentIdx > 0 ? 'inline-flex' : 'none';
-      document.getElementById('nextBtn').style.display = currentIdx < quizQuestions.length - 1 ? 'inline-flex' : 'none';
-      document.getElementById('endBtn').style.display = currentIdx === quizQuestions.length - 1 ? 'inline-flex' : 'none';
-      document.getElementById('qMeta').textContent = `Question ${currentIdx + 1} / ${quizQuestions.length}`;
-      updateProgressUI();
-    }
 
-    function selectOption(opt, q) {
-      answers[currentIdx] = opt;
-      // disable option buttons
-      document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-      // show feedback
-      const fb = document.getElementById('feedback');
-      if (opt === q.answer) fb.textContent = '✅ Correct — well done!';
-      else fb.textContent = `❌ Incorrect — correct: ${q.answer}`;
-    }
+      // set feedback if already answered
+      const fb = document.getElementById('qFeedback');
+      fb.textContent = answers[current] ? (answers[current] === q.answer ? '✅ Correct!' : `❌ Incorrect — correct: ${q.answer}`) : '';
 
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      if (currentIdx < quizQuestions.length - 1) currentIdx++;
-      renderQuestion();
-    });
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      if (currentIdx > 0) currentIdx--;
-      renderQuestion();
-    });
-    document.getElementById('endBtn').addEventListener('click', finishQuiz);
+      document.getElementById('prevBtn').style.display = current > 0 ? 'inline-flex' : 'none';
+      document.getElementById('nextBtn').style.display = current < quizQuestions.length - 1 ? 'inline-flex' : 'none';
+      document.getElementById('finishBtn').style.display = current === quizQuestions.length - 1 ? 'inline-flex' : 'none';
 
-    function updateProgressUI() {
-      const pct = Math.round((currentIdx / Math.max(1, quizQuestions.length - 1)) * 100);
-      document.getElementById('qProgress').style.width = `${pct}%`;
+      // progress bar
+      const pct = Math.round((current / Math.max(1, quizQuestions.length - 1)) * 100);
+      document.getElementById('qFill').style.width = pct + '%';
+      document.getElementById('qMeta').textContent = `Question ${current + 1} / ${quizQuestions.length}`;
     }
 
     function finishQuiz() {
-      // compute score
       let correct = 0;
       const details = [];
       quizQuestions.forEach((q, i) => {
-        const user = answers[i];
-        const ok = user === q.answer;
+        const chosen = answers[i];
+        const ok = chosen === q.answer;
         if (ok) correct++;
-        details.push({ idx: i+1, title: q.title, question: q.question, chosen: user, answer: q.answer, ok });
+        details.push({ title: q.title, question: q.question, chosen, answer: q.answer, ok, lessonId: q.lessonId });
       });
-
       const percent = Math.round((correct / quizQuestions.length) * 100);
-      // save per-category stats
-      const stats = JSON.parse(localStorage.getItem('quizStats')) || {};
-      if (!stats[selectedLevel]) stats[selectedLevel] = { attempts: 0, scores: [] };
-      stats[selectedLevel].attempts++;
-      stats[selectedLevel].scores.push(percent);
-      localStorage.setItem('quizStats', JSON.stringify(stats));
 
-      // Optionally mark per-lesson progress for correctly answered items
-      const progress = JSON.parse(localStorage.getItem('progress')) || {};
-      details.forEach(d => {
-        if (d.ok && d.lessonId) {
-          progress[d.lessonId] = true;
-        }
-      });
-      localStorage.setItem('progress', JSON.stringify(progress));
-
-      // render result
-      document.getElementById('resultTitle').textContent = `${selectedLevel} Quiz — Results`;
-      document.getElementById('resultSummary').textContent = `You scored ${percent}% — ${correct} / ${quizQuestions.length} correct.`;
-      const detailsDiv = document.getElementById('detailedAnswers');
-      detailsDiv.innerHTML = details.map(d => `
-        <div style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.04);margin-bottom:8px;">
-          <strong>Q${d.idx} — ${d.title}</strong>
-          <div class="small" style="margin-top:6px">${d.question}</div>
-          <div style="margin-top:8px">Your answer: <strong>${d.chosen || '—'}</strong> ${d.ok? '✅' : '❌'}</div>
-          ${d.ok ? '' : `<div style="margin-top:6px">Correct answer: <strong>${d.answer}</strong></div>`}
-        </div>
-      `).join('');
-      qArea.style.display = 'none';
-      resultArea.style.display = 'block';
-    }
-
-    // support preselect category via ?category= in URL
-    (function preselectFromQuery() {
-      const params = new URLSearchParams(location.search);
-      const cat = params.get('category');
-      if (cat) {
-        // delay a bit to allow UI to settle
-        setTimeout(()=> startQuiz(cat), 180);
-      }
-    })();
-  </script>
-</body>
-</html>
+      // save per-user stats
+      const profile = window.learnApp.getCurrentProfile();
+      const userId = profile && profile.id ? profile.id : 'user_guest';
+      const stats = window.learnApp.getUserQuizStats(userId);
+      if (!stats[selectedCategory]) stats[selectedCate]()
