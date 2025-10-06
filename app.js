@@ -156,17 +156,14 @@ function renderHeaderProfile(selector = '#profileWidget') {
   const container = document.querySelector(selector);
   if (!container) return;
 
-  // clear existing
   container.innerHTML = '';
 
-  // ensure profile exists
   let profile = getCurrentProfile();
   if (!profile) {
     profile = { name: 'Guest', email: '', id: 'user_guest' };
     saveCurrentProfile(profile);
   }
 
-  // create button
   const btn = document.createElement('button');
   btn.className = 'profile-btn';
   btn.setAttribute('aria-haspopup', 'true');
@@ -185,10 +182,8 @@ function renderHeaderProfile(selector = '#profileWidget') {
   info.appendChild(nm); info.appendChild(em);
   btn.appendChild(avatar); btn.appendChild(info);
 
-  // append
   container.appendChild(btn);
 
-  // create hidden file input for imports (reused)
   let hiddenInput = container.querySelector('input[data-import]');
   if (!hiddenInput) {
     hiddenInput = document.createElement('input');
@@ -199,7 +194,6 @@ function renderHeaderProfile(selector = '#profileWidget') {
     container.appendChild(hiddenInput);
   }
 
-  // dropdown menu creation + toggling
   let menu = null;
   function openMenu() {
     if (menu) return;
@@ -207,7 +201,6 @@ function renderHeaderProfile(selector = '#profileWidget') {
     menu.className = 'profile-menu card';
     menu.setAttribute('role','menu');
 
-    // user header
     const header = document.createElement('div');
     header.style.padding = '8px';
     header.style.borderRadius = '8px';
@@ -220,11 +213,9 @@ function renderHeaderProfile(selector = '#profileWidget') {
     </div>`;
     menu.appendChild(header);
 
-    // divider
     const hr = document.createElement('hr'); hr.style.border = 0; hr.style.borderTop = '1px solid var(--border)'; hr.style.margin = '8px 0';
     menu.appendChild(hr);
 
-    // menu items
     const items = [
       { id: 'edit', label: 'Edit Profile', hint: '' },
       { id: 'export', label: 'Export Data', hint: 'Download JSON' },
@@ -241,17 +232,13 @@ function renderHeaderProfile(selector = '#profileWidget') {
       menu.appendChild(row);
     });
 
-    // position menu relative to header
-    // attach to body to avoid overflow clipping
     document.body.appendChild(menu);
-    // compute position
     const rect = btn.getBoundingClientRect();
     const top = rect.bottom + 10;
     const right = Math.min(window.innerWidth - 12, rect.right);
     menu.style.top = `${top}px`;
     menu.style.left = `${Math.max(12, right - menu.offsetWidth)}px`;
 
-    // close on outside click or escape
     setTimeout(() => { document.addEventListener('click', outsideHandler); document.addEventListener('keydown', escHandler); }, 10);
     btn.setAttribute('aria-expanded','true');
   }
@@ -276,20 +263,10 @@ function renderHeaderProfile(selector = '#profileWidget') {
     const profileNow = getCurrentProfile() || { id: 'user_guest' };
     const userId = profileNow.id || 'user_guest';
 
-    if (action === 'edit') {
-      closeMenu();
-      showProfileModal();
-      return;
-    }
-    if (action === 'export') {
-      closeMenu();
-      const filename = `${(profileNow.name || 'progress').replace(/\s+/g,'-')}-${userId}.json`;
-      exportUserData(userId, filename);
-      return;
-    }
+    if (action === 'edit') { closeMenu(); showProfileModal(); return; }
+    if (action === 'export') { closeMenu(); const filename = `${(profileNow.name || 'progress').replace(/\s+/g,'-')}-${userId}.json`; exportUserData(userId, filename); return; }
     if (action === 'import') {
       closeMenu();
-      // trigger hidden input
       hiddenInput.value = '';
       hiddenInput.click();
       hiddenInput.onchange = async (ev) => {
@@ -297,8 +274,7 @@ function renderHeaderProfile(selector = '#profileWidget') {
         if (!f) return;
         try {
           await importUserDataFromFile(f);
-          // after import, re-render widget to new profile (if changed)
-          renderHeaderProfile(selector);
+          renderHeaderProfile('#profileWidget');
           setTimeout(()=> location.reload(), 600);
         } catch (err) {
           alert('Import failed: ' + (err && err.message ? err.message : err));
@@ -310,23 +286,19 @@ function renderHeaderProfile(selector = '#profileWidget') {
       closeMenu();
       if (!confirm('Sign out? This will stop using this profile locally (data remains stored).')) return;
       localStorage.removeItem('userProfile');
-      renderHeaderProfile(selector);
+      renderHeaderProfile('#profileWidget');
       showToast('Signed out');
       return;
     }
   }
 
-  // bind
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (menu) closeMenu(); else openMenu();
   });
 
-  // keyboard: Enter/Space to open
   btn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); btn.click();
-    }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
   });
 }
 
@@ -338,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!profile) {
     saveCurrentProfile({ name: 'Guest', email: '', id: 'user_guest' });
   }
-  // render if placeholder exists
   if (document.querySelector('#profileWidget')) {
     renderHeaderProfile('#profileWidget');
   }
