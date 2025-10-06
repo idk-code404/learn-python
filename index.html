@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Learn Python — Home</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,8 +10,11 @@
   <header class="page-header">
     <div class="header-inner">
       <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Interactive lessons, quizzes, and a live playground</p>
+        <div class="logo">Py</div>
+        <div>
+          <h1>Learn Python</h1>
+          <p class="lead">Interactive lessons, quizzes, and a live playground</p>
+        </div>
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;">
@@ -27,11 +30,11 @@
     </div>
   </header>
 
-  <main class="container center">
+  <main class="container center" style="padding:40px 20px;">
     <h2>Welcome — learn Python step-by-step</h2>
     <p class="small">Start with Beginner lessons and progress to Expert topics with quizzes & a live playground.</p>
 
-    <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+    <div style="margin-top:18px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <a class="btn" href="lessons.html">Browse Lessons</a>
       <a class="btn secondary" href="questions.html">Take a Quiz</a>
       <a class="btn ghost" href="dashboard.html">View Dashboard</a>
@@ -46,11 +49,9 @@
 
   <script src="app.js"></script>
   <script>
+    // Render profile then show per-user home stats
+    window.learnApp.renderHeaderProfile('#profileWidget');
     (async function () {
-      // Render profile in header
-      window.learnApp.renderHeaderProfile('#profileWidget');
-
-      // Show small snapshot (per-user)
       const profile = window.learnApp.getCurrentProfile();
       const userId = profile && profile.id ? profile.id : 'user_guest';
 
