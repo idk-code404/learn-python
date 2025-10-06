@@ -58,8 +58,8 @@ body{
   max-width: var(--max-width);
   margin: 0 auto;
   display:flex;
-  align-items:center;
   gap:20px;
+  align-items:center;
   justify-content:space-between;
   padding: 14px 20px;
 }
