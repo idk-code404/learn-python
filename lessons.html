@@ -5,21 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lessons — Learn Python</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* small page specific */
-    #lessons-wrapper { display:flex; gap:18px; max-width:1200px; margin:20px auto; padding:0 16px; }
-    #toc { width:260px; position:sticky; top:84px; height:calc(100vh - 110px); overflow:auto; padding:14px; border-radius:10px; }
-    #lessons { flex:1; min-width:0; }
-    .lesson h3 { margin-bottom:6px; }
-    .lesson pre { white-space:pre-wrap; word-break:break-word; }
-    .lesson .actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
-    .lesson .actions .btn { padding:8px 12px; border-radius:8px; }
-    @media (max-width:820px) {
-      #lessons-wrapper { flex-direction:column; }
-      #toc { position:relative; width:auto; height:auto; top:0; }
-      #lessons { margin-top:8px; }
-    }
-  </style>
 </head>
 <body>
   <header class="page-header">
@@ -29,17 +14,21 @@
         <p class="lead">Lessons — Beginner → Expert</p>
       </div>
 
-      <nav class="mini-nav" aria-label="Main navigation">
-        <a href="lessons.html" class="mini-nav-link" aria-current="page">Lessons</a>
-        <a href="questions.html" class="mini-nav-link">Quizzes</a>
-        <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-        <a href="playground.html" class="mini-nav-link">Playground</a>
-      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link" aria-current="page">Lessons</a>
+          <a href="questions.html" class="mini-nav-link">Quizzes</a>
+          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <div id="profileWidget"></div>
+      </div>
     </div>
   </header>
 
   <div id="lessons-wrapper">
-    <aside id="toc" aria-label="Table of contents and tips">
+    <aside id="toc" class="card">
       <h2>Table of Contents</h2>
       <ul id="toc-list"></ul>
 
@@ -48,18 +37,125 @@
         <ul style="padding-left:12px; margin-top:8px;">
           <li>Use 4 spaces for indentation (PEP8).</li>
           <li>Use descriptive variable names.</li>
-          <li>Read error traces — they point to the problem line.</li>
-          <li>Experiment — try small changes in the playground.</li>
+          <li>Read error traces — they point to the line that failed.</li>
+          <li>Try small changes in the playground.</li>
         </ul>
       </div>
     </aside>
 
-    <main id="lessons" role="main" aria-live="polite">
-      <!-- lessons render here -->
-    </main>
+    <main id="lessons" role="main" aria-live="polite"></main>
   </div>
 
+  <script src="app.js"></script>
   <script>
+    window.learnApp.renderHeaderProfile('#profileWidget');
+
+    async function fetchLessons() {
+      const r = await fetch('lessons.json');
+      return r.json();
+    }
+
+    function markLessonCompleted(userId, lessonId) {
+      const progress = window.learnApp.getUserProgress(userId);
+      progress[lessonId] = true;
+      window.learnApp.saveUserProgress(userId, progress);
+      // update UI
+      const el = document.querySelector(`#lesson-${lessonId} .status`);
+      if (el) el.textContent = '✅ Completed';
+    }
+
+    (async function render() {
+      const lessonsMain = document.getElementById('lessons');
+      const tocList = document.getElementById('toc-list');
+      const lessons = await fetchLessons();
+      const order = ['Beginner','Intermediate','Advanced','Expert'];
+      const grouped = {};
+      order.forEach(o => grouped[o] = []);
+      lessons.forEach(l => {
+        const cat = l.category || 'Uncategorized';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(l);
+      });
+
+      const profile = window.learnApp.getCurrentProfile();
+      const userId = profile && profile.id ? profile.id : 'user_guest';
+      const progress = window.learnApp.getUserProgress(userId);
+
+      for (const cat of order) {
+        if (!grouped[cat] || grouped[cat].length === 0) continue;
+        const sec = document.createElement('section');
+        sec.className = 'category card';
+        sec.id = `cat-${cat.toLowerCase()}`;
+        sec.innerHTML = `<h2>${cat}</h2>`;
+        const listDiv = document.createElement('div');
+
+        grouped[cat].forEach(lesson => {
+          const lessonDiv = document.createElement('article');
+          lessonDiv.className = 'lesson';
+          lessonDiv.id = `lesson-${lesson.id}`;
+
+          const done = !!progress[lesson.id];
+          lessonDiv.innerHTML = `
+            <h3>${lesson.title}</h3>
+            <p class="small">${lesson.content || ''}</p>
+            <pre><code>${escapeHtml(lesson.code || lesson.codeExample || '')}</code></pre>
+            <div class="actions">
+              <button class="btn try-btn">▶ Try Code</button>
+              <a class="btn ghost" href="questions.html?category=${encodeURIComponent(lesson.category)}">Topic Quiz</a>
+              <button class="btn ghost mark-complete">${done ? 'Mark Incomplete' : 'Mark Complete'}</button>
+              <span class="small status" style="align-self:center">${done ? '✅ Completed' : '⚪ Not completed'}</span>
+            </div>
+          `;
+
+          // actions
+          const tryBtn = lessonDiv.querySelector('.try-btn');
+          tryBtn.addEventListener('click', async () => {
+            const codeText = lesson.code || lesson.codeExample || '';
+            let newTab = null;
+            try { newTab = window.open('', '_blank'); } catch(e) { newTab = null; }
+            await navigator.clipboard.writeText(codeText);
+            const url = `playground.html?code=${encodeURIComponent(codeText)}`;
+            if (newTab) newTab.location = url;
+            else window.open(url, '_blank');
+            window.learnApp.showToast && window.learnApp.showToast('Copied code and opened playground');
+          });
+
+          const markBtn = lessonDiv.querySelector('.mark-complete');
+          markBtn.addEventListener('click', () => {
+            const prog = window.learnApp.getUserProgress(userId);
+            if (prog[lesson.id]) {
+              // mark incomplete
+              delete prog[lesson.id];
+              markBtn.textContent = 'Mark Complete';
+              lessonDiv.querySelector('.status').textContent = '⚪ Not completed';
+            } else {
+              prog[lesson.id] = true;
+              markBtn.textContent = 'Mark Incomplete';
+              lessonDiv.querySelector('.status').textContent = '✅ Completed';
+            }
+            window.learnApp.saveUserProgress(userId, prog);
+          });
+
+          listDiv.appendChild(lessonDiv);
+        });
+
+        sec.appendChild(listDiv);
+        lessonsMain.appendChild(sec);
+
+        // TOC
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="#cat-${cat.toLowerCase()}">${cat}</a>`;
+        tocList.appendChild(li);
+      }
+    })();
+
+    // small helper
+    function escapeHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+  </script>
+</body>
+</html>
     // Helper copy/open playground
     async function copyToClipboard(text) {
       try {
