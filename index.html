@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Learn Python — Home</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -14,46 +14,54 @@
         <p class="lead">Interactive lessons, quizzes, and a live playground</p>
       </div>
 
-      <nav class="mini-nav" aria-label="Main navigation">
-        <a href="lessons.html" class="mini-nav-link">Lessons</a>
-        <a href="questions.html" class="mini-nav-link">Quizzes</a>
-        <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-        <a href="playground.html" class="mini-nav-link">Playground</a>
-      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <nav class="mini-nav" aria-label="Main navigation">
+          <a href="lessons.html" class="mini-nav-link">Lessons</a>
+          <a href="questions.html" class="mini-nav-link">Quizzes</a>
+          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
+          <a href="playground.html" class="mini-nav-link">Playground</a>
+        </nav>
+
+        <div id="profileWidget"></div>
+      </div>
     </div>
   </header>
 
-  <main class="container center" style="padding:28px 16px;">
-    <section style="max-width:980px;margin:0 auto;text-align:center;">
-      <h2>Welcome — learn Python step-by-step</h2>
-      <p class="small">Start with beginner lessons, practice with quizzes, and try code in the embedded playground.</p>
+  <main class="container center">
+    <h2>Welcome — learn Python step-by-step</h2>
+    <p class="small">Start with Beginner lessons and progress to Expert topics with quizzes & a live playground.</p>
 
-      <div style="display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap;">
-        <a class="btn" href="lessons.html">Browse Lessons</a>
-        <a class="btn" href="questions.html">Take a Quiz</a>
-        <a class="btn" href="playground.html">Open Playground</a>
-      </div>
+    <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn" href="lessons.html">Browse Lessons</a>
+      <a class="btn secondary" href="questions.html">Take a Quiz</a>
+      <a class="btn ghost" href="dashboard.html">View Dashboard</a>
+    </div>
 
-      <div id="home-stats" style="margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <!-- Stats are filled by script -->
-      </div>
-    </section>
+    <div id="home-stats" style="margin-top:26px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;"></div>
   </main>
 
-  <script>
-    // Show a quick snapshot of progress and quiz stats on the homepage
-    (async function () {
-      // Load lessons to determine total
-      try {
-        const r = await fetch('lessons.json');
-        const lessons = await r.json();
-        const totalLessons = lessons.length;
+  <footer>
+    <div class="container center small">© 2025 Learn Python — local client-side demo</div>
+  </footer>
 
-        const progress = JSON.parse(localStorage.getItem('progress')) || {};
+  <script src="app.js"></script>
+  <script>
+    (async function () {
+      // Render profile in header
+      window.learnApp.renderHeaderProfile('#profileWidget');
+
+      // Show small snapshot (per-user)
+      const profile = window.learnApp.getCurrentProfile();
+      const userId = profile && profile.id ? profile.id : 'user_guest';
+
+      try {
+        const res = await fetch('lessons.json');
+        const lessons = await res.json();
+        const total = lessons.length;
+        const progress = window.learnApp.getUserProgress(userId);
         const completed = Object.values(progress).filter(v => v === true).length;
 
-        const quizStats = JSON.parse(localStorage.getItem('quizStats')) || {};
-        // compute total attempts across categories
+        const quizStats = window.learnApp.getUserQuizStats(userId);
         let totalAttempts = 0, avgAcross = 0, categories = 0;
         for (const k in quizStats) {
           totalAttempts += (quizStats[k].attempts || 0);
@@ -66,21 +74,21 @@
 
         const homeStats = document.getElementById('home-stats');
         homeStats.innerHTML = `
-          <div class="lesson-card" style="min-width:160px">
+          <div class="card" style="min-width:160px">
             <h4 style="margin:6px 0">Lessons</h4>
-            <p class="small">${completed} / ${totalLessons} completed</p>
+            <p class="small">${completed} / ${total} completed</p>
           </div>
-          <div class="lesson-card" style="min-width:160px">
+          <div class="card" style="min-width:160px">
             <h4 style="margin:6px 0">Quiz Attempts</h4>
             <p class="small">${totalAttempts} attempts</p>
           </div>
-          <div class="lesson-card" style="min-width:160px">
-            <h4 style="margin:6px 0">Avg Quiz Score</h4>
+          <div class="card" style="min-width:160px">
+            <h4 style="margin:6px 0">Avg Score</h4>
             <p class="small">${avgScore}%</p>
           </div>
         `;
       } catch (e) {
-        console.error('Failed to load lessons for homepage stats', e);
+        console.error('Home stats failed', e);
       }
     })();
   </script>
