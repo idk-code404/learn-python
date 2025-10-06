@@ -5,13 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Lessons — Learn Python</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* page-specific fine-tuning */
+    #lessons-wrapper { display:flex; gap:20px; max-width:1200px; margin:20px auto; padding:0 20px; align-items:flex-start; }
+    #toc { width:260px; padding:14px; }
+    #lessons { flex:1; min-width:0; }
+    .lesson pre { white-space:pre-wrap; word-break:break-word; }
+  </style>
 </head>
 <body>
   <header class="page-header">
     <div class="header-inner">
       <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Lessons — Beginner → Expert</p>
+        <div class="logo">Py</div>
+        <div>
+          <h1>Learn Python</h1>
+          <p class="lead">Lessons — Beginner → Expert</p>
+        </div>
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;">
@@ -55,15 +65,6 @@
       return r.json();
     }
 
-    function markLessonCompleted(userId, lessonId) {
-      const progress = window.learnApp.getUserProgress(userId);
-      progress[lessonId] = true;
-      window.learnApp.saveUserProgress(userId, progress);
-      // update UI
-      const el = document.querySelector(`#lesson-${lessonId} .status`);
-      if (el) el.textContent = '✅ Completed';
-    }
-
     (async function render() {
       const lessonsMain = document.getElementById('lessons');
       const tocList = document.getElementById('toc-list');
@@ -98,7 +99,7 @@
           lessonDiv.innerHTML = `
             <h3>${lesson.title}</h3>
             <p class="small">${lesson.content || ''}</p>
-            <pre><code>${escapeHtml(lesson.code || lesson.codeExample || '')}</code></pre>
+            <pre><code>${escapeHtml(lesson.code || '')}</code></pre>
             <div class="actions">
               <button class="btn try-btn">▶ Try Code</button>
               <a class="btn ghost" href="questions.html?category=${encodeURIComponent(lesson.category)}">Topic Quiz</a>
@@ -110,10 +111,10 @@
           // actions
           const tryBtn = lessonDiv.querySelector('.try-btn');
           tryBtn.addEventListener('click', async () => {
-            const codeText = lesson.code || lesson.codeExample || '';
+            const codeText = lesson.code || '';
             let newTab = null;
             try { newTab = window.open('', '_blank'); } catch(e) { newTab = null; }
-            await navigator.clipboard.writeText(codeText);
+            try { await navigator.clipboard.writeText(codeText); } catch (e) { /* ignore */ }
             const url = `playground.html?code=${encodeURIComponent(codeText)}`;
             if (newTab) newTab.location = url;
             else window.open(url, '_blank');
@@ -124,7 +125,6 @@
           markBtn.addEventListener('click', () => {
             const prog = window.learnApp.getUserProgress(userId);
             if (prog[lesson.id]) {
-              // mark incomplete
               delete prog[lesson.id];
               markBtn.textContent = 'Mark Complete';
               lessonDiv.querySelector('.status').textContent = '⚪ Not completed';
@@ -147,190 +147,31 @@
         li.innerHTML = `<a href="#cat-${cat.toLowerCase()}">${cat}</a>`;
         tocList.appendChild(li);
       }
+
+      // scroll-spy
+      const links = document.querySelectorAll('#toc a');
+      const sections = document.querySelectorAll('.category');
+      function spy() {
+        let id = '';
+        sections.forEach(s => {
+          const rect = s.getBoundingClientRect();
+          if (rect.top <= 140) id = s.id;
+        });
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+      document.addEventListener('scroll', spy, { passive: true });
+      spy();
+
+      // deep-link to lesson if hash present
+      if (location.hash && location.hash.startsWith('#lesson-')) {
+        const target = document.querySelector(location.hash);
+        if (target) setTimeout(()=> target.scrollIntoView({behavior:'smooth', block:'start'}), 100);
+      }
     })();
 
-    // small helper
     function escapeHtml(s) {
       return String(s || '').replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     }
-  </script>
-</body>
-</html>
-    // Helper copy/open playground
-    async function copyToClipboard(text) {
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(text);
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position = 'fixed';
-          ta.style.left = '-9999px';
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-        }
-        showToast('✅ Code copied to clipboard');
-        return true;
-      } catch (e) {
-        showToast('⚠️ Copy failed');
-        return false;
-      }
-    }
-
-    function showToast(msg, duration = 1600) {
-      let t = document.getElementById('toast-notice');
-      if (!t) {
-        t = document.createElement('div');
-        t.id = 'toast-notice';
-        Object.assign(t.style, {
-          position:'fixed',right:'20px',bottom:'20px',padding:'10px 14px',
-          background:'rgba(0,0,0,0.8)',color:'#fff',borderRadius:'8px',zIndex:9999
-        });
-        document.body.appendChild(t);
-      }
-      t.textContent = msg;
-      t.style.opacity = '1';
-      clearTimeout(t._timeout);
-      t._timeout = setTimeout(()=> t.style.opacity='0', duration);
-    }
-
-    function openPlaygroundWithCode(code, newTabRef=null) {
-      const url = `playground.html?code=${encodeURIComponent(code)}`;
-      try {
-        if (newTabRef && !newTabRef.closed) newTabRef.location = url;
-        else window.open(url, '_blank');
-      } catch (e) {
-        window.open(url, '_blank');
-      }
-    }
-
-    // Load lessons and render grouped by category in the preferred order
-    document.addEventListener('DOMContentLoaded', async () => {
-      const lessonsMain = document.getElementById('lessons');
-      const tocList = document.getElementById('toc-list');
-
-      let lessons = [];
-      try {
-        const res = await fetch('lessons.json');
-        lessons = await res.json();
-      } catch (e) {
-        lessonsMain.innerHTML = '<p>Failed to load lessons.</p>';
-        console.error(e);
-        return;
-      }
-
-      // Group by categories in desired order
-      const order = ['Beginner','Intermediate','Advanced','Expert'];
-      const categories = {};
-      for (const c of order) categories[c] = [];
-      lessons.forEach(l => {
-        const cat = l.category || 'Uncategorized';
-        if (!categories[cat]) categories[cat] = [];
-        categories[cat].push(l);
-      });
-
-      // Render categories and populate TOC
-      for (const cat of order) {
-        if (!categories[cat] || categories[cat].length === 0) continue;
-        const sec = document.createElement('section');
-        sec.className = 'category';
-        sec.id = `cat-${cat.toLowerCase()}`;
-
-        const header = document.createElement('h2');
-        header.textContent = cat;
-        sec.appendChild(header);
-
-        const listDiv = document.createElement('div');
-        listDiv.className = 'lessons-list';
-
-        categories[cat].forEach(lesson => {
-          const card = document.createElement('article');
-          card.className = 'lesson';
-          card.id = `lesson-${lesson.id}`;
-
-          const title = document.createElement('h3');
-          title.textContent = lesson.title;
-          card.appendChild(title);
-
-          const desc = document.createElement('p');
-          desc.textContent = lesson.content || '';
-          card.appendChild(desc);
-
-          const pre = document.createElement('pre');
-          const code = document.createElement('code');
-          // support both fields 'code' and 'codeExample'
-          code.textContent = lesson.code || lesson.codeExample || '';
-          pre.appendChild(code);
-          card.appendChild(pre);
-
-          const actions = document.createElement('div');
-          actions.className = 'actions';
-
-          const tryBtn = document.createElement('button');
-          tryBtn.className = 'btn';
-          tryBtn.textContent = '▶ Try Code';
-          tryBtn.addEventListener('click', async () => {
-            // open blank tab to avoid popup block
-            let newTab = null;
-            try { newTab = window.open('', '_blank'); } catch(e){ newTab = null; }
-            await copyToClipboard(code.textContent);
-            openPlaygroundWithCode(code.textContent, newTab);
-          });
-
-          const quizBtn = document.createElement('a');
-          quizBtn.className = 'btn';
-          quizBtn.textContent = 'Take Quiz (Topic)';
-          quizBtn.href = `questions.html?category=${encodeURIComponent(lesson.category)}`;
-
-          const anchorLink = document.createElement('a');
-          anchorLink.className = 'btn';
-          anchorLink.textContent = 'Permalink';
-          anchorLink.href = `lessons.html#lesson-${lesson.id}`;
-
-          actions.appendChild(tryBtn);
-          actions.appendChild(quizBtn);
-          actions.appendChild(anchorLink);
-          card.appendChild(actions);
-
-          listDiv.appendChild(card);
-        });
-
-        sec.appendChild(listDiv);
-        lessonsMain.appendChild(sec);
-
-        // TOC entry
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = `#cat-${cat.toLowerCase()}`;
-        a.textContent = cat;
-        li.appendChild(a);
-        tocList.appendChild(li);
-      }
-
-      // Scroll spy highlight for TOC
-      const tocLinks = document.querySelectorAll('#toc a');
-      const sections = document.querySelectorAll('.category');
-      function onScroll() {
-        let current = '';
-        sections.forEach(section => {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 140) current = section.id;
-        });
-        tocLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-        });
-      }
-      document.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-
-      // If hash points to a lesson, scroll it into view smoothly
-      if (location.hash && location.hash.startsWith('#lesson-')) {
-        const target = document.querySelector(location.hash);
-        if (target) setTimeout(()=> target.scrollIntoView({behavior:'smooth', block:'start'}), 80);
-      }
-    });
   </script>
 </body>
 </html>
