@@ -3,115 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knowledge Test</title>
+  <title>Python Knowledge Tests</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>🧩 Knowledge Test</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="lessons.html">Lessons</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="playground.html">Playground</a>
-  </nav>
-</header>
+  <header>
+    <h1>🧩 Python Knowledge Quizzes</h1>
+    <nav class="mini-nav">
+      <a href="lessons.html">Lessons</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="playground.html">Playground</a>
+    </nav>
+  </header>
 
-<main class="center">
-  <button id="startQuizBtn" class="btn">Start Quiz</button>
+  <main class="quiz-container">
+    <section class="quiz-select">
+      <h2>Select a Quiz Level</h2>
+      <div class="quiz-buttons">
+        <button onclick="startQuiz('Beginner')">Beginner</button>
+        <button onclick="startQuiz('Intermediate')">Intermediate</button>
+        <button onclick="startQuiz('Advanced')">Advanced</button>
+        <button onclick="startQuiz('Expert')">Expert</button>
+      </div>
+    </section>
 
-  <div id="quizContent" style="display:none;">
-    <h3 id="quizQuestion"></h3>
-    <div id="quizOptions"></div>
-    <p id="quizResult"></p>
-    <button id="nextBtn" class="btn">Next</button>
-  </div>
+    <section id="quizContent" style="display:none;">
+      <h3 id="quizQuestion"></h3>
+      <div id="quizOptions" class="options"></div>
+      <p id="quizResult"></p>
+      <button id="nextBtn">Next</button>
+    </section>
 
-  <div id="finalScore" style="display:none;">
-    <h3 id="scoreText"></h3>
-    <button id="restartBtn" class="btn">Restart</button>
-  </div>
-</main>
+    <section id="finalScore" style="display:none;">
+      <h3 id="scoreText"></h3>
+      <button id="restartBtn">Take Another Quiz</button>
+    </section>
+  </main>
 
-<script>
-  let lessons = [];
-  let currentQuestionIndex = 0;
-  let score = 0;
-  let quizQuestions = [];
+  <script>
+    let lessons = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let quizQuestions = [];
+    let currentCategory = '';
 
-  async function loadLessons() {
-    const res = await fetch('lessons.json');
-    lessons = await res.json();
-  }
-
-  async function startQuiz() {
-    document.getElementById('startQuizBtn').style.display = 'none';
-    await loadLessons();
-    quizQuestions = lessons.filter(l => l.quiz).map(l => ({
-      question: l.quiz.question,
-      options: l.quiz.options,
-      answer: l.quiz.answer
-    })).sort(() => Math.random() - 0.5).slice(0, 10);
-
-    currentQuestionIndex = 0;
-    score = 0;
-    document.getElementById('quizContent').style.display = 'block';
-    showQuestion();
-  }
-
-  function showQuestion() {
-    const q = quizQuestions[currentQuestionIndex];
-    document.getElementById('quizQuestion').textContent = q.question;
-    const optionsDiv = document.getElementById('quizOptions');
-    optionsDiv.innerHTML = '';
-    q.options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.classList.add('option-btn');
-      btn.textContent = opt;
-      btn.onclick = () => checkAnswer(opt);
-      optionsDiv.appendChild(btn);
-    });
-    document.getElementById('quizResult').textContent = '';
-  }
-
-  function checkAnswer(selected) {
-    const q = quizQuestions[currentQuestionIndex];
-    const resultEl = document.getElementById('quizResult');
-    if (selected === q.answer) {
-      score++;
-      resultEl.textContent = '✅ Correct!';
-    } else {
-      resultEl.textContent = `❌ Incorrect. Correct: ${q.answer}`;
+    async function loadLessons() {
+      const res = await fetch('lessons.json');
+      lessons = await res.json();
     }
-    document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
-  }
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < quizQuestions.length) {
+    async function startQuiz(category) {
+      currentCategory = category;
+      document.querySelector('.quiz-select').style.display = 'none';
+      await loadLessons();
+
+      quizQuestions = lessons
+        .filter(l => l.category === category && l.quiz)
+        .map(l => ({
+          question: l.quiz.question,
+          options: l.quiz.options,
+          answer: l.quiz.answer
+        }))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10);
+
+      score = 0;
+      currentQuestionIndex = 0;
+      document.getElementById('quizContent').style.display = 'block';
       showQuestion();
-    } else {
-      showFinalScore();
     }
-  });
 
-  function showFinalScore() {
-    document.getElementById('quizContent').style.display = 'none';
-    document.getElementById('finalScore').style.display = 'block';
-    document.getElementById('scoreText').textContent = `You got ${score} out of ${quizQuestions.length}.`;
-    const percent = Math.round((score / quizQuestions.length) * 100);
-    saveQuizStats(percent);
-  }
+    function showQuestion() {
+      const q = quizQuestions[currentQuestionIndex];
+      document.getElementById('quizQuestion').textContent = q.question;
+      const optionsDiv = document.getElementById('quizOptions');
+      optionsDiv.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.classList.add('option-btn');
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt);
+        optionsDiv.appendChild(btn);
+      });
+      document.getElementById('quizResult').textContent = '';
+    }
 
-  function saveQuizStats(percent) {
-    const stats = JSON.parse(localStorage.getItem('quizStats')) || { attempts: 0, scores: [] };
-    stats.attempts++;
-    stats.scores.push(percent);
-    localStorage.setItem('quizStats', JSON.stringify(stats));
-  }
+    function checkAnswer(selected) {
+      const q = quizQuestions[currentQuestionIndex];
+      const resultEl = document.getElementById('quizResult');
+      if (selected === q.answer) {
+        score++;
+        resultEl.textContent = '✅ Correct!';
+      } else {
+        resultEl.textContent = `❌ Incorrect. Correct answer: ${q.answer}`;
+      }
+      document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+    }
 
-  document.getElementById('restartBtn').addEventListener('click', () => location.reload());
-  document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
-</script>
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizQuestions.length) showQuestion();
+      else showFinalScore();
+    });
+
+    function showFinalScore() {
+      document.getElementById('quizContent').style.display = 'none';
+      document.getElementById('finalScore').style.display = 'block';
+      document.getElementById('scoreText').textContent = 
+        `You got ${score} out of ${quizQuestions.length} correct.`;
+
+      const percent = Math.round((score / quizQuestions.length) * 100);
+      saveQuizStats(currentCategory, percent);
+    }
+
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      document.getElementById('finalScore').style.display = 'none';
+      document.querySelector('.quiz-select').style.display = 'block';
+    });
+
+    function saveQuizStats(category, percent) {
+      const stats = JSON.parse(localStorage.getItem('quizStats')) || {};
+      if (!stats[category]) stats[category] = { attempts: 0, scores: [] };
+      stats[category].attempts++;
+      stats[category].scores.push(percent);
+      localStorage.setItem('quizStats', JSON.stringify(stats));
+    }
+  </script>
 </body>
 </html>
+
