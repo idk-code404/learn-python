@@ -1,91 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python Playground</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .playground-container { max-width:1100px; margin:20px auto; padding:0 18px; }
-    .play-container { display:grid; grid-template-columns: 1fr 420px; gap:18px; }
-    @media (max-width:980px) { .play-container { grid-template-columns: 1fr; } }
-    .editor-area pre { max-height:520px; overflow:auto; }
-    .trinket-iframe { width:100%; height:640px; border-radius:10px; border:1px solid var(--border); }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="page-header">
-    <div class="header-inner">
-      <div class="brand">
-        <div class="logo">Py</div>
-        <div>
-          <h1>Python Playground</h1>
-          <p class="lead">Experiment with Python code</p>
-        </div>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;">
-        <nav class="mini-nav" aria-label="Main navigation">
-          <a href="lessons.html" class="mini-nav-link">Lessons</a>
-          <a href="questions.html" class="mini-nav-link">Quizzes</a>
-          <a href="dashboard.html" class="mini-nav-link">Dashboard</a>
-          <a href="playground.html" class="mini-nav-link" aria-current="page">Playground</a>
-        </nav>
-
-        <div id="profileWidget"></div>
-      </div>
-    </div>
+  <header class="main-header">
+    <h1>🐍 Python Playground</h1>
+    <nav class="mini-nav">
+      <a href="index.html">🏠 Home</a>
+      <a href="lessons.html">📘 Lessons</a>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="questions.html">🧠 Quizzes</a>
+    </nav>
   </header>
 
   <main class="playground-container">
-    <div class="play-container">
-      <div class="card editor-area">
-        <h3 style="margin-top:0">Editor (preloaded code)</h3>
-        <p class="small">This textarea is pre-filled if you opened the playground via a lesson's <em>Try Code</em> button. Trinket's embed doesn’t accept code via URL, so paste into the embedded editor (Ctrl/Cmd+V) if you want to run it there.</p>
-        <textarea id="codeArea" style="width:100%;height:360px;padding:12px;border-radius:8px;border:1px solid var(--border);font-family:var(--mono);font-size:13px;"></textarea>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
-          <button id="copyBtn" class="btn">Copy Code</button>
-          <button id="openTrinketBtn" class="btn secondary">Open Embedded Editor</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 style="margin-top:0">Live Playground</h3>
-        <iframe id="trinketFrame" class="trinket-iframe"
-          src="https://trinket.io/embed/python3/055c60f8a0?outputOnly=1"
-          allowfullscreen>
-        </iframe>
-        <p class="small" style="margin-top:8px">Tip: paste code from the left into the embedded editor if you need to run it.</p>
-      </div>
-    </div>
+    <iframe 
+      src="https://trinket.io/embed/python3/055c60f8a0" 
+      width="100%" 
+      height="100%" 
+      frameborder="0" 
+      marginwidth="0" 
+      marginheight="0" 
+      allowfullscreen>
+    </iframe>
   </main>
-
-  <script src="app.js"></script>
-  <script>
-    window.learnApp.renderHeaderProfile('#profileWidget');
-
-    // Load code from ?code=...
-    (function () {
-      const params = new URLSearchParams(location.search);
-      const code = params.get('code') ? decodeURIComponent(params.get('code')) : '';
-      const area = document.getElementById('codeArea');
-      if (code) area.value = code;
-      else area.value = "# Type or paste Python code here. Use the embedded editor to run it.";
-
-      document.getElementById('copyBtn').addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(area.value);
-          window.learnApp.showToast('Code copied to clipboard');
-        } catch (e) {
-          alert('Copy failed — use Ctrl/Cmd+C');
-        }
-      });
-
-      document.getElementById('openTrinketBtn').addEventListener('click', () => {
-        // open the trinket page in a new tab for editing
-        window.open('https://trinket.io/python3', '_blank');
-      });
-    })();
-  </script>
 </body>
 </html>
