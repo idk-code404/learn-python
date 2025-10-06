@@ -1,432 +1,264 @@
 [
   {
+    "category": "Beginner",
     "id": 1,
-    "title": "Hello World",
-    "content": "Learn how to print your first message in Python.",
-    "code": "print('Hello, world!')",
+    "title": "Introduction to Python",
+    "content": "Python is a high-level, interpreted programming language known for its simplicity and readability. It’s great for web development, data analysis, AI, and more.",
+    "code": "print('Hello, Python!')",
     "quiz": {
-      "question": "What function prints text in Python?",
-      "options": ["echo()", "printf()", "print()"],
-      "answer": "print()"
-    },
-    "category": "Beginner"
+      "question": "Why is Python considered an interpreted language?",
+      "options": [
+        "Because Python translates code to machine language before running",
+        "Because Python executes code line by line at runtime",
+        "Because Python compiles code to C before running",
+        "Because Python runs only in browsers"
+      ],
+      "answer": "Because Python executes code line by line at runtime"
+    }
   },
   {
+    "category": "Beginner",
     "id": 2,
-    "title": "Variables",
-    "content": "Store data in variables.",
-    "code": "x = 5\nname = 'Alice'\nprint(x, name)",
+    "title": "Variables and Data Types",
+    "content": "Variables are containers for storing data values. Python supports several types: int, float, str, and bool.",
+    "code": "name = 'Alice'\nage = 25\nis_student = True\nprint(name, age, is_student)",
     "quiz": {
-      "question": "Which symbol is used to assign a value?",
-      "options": ["=", "==", ":"],
-      "answer": "="
-    },
-    "category": "Beginner"
-  },
-  {
-    "id": 3,
-    "title": "Data Types",
-    "content": "Python supports strings, integers, floats, and booleans.",
-    "code": "age = 25\npi = 3.14\nis_happy = True\nprint(type(pi))",
-    "quiz": {
-      "question": "Which type is 3.14?",
-      "options": ["int", "float", "str"],
+      "question": "What will be the output type of `type(3.0)`?",
+      "options": ["int", "float", "str", "bool"],
       "answer": "float"
-    },
-    "category": "Beginner"
+    }
   },
   {
+    "category": "Beginner",
+    "id": 3,
+    "title": "Conditionals (if, elif, else)",
+    "content": "Conditional statements help control program flow. Python uses indentation instead of braces.",
+    "code": "x = 10\nif x > 5:\n    print('Greater than 5')\nelse:\n    print('5 or less')",
+    "quiz": {
+      "question": "What happens if indentation is missing under an if-statement in Python?",
+      "options": [
+        "The condition is ignored",
+        "Python assumes a single-line block",
+        "A SyntaxError is raised",
+        "The interpreter continues silently"
+      ],
+      "answer": "A SyntaxError is raised"
+    }
+  },
+  {
+    "category": "Beginner",
     "id": 4,
-    "title": "Lists",
-    "content": "Lists store ordered collections.",
-    "code": "fruits = ['apple','banana','cherry']\nprint(fruits[1])",
-    "quiz": {
-      "question": "Which index gives 'banana'?",
-      "options": ["0", "1", "2"],
-      "answer": "1"
-    },
-    "category": "Beginner"
-  },
-  {
-    "id": 5,
-    "title": "If Statements",
-    "content": "Control flow with conditions.",
-    "code": "x = 10\nif x > 5:\n    print('Big!')",
-    "quiz": {
-      "question": "What keyword starts a condition?",
-      "options": ["if", "when", "case"],
-      "answer": "if"
-    },
-    "category": "Beginner"
-  },
-  {
-    "id": 6,
-    "title": "Loops",
-    "content": "Repeat actions with loops.",
+    "title": "Loops (for and while)",
+    "content": "Loops let you repeat tasks. The `for` loop iterates over sequences; `while` repeats while a condition is true.",
     "code": "for i in range(3):\n    print(i)",
     "quiz": {
-      "question": "Which loop is used to iterate a sequence?",
-      "options": ["for", "while", "loop"],
-      "answer": "for"
-    },
-    "category": "Beginner"
+      "question": "Which statement about `range(3)` is true?",
+      "options": [
+        "It produces [1, 2, 3]",
+        "It produces [0, 1, 2]",
+        "It runs infinitely",
+        "It produces an error"
+      ],
+      "answer": "It produces [0, 1, 2]"
+    }
   },
   {
-    "id": 7,
+    "category": "Beginner",
+    "id": 5,
     "title": "Functions",
-    "content": "Encapsulate reusable code.",
-    "code": "def greet(name):\n    return 'Hello ' + name\nprint(greet('Bob'))",
+    "content": "Functions organize code into reusable blocks. They can take arguments and return values.",
+    "code": "def greet(name):\n    return f'Hello, {name}!'\nprint(greet('Python'))",
     "quiz": {
-      "question": "What keyword defines a function?",
-      "options": ["function", "def", "func"],
-      "answer": "def"
-    },
-    "category": "Beginner"
+      "question": "What is the return value of `print()` when used inside another print call?",
+      "options": ["The printed text", "None", "An empty string", "A tuple"],
+      "answer": "None"
+    }
   },
   {
+    "category": "Intermediate",
+    "id": 6,
+    "title": "Lists and Dictionaries",
+    "content": "Lists store ordered items; dictionaries store key-value pairs.",
+    "code": "fruits = ['apple', 'banana', 'cherry']\nprices = {'apple': 1.2, 'banana': 0.8}\nprint(fruits[1], prices['apple'])",
+    "quiz": {
+      "question": "If `fruits = ['apple', 'banana']`, what does `fruits.append('pear')` do?",
+      "options": [
+        "Creates a new list",
+        "Adds 'pear' to the end of the list",
+        "Replaces 'banana' with 'pear'",
+        "Deletes 'banana'"
+      ],
+      "answer": "Adds 'pear' to the end of the list"
+    }
+  },
+  {
+    "category": "Intermediate",
+    "id": 7,
+    "title": "Exception Handling",
+    "content": "Use `try`, `except`, and `finally` to handle runtime errors safely.",
+    "code": "try:\n    x = int('hello')\nexcept ValueError:\n    print('Invalid number')",
+    "quiz": {
+      "question": "What happens if a `try` block raises a ValueError not caught by an `except` block?",
+      "options": [
+        "The program ignores it",
+        "The program terminates with an error message",
+        "Python retries the block",
+        "The error is logged silently"
+      ],
+      "answer": "The program terminates with an error message"
+    }
+  },
+  {
+    "category": "Intermediate",
     "id": 8,
-    "title": "Exceptions",
-    "content": "Handle runtime errors with try/except.",
-    "code": "try:\n    x = int('hello')\nexcept ValueError:\n    print('Error!')",
-    "quiz": {
-      "question": "What keyword catches errors?",
-      "options": ["catch", "except", "handle"],
-      "answer": "except"
-    },
-    "category": "Intermediate"
-  },
-  {
-    "id": 9,
-    "title": "Modules",
-    "content": "Reuse code with modules.",
+    "title": "Modules and Imports",
+    "content": "Modules let you organize code across files. Use `import` to include them.",
     "code": "import math\nprint(math.sqrt(16))",
     "quiz": {
-      "question": "Which module gives math functions?",
-      "options": ["random", "math", "os"],
-      "answer": "math"
-    },
-    "category": "Intermediate"
+      "question": "Which line correctly imports the `sqrt` function directly?",
+      "options": [
+        "from math import sqrt",
+        "import sqrt from math",
+        "import math.sqrt",
+        "include math.sqrt"
+      ],
+      "answer": "from math import sqrt"
+    }
   },
   {
+    "category": "Intermediate",
+    "id": 9,
+    "title": "File Handling",
+    "content": "You can read and write files using the `open()` function.",
+    "code": "with open('data.txt', 'w') as f:\n    f.write('Hello!')",
+    "quiz": {
+      "question": "Why use `with open()` instead of a plain `open()` call?",
+      "options": [
+        "It runs faster",
+        "It automatically closes the file",
+        "It requires fewer parameters",
+        "It prevents syntax errors"
+      ],
+      "answer": "It automatically closes the file"
+    }
+  },
+  {
+    "category": "Advanced",
     "id": 10,
-    "title": "File I/O",
-    "content": "Read and write files.",
-    "code": "with open('data.txt','w') as f:\n    f.write('Hello file!')",
-    "quiz": {
-      "question": "Which mode opens file for writing?",
-      "options": ["r", "w", "a"],
-      "answer": "w"
-    },
-    "category": "Intermediate"
-  },
-  {
-    "id": 11,
-    "title": "Libraries",
-    "content": "Use pip-installed libraries.",
-    "code": "import requests\nprint(requests.get('https://example.com').status_code)",
-    "quiz": {
-      "question": "Which tool installs Python packages?",
-      "options": ["npm", "pip", "brew"],
-      "answer": "pip"
-    },
-    "category": "Intermediate"
-  },
-  {
-    "id": 12,
     "title": "Decorators",
-    "content": "Decorators modify functions.",
-    "code": "def log(func):\n    def wrapper():\n        print('Running...')\n        func()\n    return wrapper\n\n@log\ndef hello():\n    print('Hello')\n\nhello()",
+    "content": "Decorators modify the behavior of functions using higher-order functions.",
+    "code": "def debug(func):\n    def wrapper(*args, **kwargs):\n        print('Calling', func.__name__)\n        return func(*args, **kwargs)\n    return wrapper\n\n@debug\ndef greet():\n    print('Hi!')\ngreet()",
     "quiz": {
-      "question": "Which symbol applies a decorator?",
-      "options": ["@", "#", "&"],
-      "answer": "@"
-    },
-    "category": "Advanced"
+      "question": "What does a decorator function typically return?",
+      "options": [
+        "A string",
+        "A new modified function",
+        "A Boolean",
+        "The same function unchanged"
+      ],
+      "answer": "A new modified function"
+    }
   },
   {
-    "id": 13,
+    "category": "Advanced",
+    "id": 11,
     "title": "Generators",
-    "content": "Yield values lazily with generators.",
-    "code": "def counter():\n    for i in range(3):\n        yield i\nfor x in counter():\n    print(x)",
+    "content": "Generators yield values one at a time using the `yield` keyword.",
+    "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\nfor i in countdown(3):\n    print(i)",
     "quiz": {
-      "question": "What keyword creates a generator?",
-      "options": ["yield", "return", "gen"],
-      "answer": "yield"
-    },
-    "category": "Advanced"
+      "question": "What is a key benefit of generators over lists?",
+      "options": [
+        "They run faster always",
+        "They use less memory by generating values on demand",
+        "They store all data in memory",
+        "They can be indexed directly"
+      ],
+      "answer": "They use less memory by generating values on demand"
+    }
   },
   {
+    "category": "Advanced",
+    "id": 12,
+    "title": "Asynchronous Programming (async/await)",
+    "content": "Async functions allow non-blocking operations for tasks like I/O or web requests.",
+    "code": "import asyncio\nasync def greet():\n    await asyncio.sleep(1)\n    print('Hello async!')\nasyncio.run(greet())",
+    "quiz": {
+      "question": "What happens if you call an async function without `await` or `asyncio.run()`?",
+      "options": [
+        "It executes normally",
+        "It returns a coroutine object",
+        "It blocks the program",
+        "It raises an ImportError"
+      ],
+      "answer": "It returns a coroutine object"
+    }
+  },
+  {
+    "category": "Advanced",
+    "id": 13,
+    "title": "NumPy Arrays",
+    "content": "NumPy provides efficient numerical arrays for scientific computing.",
+    "code": "import numpy as np\na = np.array([1, 2, 3])\nprint(a * 2)",
+    "quiz": {
+      "question": "How does `np.array([1, 2, 3]) * 2` differ from `[1, 2, 3] * 2`?",
+      "options": [
+        "Both produce [1, 2, 3, 1, 2, 3]",
+        "NumPy multiplies each element; lists repeat the sequence",
+        "Both double each element",
+        "Both give errors"
+      ],
+      "answer": "NumPy multiplies each element; lists repeat the sequence"
+    }
+  },
+  {
+    "category": "Advanced",
     "id": 14,
-    "title": "Async Programming",
-    "content": "Use async/await for concurrency.",
-    "code": "import asyncio\n\nasync def main():\n    print('Hello')\n    await asyncio.sleep(1)\n    print('World')\n\nasyncio.run(main())",
+    "title": "Web Development with Flask",
+    "content": "Flask is a lightweight web framework for Python.",
+    "code": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef home():\n    return 'Hello Flask!'\n\n# app.run()",
     "quiz": {
-      "question": "Which keyword declares an async function?",
-      "options": ["async", "await", "future", "task"],
-      "answer": "async"
-    },
-    "category": "Advanced"
+      "question": "What does `@app.route('/')` do in Flask?",
+      "options": [
+        "It defines the default web page route",
+        "It runs the Flask server",
+        "It creates a database connection",
+        "It starts a background task"
+      ],
+      "answer": "It defines the default web page route"
+    }
   },
   {
+    "category": "Expert",
     "id": 15,
-    "title": "NumPy Basics",
-    "content": "Work with arrays using NumPy.",
-    "code": "import numpy as np\narr = np.array([1,2,3])\nprint(arr * 2)",
+    "title": "APIs and HTTP Requests",
+    "content": "Python’s `requests` library lets you interact with APIs easily.",
+    "code": "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)",
     "quiz": {
-      "question": "Which library is used for arrays?",
-      "options": ["Pandas", "NumPy", "SciPy"],
-      "answer": "NumPy"
-    },
-    "category": "Advanced"
+      "question": "What type of object is returned by `requests.get()`?",
+      "options": [
+        "A JSON object",
+        "A Response object containing data and metadata",
+        "A tuple of status and text",
+        "A file-like object"
+      ],
+      "answer": "A Response object containing data and metadata"
+    }
   },
   {
+    "category": "Expert",
     "id": 16,
-    "title": "Flask Basics",
-    "content": "Build a simple web app with Flask.",
-    "code": "from flask import Flask\napp = Flask(__name__)\n\n@app.route('/')\ndef home():\n    return 'Hello Flask!'",
+    "title": "Object-Oriented Programming (OOP)",
+    "content": "OOP in Python allows encapsulation, inheritance, and polymorphism.",
+    "code": "class Animal:\n    def speak(self):\n        return 'Sound'\nclass Dog(Animal):\n    def speak(self):\n        return 'Bark'\n\nprint(Dog().speak())",
     "quiz": {
-      "question": "Which decorator defines a route?",
-      "options": ["@app.route", "@route", "@flask.route"],
-      "answer": "@app.route"
-    },
-    "category": "Advanced"
-  },
-  {
-    "id": 17,
-    "title": "Pandas Basics",
-    "content": "Work with tabular data using Pandas.",
-    "code": "import pandas as pd\ndf = pd.DataFrame({'a':[1,2],'b':[3,4]})\nprint(df)",
-    "quiz": {
-      "question": "Which library is best for DataFrames?",
-      "options": ["Pandas", "NumPy", "Matplotlib"],
-      "answer": "Pandas"
-    },
-    "category": "Advanced"
-  },
-  {
-    "id": 18,
-    "title": "Object-Oriented Programming",
-    "content": "Define classes and objects.",
-    "code": "class Dog:\n    def __init__(self,name):\n        self.name = name\n\n    def bark(self):\n        print(self.name + ' says woof!')\n\nfido = Dog('Fido')\nfido.bark()",
-    "quiz": {
-      "question": "What method initializes a class?",
-      "options": ["__init__", "start", "create"],
-      "answer": "__init__"
-    },
-    "category": "Intermediate"
-  },
-  {
-    "id": 19,
-    "title": "Virtual Environments",
-    "content": "Isolate dependencies with venv.",
-    "code": "python -m venv myenv\nsource myenv/bin/activate",
-    "quiz": {
-      "question": "What command creates a venv?",
-      "options": ["pip venv", "python -m venv", "mkvenv"],
-      "answer": "python -m venv"
-    },
-    "category": "Advanced"
-  },
-  {
-    "id": 20,
-    "title": "Unit Testing",
-    "content": "Test code with unittest.",
-    "code": "import unittest\n\nclass TestMath(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(2+2,4)\n\nunittest.main()",
-    "quiz": {
-      "question": "Which module is for testing?",
-      "options": ["unittest", "pytest", "both"],
-      "answer": "unittest"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 21,
-    "title": "APIs with Flask",
-    "content": "Create REST APIs in Flask.",
-    "code": "from flask import Flask, jsonify\napp = Flask(__name__)\n\n@app.route('/api')\ndef api():\n    return jsonify({'msg':'Hello API'})",
-    "quiz": {
-      "question": "Which function returns JSON?",
-      "options": ["return()", "jsonify()", "toJSON()"],
-      "answer": "jsonify()"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 22,
-    "title": "Data Visualization",
-    "content": "Plot data with Matplotlib.",
-    "code": "import matplotlib.pyplot as plt\nplt.plot([1,2,3],[4,5,6])\nplt.show()",
-    "quiz": {
-      "question": "Which library plots graphs?",
-      "options": ["Matplotlib", "Flask", "Seaborn"],
-      "answer": "Matplotlib"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 23,
-    "title": "Web Scraping",
-    "content": "Extract data with BeautifulSoup.",
-    "code": "import requests\nfrom bs4 import BeautifulSoup\nhtml = requests.get('https://example.com').text\nsoup = BeautifulSoup(html,'html.parser')\nprint(soup.title.string)",
-    "quiz": {
-      "question": "Which library parses HTML?",
-      "options": ["requests", "BeautifulSoup", "json"],
-      "answer": "BeautifulSoup"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 24,
-    "title": "Django Basics",
-    "content": "Web framework for large apps.",
-    "code": "django-admin startproject mysite",
-    "quiz": {
-      "question": "Which command creates a Django project?",
-      "options": ["flask new", "django-admin startproject", "django new"],
-      "answer": "django-admin startproject"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 25,
-    "title": "Machine Learning Intro",
-    "content": "Use scikit-learn for ML.",
-    "code": "from sklearn.linear_model import LinearRegression\nmodel = LinearRegression()",
-    "quiz": {
-      "question": "Which library is for ML?",
-      "options": ["sklearn", "flask", "numpy"],
-      "answer": "sklearn"
-    },
-    "category": "Expert"
-  },
-  {
-    "id": 26,
-    "title": "Strings & Common Methods",
-    "content": "Work with strings and common methods like upper(), lower(), and split().",
-    "code": "s = 'Hello, Python!'\nprint(s.upper())\nprint(s.lower())\nprint(s.split(','))",
-    "quiz": {
-      "question": "Which method converts a string to uppercase?",
-      "options": ["upper()", "lower()", "capitalize()", "toUpper()"],
-      "answer": "upper()"
-    },
-    "category": "Beginner",
-    "exercises": [
-      {
-        "prompt": "Write code that asks the user for a sentence and prints the sentence in uppercase.",
-        "starter_code": "s = input('Enter a sentence: ')\n# your code here",
-        "hint": "Use the .upper() string method.",
-        "solution": "s = input('Enter a sentence: ')\nprint(s.upper())"
-      },
-      {
-        "prompt": "Split the string 'apple,banana,cherry' into a list and print the second item.",
-        "starter_code": "s = 'apple,banana,cherry'\n# your code here",
-        "hint": "Use .split(',') and list indexing.",
-        "solution": "s = 'apple,banana,cherry'\nfruits = s.split(',')\nprint(fruits[1])  # banana"
-      }
-    ]
-  },
-  {
-    "id": 27,
-    "title": "User Input",
-    "content": "Get input from users using input() and use that value in your program.",
-    "code": "name = input('What is your name? ')\nprint('Hello,', name)",
-    "quiz": {
-      "question": "Which function reads a line from user input?",
-      "options": ["input()", "raw_input()", "readline()", "scan()"],
-      "answer": "input()"
-    },
-    "category": "Beginner",
-    "exercises": [
-      {
-        "prompt": "Ask the user for their age and print 'You are X years old' where X is the input.",
-        "starter_code": "age = input('How old are you? ')\n# your code here",
-        "hint": "You can use string concatenation or an f-string.",
-        "solution": "age = input('How old are you? ')\nprint(f'You are {age} years old')"
-      },
-      {
-        "prompt": "Prompt for two numbers, add them (remember input() returns a string), and print the numeric sum.",
-        "starter_code": "a = input('First number: ')\nb = input('Second number: ')\n# your code here",
-        "hint": "Convert inputs to int() or float() before adding.",
-        "solution": "a = int(input('First number: '))\nb = int(input('Second number: '))\nprint(a + b)"
-      }
-    ]
-  },
-  {
-    "id": 28,
-    "title": "f-Strings & String Formatting",
-    "content": "Format strings easily with f-strings (Python 3.6+).",
-    "code": "name = 'Alice'\nage = 30\nprint(f'{name} is {age} years old')\nprint('Name: {} Age: {}'.format(name, age))",
-    "quiz": {
-      "question": "Which of these is an f-string?",
-      "options": ["f'{name}'", "'{name}'", "format('{name}')", "%s" ],
-      "answer": "f'{name}'"
-    },
-    "category": "Beginner",
-    "exercises": [
-      {
-        "prompt": "Use an f-string to print 'Alice scored 95.5% on the test' using variables name and score.",
-        "starter_code": "name = 'Alice'\nscore = 95.5\n# your code here",
-        "hint": "Start the string with f and put variables in {}.",
-        "solution": "name = 'Alice'\nscore = 95.5\nprint(f'{name} scored {score}% on the test')"
-      },
-      {
-        "prompt": "Recreate the same output using str.format() instead of an f-string.",
-        "starter_code": "name = 'Alice'\nscore = 95.5\n# your code here",
-        "hint": "Use '{}'.format(...) pattern.",
-        "solution": "name = 'Alice'\nscore = 95.5\nprint('{} scored {}% on the test'.format(name, score))"
-      }
-    ]
-  },
-  {
-    "id": 29,
-    "title": "String Slicing",
-    "content": "Extract parts of strings using slicing and negative indices.",
-    "code": "s = 'Python'\nprint(s[0:2])  # 'Py'\nprint(s[-1])   # last character",
-    "quiz": {
-      "question": "How do you access the last character of a string s?",
-      "options": ["s[-1]", "s[last]", "s[0]", "s(end)"],
-      "answer": "s[-1]"
-    },
-    "category": "Beginner",
-    "exercises": [
-      {
-        "prompt": "Given s = 'programming', print the substring 'gram'.",
-        "starter_code": "s = 'programming'\n# your code here",
-        "hint": "Find the start and end indices for slice s[start:end].",
-        "solution": "s = 'programming'\nprint(s[3:7])  # 'gram'"
-      },
-      {
-        "prompt": "Print the last 3 characters of a string using negative indices.",
-        "starter_code": "s = 'development'\n# your code here",
-        "hint": "Use s[-3:] to get the last three characters.",
-        "solution": "s = 'development'\nprint(s[-3:])  # 'ent'"
-      }
-    ]
-  },
-  {
-    "id": 30,
-    "title": "Booleans & Comparisons",
-    "content": "Compare values using ==, !=, >, < and combine conditions with and/or/not.",
-    "code": "print(5 > 3)\nprint(5 == 5)\nprint(5 != 3)\nprint((5 > 3) and (3 > 1))",
-    "quiz": {
-      "question": "Which operator checks equality?",
-      "options": ["==", "=", "===", "equals()"],
-      "answer": "=="
-    },
-    "category": "Beginner",
-    "exercises": [
-      {
-        "prompt": "Write a program that asks for a number and prints whether it is even or odd.",
-        "starter_code": "n = int(input('Enter an integer: '))\n# your code here",
-        "hint": "Use the % (modulo) operator: n % 2 == 0 means even.",
-        "solution": "n = int(input('Enter an integer: '))\nif n % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')"
-      },
-      {
-        "prompt": "Ask for a user's age and print 'Adult' if age >= 18, otherwise print 'Minor'.",
-        "starter_code": "age = int(input('Your age: '))\n# your code here",
-        "hint": "Use an if/else and the >= operator.",
-        "solution": "age = int(input('Your age: '))\nif age >= 18:\n    print('Adult')\nelse:\n    print('Minor')"
-      }
-    ]
+      "question": "What happens when a subclass defines a method with the same name as in the parent class?",
+      "options": [
+        "The subclass method overrides the parent’s method",
+        "Both are executed",
+        "It causes an error",
+        "Python ignores the subclass method"
+      ],
+      "answer": "The subclass method overrides the parent’s method"
+    }
   }
 ]
