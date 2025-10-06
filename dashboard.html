@@ -1,92 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Progress Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Shared header: brand + mini-nav + home/back -->
-  <header class="page-header">
-    <div class="header-inner">
-      <div class="brand">
-        <h1>🐍 Learn Python</h1>
-        <p class="lead">Track your learning progress</p>
-      </div>
+<header>
+  <h1>📈 Progress Dashboard</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="lessons.html">Lessons</a>
+    <a href="playground.html">Playground</a>
+    <a href="questions.html">Questions</a>
+  </nav>
+</header>
 
-      <div class="header-actions">
-        <!-- Mini nav -->
-        <nav class="mini-nav" aria-label="Main navigation">
-          <a href="lessons.html" class="mini-nav-link">Lessons</a>
-          <a href="dashboard.html" class="mini-nav-link" aria-current="page">Dashboard</a>
-          <a href="playground.html" class="mini-nav-link">Playground</a>
-        </nav>
+<main class="center">
+  <div id="progressList"></div>
+</main>
 
-        <!-- Home button -->
-        <a href="index.html" class="back-btn" aria-label="Back to Home">
-          <span class="arrow">⬅</span>
-          <span class="text">Home</span>
-        </a>
-      </div>
-    </div>
-  </header>
+<script>
+  const progress = JSON.parse(localStorage.getItem('progress')) || {};
+  const total = Object.keys(progress).length;
+  const completed = Object.values(progress).filter(v => v === true).length;
 
-  <!-- Hero (dashboard-specific) -->
-  <header class="hero" style="margin-top:12px; border-radius:12px; padding:20px;">
-    <div class="container">
-      <h1 style="margin:0 0 6px 0">📊 Progress Dashboard</h1>
-      <p style="margin:0; color:var(--muted)">See your overall progress and quick lesson status.</p>
-    </div>
-  </header>
+  const quizStats = JSON.parse(localStorage.getItem('quizStats')) || { attempts: 0, scores: [] };
+  const attempts = quizStats.attempts;
+  const scores = quizStats.scores;
+  const avgScore = scores.length ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : 0;
+  const bestScore = scores.length ? Math.max(...scores) : 0;
 
-  <main class="container" style="padding-top:18px; max-width:1100px;">
+  const container = document.getElementById('progressList');
+  container.innerHTML = `
     <div class="progress-summary">
-      <h2 style="margin-bottom:8px">Overall Progress</h2>
-      <div class="progress-bar" aria-hidden="true" style="margin-bottom:8px;">
-        <div id="overall-progress" class="progress-fill" style="width:0%"></div>
-      </div>
-      <p id="progress-text" class="small">0% complete</p>
+      <h3>Lesson Progress</h3>
+      <p><strong>${completed}</strong> of <strong>${total}</strong> lessons completed</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: ${(completed/total)*100 || 0}%"></div></div>
     </div>
 
-    <section id="lessons-list" class="lessons-list grid" aria-live="polite">
-      <!-- JS will populate lesson cards here (no action buttons) -->
-    </section>
-
-    <a href="lessons.html" class="back-btn" style="margin:28px auto; display:inline-flex;">← Browse Lessons</a>
-  </main>
-
-  <script>
-    // Load lessons and progress (uses lessons.json & localStorage)
-    fetch('lessons.json')
-      .then(res => res.json())
-      .then(lessons => {
-        const list = document.getElementById('lessons-list');
-        let completed = 0;
-
-        lessons.forEach(lesson => {
-          const done = localStorage.getItem(`lesson-${lesson.id}`) === 'completed';
-          if (done) completed++;
-
-          const card = document.createElement('div');
-          card.className = 'lesson-card' + (done ? ' completed' : '');
-          card.innerHTML = `
-            <h3 style="margin-top:0">${lesson.title}</h3>
-            <p class="small" style="margin:6px 0 10px 0">${lesson.category || ''}</p>
-            <p style="margin:0 0 12px 0">${done ? '✅ Completed' : '❌ Not started'}</p>
-          `;
-          list.appendChild(card);
-        });
-
-        // Update overall progress UI
-        const percent = Math.round((completed / lessons.length) * 100);
-        document.getElementById('overall-progress').style.width = percent + '%';
-        document.getElementById('progress-text').textContent = `${percent}% complete`;
-      })
-      .catch(err => {
-        document.getElementById('lessons-list').innerHTML = '<p>Failed to load lessons.</p>';
-        console.error(err);
-      });
-  </script>
+    <div class="quiz-summary">
+      <h3>Quiz Performance</h3>
+      <p>Attempts: <strong>${attempts}</strong></p>
+      <p>Average Score: <strong>${avgScore}%</strong></p>
+      <p>Best Score: <strong>${bestScore}%</strong></p>
+    </div>
+  `;
+</script>
 </body>
 </html>
